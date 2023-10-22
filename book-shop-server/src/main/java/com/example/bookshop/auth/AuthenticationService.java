@@ -1,7 +1,7 @@
 package com.example.bookshop.auth;
 
 import com.example.bookshop.config.JwtService;
-import com.example.bookshop.entity.Role;
+import com.example.bookshop.entity.enums.Role;
 import com.example.bookshop.entity.User;
 import com.example.bookshop.repository.UserRepository;
 import com.example.bookshop.service.CustomUserDetailsService;

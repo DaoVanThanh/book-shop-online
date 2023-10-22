@@ -1,6 +1,7 @@
 package com.example.bookshop.repository;
 
-import com.example.bookshop.entity.Order;
+import com.example.bookshop.entity.Book;
+import com.example.bookshop.entity.OrderDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -9,18 +10,15 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 @Repository
-public interface OrderRepository extends JpaRepository<Order, Long> {
-    Optional<Order> getByOrderId(Long orderId);
-
+public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> {
     @Modifying
     @Query(
-            value = "select order_id from orders " +
-                    "where user_id = :user_id", nativeQuery = true)
+            value = "select distinct book_id from order_details " +
+                    "where order_id IN :order_ids", nativeQuery = true)
     @Transactional
-    ArrayList<Long> getOrderIdsByUserId(
-            @Param("user_id") Long userId
+    ArrayList<Long> getBookIdsByOrderIds(
+            @Param("order_ids") ArrayList<Long> orderIds
     );
 }

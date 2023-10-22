@@ -1,16 +1,24 @@
 package com.example.bookshop.service.impl;
 
 
-import com.example.bookshop.entity.Cart;
+import com.example.bookshop.dto.BookQuantity;
+import com.example.bookshop.dto.response.CreateOrderResponse;
+import com.example.bookshop.dto.response.GetAllBookPurchasedResponse;
+import com.example.bookshop.entity.*;
 import com.example.bookshop.dto.response.GetStatusOrderResponse;
-import com.example.bookshop.repository.CartDetailRepository;
-import com.example.bookshop.repository.CartRepository;
-import com.example.bookshop.repository.OrderRepository;
+import com.example.bookshop.entity.enums.OrderStatus;
+import com.example.bookshop.exception.ElementNotFoundException;
+import com.example.bookshop.exception.ParamInvalidException;
+import com.example.bookshop.repository.*;
+import com.example.bookshop.service.BookService;
 import com.example.bookshop.service.OrderManagementService;
 import com.example.bookshop.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.ArrayList;
+import java.util.Calendar;
 
 @Service
 @RequiredArgsConstructor
@@ -19,24 +27,99 @@ public class OrderManagementServiceImpl implements OrderManagementService {
     private final OrderRepository orderRepository;
     private final CartRepository cartRepository;
     private final CartDetailRepository cartDetailRepository;
+    private final BookRepository bookRepository;
+    private final OrderDetailRepository orderDetailRepository;
 
-    public GetStatusOrderResponse getStatusOrder(Long orderId) throws NotFoundException {
+    private final BookService bookService;
+
+    public GetStatusOrderResponse getStatusOrder(Long orderId) throws ResponseStatusException {
         var order = orderRepository
                 .getByOrderId(orderId)
-                .orElseThrow(() -> new NotFoundException());
+                .orElseThrow(() -> new ElementNotFoundException("order id"));
         return GetStatusOrderResponse.builder().status(order.getStatus()).build();
     }
 
-    public void updateCart(Long bookId, Integer quantity) throws Exception {
+    public void updateCart(Long bookId, Integer quantity) throws ResponseStatusException {
         Long userId = userService.getUserId();
         Cart cart = cartRepository
                 .getCartByUserUserId(userId)
-                .orElseThrow(() -> new Exception());
+                .orElseThrow(() -> new ParamInvalidException("Rỏ hàng chưa được tạo"));
 
         if (quantity == 0) {
             cartDetailRepository.deteleByCartIdAndBookId(bookId, cart.getCartId());
         } else {
             cartDetailRepository.upsertByCartIdAndBookId(bookId, cart.getCartId(), quantity);
         }
+    }
+
+    public CreateOrderResponse createOrder(
+            String deliveryAddress,
+            ArrayList<BookQuantity> bookQuantities
+    ) throws ResponseStatusException {
+        try {
+            if (!bookService.checkBookQuantity(bookQuantities).booleanValue()) {
+                throw new ParamInvalidException("Không đủ sách trong kho");
+            }
+            Long total = bookService.calcCost(bookQuantities);
+            Order order = Order.builder()
+                    .orderDate(Calendar.getInstance().getTime())
+                    .deliveryAddress(deliveryAddress)
+                    .status(OrderStatus.CREATING)
+                    .totalAmount(total)
+                    .user(userService.getUser())
+                    .build();
+
+            orderRepository.save(order);
+            bookService.removeBooksFromWarehouse(bookQuantities);
+            for (BookQuantity bookQuantity : bookQuantities) {
+                OrderDetail orderDetail = OrderDetail.builder()
+                        .order(order)
+                        .book(bookRepository.findById(bookQuantity.getBookId()).orElseThrow())
+                        .quantity(bookQuantity.getQuantity())
+                        .build();
+                orderDetailRepository.save(orderDetail);
+            }
+
+            return CreateOrderResponse.builder()
+                    .totalAmount(total)
+                    .orderId(order.getOrderId())
+                    .build();
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    public void updateStatusOrder(
+            Long orderId,
+            OrderStatus orderStatus
+    ) throws ResponseStatusException {
+        if (orderStatus == OrderStatus.CREATING) {
+            throw new ParamInvalidException("Không cập nhật trạng thái CREATING");
+        }
+        Order order = orderRepository
+                .findById(orderId)
+                .orElseThrow(() -> new ElementNotFoundException("order id"));
+        if (orderStatus == OrderStatus.CANCEL && order.getStatus() != OrderStatus.CREATING) {
+            throw new ParamInvalidException("Không thể hủy đơn hàng đang giao");
+        }
+        if (orderStatus == OrderStatus.DELIVERING && order.getStatus() != OrderStatus.CREATING) {
+            throw new ParamInvalidException("Cập nhật thất bại");
+        }
+        if (orderStatus == OrderStatus.DELIVERING && order.getStatus() != OrderStatus.CREATING) {
+            throw new ParamInvalidException("Cập nhật thất bại");
+        }
+        if (orderStatus == OrderStatus.DONE && order.getStatus() != OrderStatus.DELIVERING) {
+            throw new ParamInvalidException("Cập nhật thất bại");
+        }
+        order.setStatus(orderStatus);
+        orderRepository.save(order);
+    }
+
+    public GetAllBookPurchasedResponse getAllBookPurchased() throws ResponseStatusException {
+        Long userId = userService.getUserId();
+        ArrayList<Long> orderIds = orderRepository.getOrderIdsByUserId(userId);
+        ArrayList<Long> bookIds = orderDetailRepository.getBookIdsByOrderIds(orderIds);
+        ArrayList<Book> books = bookRepository.getBooksByBookIdIn(bookIds);
+        return GetAllBookPurchasedResponse.builder().books(books).build();
     }
 }

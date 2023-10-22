@@ -1,0 +1,91 @@
+/*
+-----------------------------------------------------------------------
+	Testimonial CSS
+-----------------------------------------------------------------------
+*/
+.testimonial-area {
+	&.testimonial-default-area {
+		background-color: #f7f7f7;
+		padding: 167px 0 155px;
+		@media #{$lg-device} {
+			padding: 77px 0 90px;
+		}
+	}
+}
+
+.testimonial-single {
+	text-align: center;
+	.client-thumb {
+		img {}
+	}
+	.client-content {
+		p {
+			color: $white;
+			font-size: 16px;
+			font-weight: 400;
+			font-style: italic;
+			line-height: 28px;
+			margin-bottom: 34px;
+			margin-top: 20px;
+		}
+	}
+	.client-info {
+		.name {
+			color: $white;
+			font-size: 18px;
+			font-weight: $font-weight-semi-bold;
+			margin-bottom: 11px;
+		}
+		.designation {
+			color: $white;
+			font-size: 14px;
+			font-weight: $font-weight-normal;
+		}
+	}
+}
+
+.testimonial-item {
+	.client-content {
+		margin-bottom: 42px;
+		p {
+			color: $white;
+			font-size: 16px;
+			line-height: 28px;
+		}
+	}
+	.client-info {
+		align-items: center;
+		display: flex;
+		.thumb {
+			margin-right: 20px;
+			img {
+				width: auto;
+			}
+		}
+		.desc {
+			margin-top: 1px;
+			.name {
+				color: $white;
+				font-size: 18px;
+				font-weight: 600;
+				line-height: 1;
+				margin-bottom: 5px;
+			}
+			.designation {
+				color: $white;
+				font-size: 14px;
+				font-weight: 400;
+				margin-bottom: 0;
+			}
+		}
+	}
+}
+
+.testimonial-default-area {
+	.testimonial-item {
+		padding: 47px 30px 46px 70px;
+		@media #{$md-device} {
+			padding: 0;
+		}
+	}
+}

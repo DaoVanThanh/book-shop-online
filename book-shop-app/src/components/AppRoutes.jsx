@@ -5,7 +5,9 @@ import Login from "./Login/Login";
 import Shop from "./Shop/Shop";
 import About from "./About/About";
 import Cart from "./Cart/Cart";
+import AccountManager from "./AccountManager/AccountManager";
 import Policy from "./Policy/Policy";
+import Footer from "./Footer/Footer";
 
 function AppRoutes() {
   return (
@@ -15,6 +17,7 @@ function AppRoutes() {
         <Route path="/about" element={<About />}></Route>
         <Route path="/shop" element={<Shop />}></Route>
         <Route path="/cart" element={<Cart />}></Route>
+        <Route path="/accountManager" element={<AccountManager />}></Route>
         <Route path="/policy" element={<Policy />}></Route>
     </Routes>
   );

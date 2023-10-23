@@ -1,0 +1,15 @@
+.title, .abstract, .section-container {
+    text-align: left;
+    margin: 0 20%;
+}
+
+.title {
+    font-size: 30px;
+    font-weight: bold;
+    color: green;
+    margin-top: 20px;
+}
+
+.section {
+    font-weight: bold;
+}

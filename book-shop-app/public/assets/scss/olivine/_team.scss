@@ -1,0 +1,89 @@
+/*
+-----------------------------------------------------------------------
+	Team CSS
+-----------------------------------------------------------------------
+*/
+.team-area {
+  &.team-default-area {
+  	padding: 100px 0;
+  }
+}
+
+.team-member {
+    @media #{$md-device} {
+    	margin-bottom: 30px;
+    }
+	.thumb {
+		overflow: hidden;
+		position: relative;
+		img {
+			width: 100%;
+		}
+		.social-icons {
+			bottom: 15px;
+			position: absolute;
+			right: 15px;
+			a {
+				background-color: #f4a460;
+				border-radius: 50%;
+				color: #fff;
+				left: 30px;
+				opacity: 0;
+				visibility: hidden;
+				position: relative;
+				display: inline-block;
+				height: 40px;
+				line-height: 40px;
+				width: 40px;
+				text-align: center;
+				font-size: 18px;
+				margin-right: 1px;
+				&:last-child {
+					margin-right: 0;
+				}
+				&:nth-child(1) {
+			    transition-delay: 0.1s;
+				}
+				&:nth-child(2) {
+			    transition-delay: 0.2s;
+				}
+				&:nth-child(3) {
+			    transition-delay: 0.3s;
+				}
+				&:hover {
+					background-color: #fff;
+					color: #f4a460;
+				}
+			}
+		}
+	}
+	.content {
+		text-align: center;
+		box-shadow: 0 3px 5px rgb(85 85 85 / 20%);
+		padding: 20px 10px 16px;
+		.member-info {
+			.name {
+				font-size: 18px;
+				font-weight: 500;
+				font-family: $font-current-theme1;
+				a {
+					color: #6d6d6d;
+				}
+			}
+			.designation {
+				font-size: 15px;
+			}
+		}
+	}
+	&:hover {
+		.thumb {
+			.social-icons {
+				a {
+					opacity: 1;
+					visibility: visible;
+					left: 0;
+				}
+			}
+		}
+	}
+}

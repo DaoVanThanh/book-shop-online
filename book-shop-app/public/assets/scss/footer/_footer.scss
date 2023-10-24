@@ -1,0 +1,146 @@
+/*
+-----------------------------------------------------------------------
+  Footer CSS
+-----------------------------------------------------------------------
+*/
+
+.footer-area {
+  background-color: $white-f7;
+  padding-top: 115px;
+  @media #{$lg-device} {
+    padding-top: 85px;
+  }
+  .footer-main {
+    padding-bottom: 42px;
+    @media #{$xxs-device} {
+      padding-bottom: 10px;
+    }
+  }
+  .widget-logo-area {
+    margin-bottom: 40px;
+  }
+  p {
+    color: $black-333;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 28px;
+    margin: 0 auto 32px;
+    width: 410px;
+    text-align: center;
+    @media #{$xxs-device} {
+      width: 100%;
+    }
+  }
+  .social-widget {
+    margin-bottom: 49px;
+    @media #{$xxs-device} {
+      margin-bottom: 25px;
+    }
+    a {
+      color: $black-333;
+      font-size: 17px;
+      margin-right: 26px;
+      &:last-child {
+        margin-right: 0;
+      }
+      &:hover {
+        color: $theme-color;
+      }
+    }
+  }
+  .widget-menu-wrap {
+    .nav-menu {
+      li {
+        line-height: 1;
+        display: inline-block;
+        margin-right: 36px;
+        @media #{$xxs-device} {
+          margin-right: 16px;
+        }
+        a {
+          color: $black-333;
+          font-size: 16px;
+          font-weight: $font-weight-medium;
+          display: inline-block;
+          letter-spacing: 0;
+          line-height: 1;
+          @media #{$xxs-device} {
+            font-size: 14px;
+          }
+          &:hover {
+            color: $theme-color;
+          }
+        }
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+  .widget-item {}
+  .widget-title {}
+  .footer-bottom {
+    &-content {
+      border-top: 1px solid #eee;
+      padding: 37px 0 40px;
+    }
+    .widget-copyright {
+      p {
+        color: $black-333;
+        font-size: 14px;
+        font-weight: $font-weight-normal;
+        margin: 0;
+        width: auto;
+        line-height: 24px;
+        text-align: left;
+        @media #{$sm-device} {
+          text-align: center;
+        }
+        a {
+          color: #9E9E9E;
+          &:hover {
+            color: $theme-color;
+          }
+        }
+      }
+    }
+    .widget-bottom-menu-wrap {
+      text-align: right;
+      @media #{$sm-device} {
+        text-align: center;
+      }
+      .nav-menu {
+        margin-bottom: 0;
+        li {
+          display: inline-block;
+          margin-right: 17px;
+          line-height: 1;
+          a {
+            color: $black-333;
+            font-size: 14px;
+          }
+          &:last-child {
+            margin-right: 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+.reveal-footer {
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  width: 100%;
+  @media #{$md-device} {
+    position: relative;
+  }
+}
+
+.site-wrapper-reveal {
+  position: relative;
+  @media #{$md-device} {
+    margin-bottom: 0 !important;
+  }
+}

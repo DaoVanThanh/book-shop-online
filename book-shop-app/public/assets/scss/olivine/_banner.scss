@@ -1,0 +1,449 @@
+/*
+-----------------------------------------------------------------------
+    Home Slider CSS
+-----------------------------------------------------------------------
+*/
+
+.home-slider-area {
+  &.slider-default {
+    position: relative;
+    .home-slider-content {
+      padding: 0 55px;
+      @media #{$lg-device} {
+        padding: 0 20px;
+      }
+      @media #{$sm-device} {
+        padding: 0 15px;
+      }
+      .swiper-container {
+        .swiper-wrapper {
+          .swiper-slide {
+            &-active {
+              .slider-content-area {
+                .content {
+                  background: $white-f8;
+                  .tittle-wrp {
+                    &:before {
+                      -webkit-animation-delay: .5s;
+                      animation-delay: .5s;
+                      -webkit-animation-name: fadeIn;
+                      animation-name: fadeIn;
+                    }
+                    h2 {
+                      -webkit-animation-delay: 1.3s;
+                      animation-delay: 1.3s;
+                      -webkit-animation-name: fadeInLeft;
+                      animation-name: fadeInLeft;
+                    }
+                    h1 {
+                      -webkit-animation-delay: 1.6s;
+                      animation-delay: 1.6s;
+                      -webkit-animation-name: fadeInRight;
+                      animation-name: fadeInRight;
+                    }
+                  }
+                  .btn-wrp {
+                    -webkit-animation-delay: 1.6s;
+                    animation-delay: 1.6s;
+                    -webkit-animation-name: fadeInLeft;
+                    animation-name: fadeInLeft;
+                  }
+                }
+                .slider-thumb {
+                  img {
+                    -webkit-animation-delay: .5s;
+                    animation-delay: .5s;
+                    -webkit-animation-name: fadeInDown;
+                    animation-name: fadeInDown;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      .swiper-button-prev,
+      .swiper-button-next {
+        opacity: 0;
+        top: calc(53% + 1px);
+        visibility: hidden;
+        @include transition(.3s);
+        &:before {
+          color: #0A1039;
+          font-family: IcoFont;
+          font-size: 45px;
+          line-height: 1;
+          @media #{$xl-device} {
+            font-size: 20px;
+          }
+        }
+        &:after {
+          display: none;
+        }
+        &:hover {
+          &:before {
+            color: $theme-color;
+          }
+        }
+      }
+      .swiper-button-prev {
+        left: 0%;
+        &:before {
+          content:"\eab5";
+        }
+      }
+      .swiper-button-next {
+        right: 0%;        
+        &:before {
+          content:"\eab8";
+        }
+      }
+      &:hover {
+        .swiper-button-prev {
+          left: 2.5%;
+          opacity: 1;
+          visibility: visible;
+          @media #{$xl-device} {
+            left: 0;
+          }
+        }
+        .swiper-button-next {
+          opacity: 1;
+          right: 2.5%;
+          visibility: visible;
+          @media #{$xl-device} {
+            right: 0;
+          }
+        }
+      }
+      &.slider-content-style2 {
+        padding: 0;
+        .slider-content-area {
+          height: 780px;
+          @media #{$sm-device} {
+            height: 600px;
+          }
+        }
+        .content {
+          margin-top: -38px;
+          text-align: center;
+          .tittle-wrp {
+            margin-left: 0;
+            margin-top: 0;
+            &:before {
+              display: none;
+            }
+            h1 {
+              color: $theme-color4;
+              font-size: 60px;
+              font-style: normal;
+              font-weight: 700;
+              letter-spacing: 0;
+              line-height: 94px;
+              text-transform: capitalize;
+              @media #{$lg-device} {
+                font-size: 39px;
+                line-height: 50px;
+              }
+            }
+          }
+          p {
+            margin: 20px 0 47px;
+            -webkit-animation-duration: 1s;
+            animation-duration: 1s;
+            -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+          }
+          .btn-theme {
+            &.btn-hover-style {
+              font-size: 12px;
+              font-weight: 700;
+              line-height: 1;
+              padding: 18px 50px 19px;
+              text-transform: uppercase;
+              -webkit-animation-duration: 1s;
+              animation-duration: 1s;
+              -webkit-animation-fill-mode: both;
+              animation-fill-mode: both;
+            }
+          }
+        }
+        .slider-thumb {
+          left: -18px;
+          position: relative;
+          top: 51px;
+        }
+        .swiper-container {
+          .swiper-wrapper {
+            .swiper-slide {
+              &-active {
+                .slider-content-area {
+                  .content {
+                    .tittle-wrp {
+                      h1 {
+                        -webkit-animation-delay: 1.3s;
+                        animation-delay: 1.3s;
+                        -webkit-animation-name: fadeInLeft;
+                        animation-name: fadeInLeft;
+                      }
+                    }
+                    p {
+                      -webkit-animation-delay: 1.6s;
+                      animation-delay: 1.6s;
+                      -webkit-animation-name: fadeInLeft;
+                      animation-name: fadeInLeft;
+                    }
+                    .btn-theme {
+                      &.btn-hover-style {
+                        -webkit-animation-delay: 1.9s;
+                        animation-delay: 1.9s;
+                        -webkit-animation-name: fadeInLeft;
+                        animation-name: fadeInLeft;
+                      }
+                    }
+                  }
+                  .slider-thumb {
+                    img {
+                      -webkit-animation-delay: 1.6s;
+                      animation-delay: 1.6s;
+                      -webkit-animation-name: fadeInRight;
+                      animation-name: fadeInRight;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      &.slider-content-style3 {
+        padding: 0;
+        .slider-content-area {
+          height: 640px;
+          @media #{$sm-device} {
+            height: 460px;
+          }
+        }
+        .content {
+          margin-top: -20px;
+          .tittle-wrp {
+            margin-left: 0;
+            margin-top: 0;
+            &:before {
+              display: none;
+            }
+            h1 {
+              color: $theme-color4;
+              font-size: 60px;
+              font-style: normal;
+              font-weight: 700;
+              letter-spacing: 0;
+              line-height: 94px;
+              text-transform: capitalize;
+              @media #{$xl-device} {
+                font-size: 46px;
+                line-height: 62px;
+              }
+              @media #{$md-device} {
+                font-size: 36px;
+                line-height: 50px;
+              }
+            }
+          }
+          p {
+            margin: 20px 0 36px;
+            -webkit-animation-duration: 1s;
+            animation-duration: 1s;
+            -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+            @media #{$md-device} {
+              font-size: 12px;
+            }
+          }
+          .btn-theme {
+            &.btn-hover-style-bg {
+              border: none;
+              font-size: 16px;
+              font-weight: 500;
+              line-height: 1;
+              padding: 18px 34px 20px;
+              -webkit-animation-duration: 1s;
+              animation-duration: 1s;
+              -webkit-animation-fill-mode: both;
+              animation-fill-mode: both;
+            }
+          }
+        }
+        .slider-thumb {
+          margin-right: -5px;
+          position: relative;
+          right: -80px;
+          top: -11px;
+          @media #{$xl-device} {
+            margin-right: 0;
+            right: 0;
+          }
+        }
+        .swiper-container {
+          .swiper-wrapper {
+            .swiper-slide {
+              &-active {
+                .slider-content-area {
+                  .content {
+                    .tittle-wrp {
+                      h1 {
+                        -webkit-animation-delay: 1.3s;
+                        animation-delay: 1.3s;
+                        -webkit-animation-name: fadeInLeft;
+                        animation-name: fadeInLeft;
+                      }
+                    }
+                    p {
+                      -webkit-animation-delay: 1.6s;
+                      animation-delay: 1.6s;
+                      -webkit-animation-name: fadeInLeft;
+                      animation-name: fadeInLeft;
+                    }
+                    .btn-theme {
+                      &.btn-hover-style-bg {
+                        -webkit-animation-delay: 1.9s;
+                        animation-delay: 1.9s;
+                        -webkit-animation-name: fadeInLeft;
+                        animation-name: fadeInLeft;
+                      }
+                    }
+                  }
+                  .slider-thumb {
+                    img {
+                      -webkit-animation-delay: 1.6s;
+                      animation-delay: 1.6s;
+                      -webkit-animation-name: fadeInRight;
+                      animation-name: fadeInRight;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    .slider-content-area {
+      align-items: center;
+      background: $white-f8;
+      display: flex;
+      height: 726px;
+      position: relative;
+      @media #{$lg-device} {
+        height: 600px;
+      }
+      @media #{$xs-device} {
+        height: 480px;
+      }
+      .content {
+        @media #{$sm-device} {
+          text-align: center;
+        }
+        .tittle-wrp {
+          margin-left: -86px;
+          margin-top: -60px;
+          position: relative;
+          @include transition(2s);
+          @media (max-width:1700px) {
+            margin-left: 0;
+          }
+          &:before {
+            border: 4px solid $theme-color;
+            position: absolute;
+            left: 65px;
+            top: -80px;
+            width: 360px;
+            height: 335px;
+            content: "";
+            z-index: 9;
+            -webkit-animation-duration: 1s;
+            animation-duration: 1s;
+            -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+            @include transition(2s);
+            @include rotate(45);
+            @media #{$xl-device} {
+              height: 270px;
+              width: 270px;
+            }
+            @media #{$sm-device} {
+              height: 180px;
+              width: 180px;
+              top: -26px;
+              left: 0;
+              right: 0;
+              margin: 0 auto;
+            }
+            @media #{$xs-device} {
+              display: none;
+            }
+          }
+          h2 {
+            color: $black-333;
+            font-size: 60px;
+            font-style: italic;
+            font-weight: 900;
+            letter-spacing: 3px;
+            line-height: 40px;
+            margin-bottom: 26px;
+            text-transform: uppercase;
+            -webkit-animation-duration: 1s;
+            animation-duration: 1s;
+            -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+            @media #{$xl-device} {
+              font-size: 48px;
+              margin-bottom: 0;
+            }
+            @media #{$xs-device} {
+              font-size: 38px;
+            }
+          }
+          h1 {
+            color: $theme-color;
+            font-size: 80px;
+            font-style: italic;
+            font-weight: 900;
+            letter-spacing: 3px;
+            line-height: 100px;
+            margin-bottom: 0;
+            text-transform: uppercase;
+            -webkit-animation-duration: 1s;
+            animation-duration: 1s;
+            -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+            @media #{$xl-device} {
+              font-size: 62px;
+            }
+            @media #{$xs-device} {
+              font-size: 38px;
+              line-height: 1;
+            }
+          }
+        }
+      }
+      .slider-thumb {
+        overflow: hidden;
+        @media #{$sm-device} {
+          display: none;
+        }
+        img {
+          display: block;
+          margin-left: auto;
+          -webkit-animation-duration: 1s;
+          animation-duration: 1s;
+          -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
+          -webkit-animation-name: fadeOut;
+          animation-name: fadeOut;
+        }
+      }
+    }    
+  }
+}
+

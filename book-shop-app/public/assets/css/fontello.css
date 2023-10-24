@@ -1,0 +1,25 @@
+@font-face{
+  font-family:'fontello';
+  src:url('../fonts/fontello.woff2');
+  font-weight:normal;
+  font-style:normal;
+}
+[class^="icon-"]:before,
+[class*=" icon-"]:before{
+  font-family:"fontello";
+  font-style:normal;
+  font-weight:normal;
+  speak:none;
+  display:inline-block;
+  text-decoration:inherit;
+  width:1em;
+  margin-right:.2em;
+  text-align:center;
+  font-variant:normal;
+  text-transform:none;
+  line-height:1em;
+  margin-left:.2em;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale
+}
+.icon-happiness:before{content:'\e800'}.icon-headphones:before{content:'\e801'}.icon-joystick:before{content:'\e802'}.icon-kitchen-pack:before{content:'\e803'}.icon-laptop:before{content:'\e804'}.icon-photograph:before{content:'\e805'}.icon-printer:before{content:'\e806'}.icon-rating:before{content:'\e807'}.icon-refrigerator:before{content:'\e808'}.icon-shipping-car:before{content:'\e809'}.icon-social-facebook-square:before{content:'\e80a'}.icon-social-instagram:before{content:'\e80b'}.icon-social-pinterest:before{content:'\e80c'}.icon-social-twitter:before{content:'\e80d'}.icon-support-expart:before{content:'\e80e'}.icon-heart:before{content:'\e80f'}.icon-star-empty:before{content:'\e810'}.icon-trusty:before{content:'\e811'}.icon-zoom:before{content:'\e812'}.icon-air-conditions:before{content:'\e813'}.icon-arrow-right-2:before{content:'\e814'}.icon-camera:before{content:'\e815'}.icon-categori-all:before{content:'\e816'}.icon-compare:before{content:'\e817'}.icon-computer:before{content:'\e818'}.icon-drone:before{content:'\e819'}.icon-echo-dot:before{content:'\e81a'}.icon-gadget:before{content:'\e81b'}.icon-heart-empty:before{content:'\e81c'}.icon-angle-down:before{content:'\e81d'}.icon-arrow-right-1:before{content:'\e81e'}.icon-basket:before{content:'\e81f'}.icon-star-half-alt:before{content:'\f123'}.icon-share:before{content:'\f1e0'}

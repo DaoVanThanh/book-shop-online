@@ -6,6 +6,8 @@ import Shop from "./Shop/Shop";
 import About from "./About/About";
 import Contact from "./Contact/Contact";
 import Cart from "./Cart/Cart";
+import Checkout from "./Checkout/Checkout";
+import Sidebar from "./Sidebar/Sidebar";
 
 function AppRoutes() {
   return (
@@ -16,6 +18,9 @@ function AppRoutes() {
         <Route path="/shop" element={<Shop />}></Route>
         <Route path="/contact" element={<Contact />}></Route>
         <Route path="/cart" element={<Cart />}></Route>
+        <Route path="/sidebar" element={<Sidebar />}></Route>
+        <Route path="/checkout" element={<Checkout />}></Route>
+
     </Routes>
   );
 }

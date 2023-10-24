@@ -8,6 +8,8 @@ import Cart from "./Cart/Cart";
 import AccountManager from "./AccountManager/AccountManager";
 import Policy from "./Policy/Policy";
 import Footer from "./Footer/Footer";
+import Checkout from "./Checkout/Checkout";
+import Sidebar from "./Sidebar/Sidebar";
 
 function AppRoutes() {
   return (
@@ -19,6 +21,10 @@ function AppRoutes() {
         <Route path="/cart" element={<Cart />}></Route>
         <Route path="/accountManager" element={<AccountManager />}></Route>
         <Route path="/policy" element={<Policy />}></Route>
+        <Route path="/checkout" element={<Checkout />}></Route>
+        <Route path="/sidebar" element={<Sidebar />}></Route>
+
+
     </Routes>
   );
 }

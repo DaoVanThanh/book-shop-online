@@ -1,13 +1,15 @@
 package com.example.bookshop.controller;
 
+import com.example.bookshop.dto.request.CreateOrderRequest;
 import com.example.bookshop.dto.request.GetStatusOrderRequest;
 import com.example.bookshop.dto.request.UpdateCartRequest;
+import com.example.bookshop.dto.request.UpdateStatusOrderRequest;
 import com.example.bookshop.service.OrderManagementService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/orm")
@@ -18,22 +20,40 @@ public class OrderManagementController {
     @PutMapping("/carts/book")
     public ResponseEntity<?> updateCart(
             @RequestBody UpdateCartRequest request
-    ) {
-        try {
-            orderManagementService.updateCart(request.getBookId(), request.getQuantity());
-            return ResponseEntity.ok("update cart successfully!");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+    ) throws ResponseStatusException {
+        orderManagementService.updateCart(request.getBookId(), request.getQuantity());
+        return ResponseEntity.ok("update cart successfully!");
     }
     @GetMapping("/orders/status")
     public ResponseEntity<?> getStatusOrder(
             GetStatusOrderRequest request
-    ) {
-        try {
-            return ResponseEntity.ok(orderManagementService.getStatusOrder(request.getOrderId()));
-        } catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("order id not found");
-        }
+    ) throws ResponseStatusException {
+        return ResponseEntity.ok(orderManagementService.getStatusOrder(request.getOrderId()));
+    }
+
+    @PostMapping("/orders/create")
+    public ResponseEntity<?> CreateOrder(
+            @RequestBody CreateOrderRequest request
+    ) throws ResponseStatusException {
+        return ResponseEntity.ok(
+                orderManagementService
+                        .createOrder(
+                                request.getDeliveryAddress(),
+                                request.getBookQuantities()));
+    }
+
+    @PutMapping("orders/update/status")
+    public ResponseEntity<?> UpdateStatusOrder(
+            @RequestBody UpdateStatusOrderRequest request
+    ) throws ResponseStatusException {
+        orderManagementService.updateStatusOrder(
+                request.getOrderId(),
+                request.getOrderStatus());
+        return ResponseEntity.ok("Update status order successfully");
+    }
+
+    @GetMapping("book/purchased")
+    public ResponseEntity<?> GetAllBookPurchased() throws ResponseStatusException {
+        return ResponseEntity.ok(orderManagementService.getAllBookPurchased());
     }
 }

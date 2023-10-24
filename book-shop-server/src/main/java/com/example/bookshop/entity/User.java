@@ -1,5 +1,6 @@
 package com.example.bookshop.entity;
 
+import com.example.bookshop.entity.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;

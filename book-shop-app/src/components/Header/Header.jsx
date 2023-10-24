@@ -47,12 +47,12 @@ const Header = () => {
             <Nav.Link onClick={handleShop}>Shop</Nav.Link>
             <Nav.Link onClick={handleContact}>Contact</Nav.Link>
             <Nav.Link onClick={handleCart}>
-              <i class="fa-solid fa-cart-shopping"></i>
+              <i className="fa-solid fa-cart-shopping"></i>
             </Nav.Link>
             <NavDropdown
               title={
                 <span>
-                  <i class="fa-solid fa-user"></i>
+                  <i className="fa-solid fa-user"></i>
                   FullName
                 </span>
               }

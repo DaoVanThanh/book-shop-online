@@ -1,5 +1,6 @@
 package com.example.bookshop.repository;
 
+import com.example.bookshop.entity.Book;
 import com.example.bookshop.entity.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -12,15 +13,20 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 @Repository
-public interface OrderRepository extends JpaRepository<Order, Long> {
-    Optional<Order> getByOrderId(Long orderId);
+public interface BookRepository extends JpaRepository<Book, Long>  {
+    @Override
+    Optional<Book> findById(Long bookId);
 
     @Modifying
     @Query(
-            value = "select order_id from orders " +
-                    "where user_id = :user_id", nativeQuery = true)
+            value = "update books " +
+                    "set stock_quantity = stock_quantity - :quantity " +
+                    "where book_id = :book_id", nativeQuery = true)
     @Transactional
-    ArrayList<Long> getOrderIdsByUserId(
-            @Param("user_id") Long userId
+    void removeBooks(
+            @Param("book_id") Long bookId,
+            @Param("quantity") Integer quantity
     );
+
+    ArrayList<Book> getBooksByBookIdIn(ArrayList<Long> ids);
 }

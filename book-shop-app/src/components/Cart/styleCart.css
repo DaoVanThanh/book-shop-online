@@ -1,0 +1,383 @@
+@media only screen and (max-width: 767px) {
+    .cart-main-area.pb-100 {
+        padding-bottom: 60px;
+    }
+}
+h3.cart-page-title {
+    font-size: 20px;
+    font-weight: 500;
+    margin: 0 0 15px;
+}
+.cart-table-content table {
+    border: 1px solid #ebebeb;
+}
+.cart-table-content table thead > tr {
+    background-color: #f9f9f9;
+    border: 1px solid #ebebeb;
+}
+.cart-table-content table thead > tr th {
+    border-top: medium none;
+    color: #333;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 21px 45px 22px;
+    text-align: center;
+    text-transform: uppercase;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+    .cart-table-content table thead > tr th {
+        padding: 21px 35px 22px;
+    }
+}
+@media only screen and (max-width: 767px) {
+    .cart-table-content table thead > tr th {
+        padding: 21px 20px 22px;
+    }
+}
+.cart-table-content table tbody > tr {
+    border-bottom: 1px solid #ebebeb;
+}
+.cart-table-content table tbody > tr td.product-thumbnail {
+    width: 150px;
+}
+.cart-table-content table tbody > tr td.product-name {
+    width: 435px;
+    text-align: left;
+}
+.cart-table-content table tbody > tr td.product-name a {
+    color: #333;
+    font-size: 15px;
+    font-weight: 500;
+}
+.cart-table-content table tbody > tr td.product-name a:hover {
+    color: #196142;
+}
+.cart-table-content table tbody > tr td.product-price-cart {
+    width: 435px;
+}
+.cart-table-content table tbody > tr td.product-price-cart span {
+    font-weight: 500;
+    color: #333;
+}
+.cart-table-content table tbody > tr td.product-price-cart span.old {
+    text-decoration: line-through;
+    margin-right: 10px;
+    color: #8e8e8e;
+}
+.cart-table-content table tbody > tr td.product-subtotal {
+    font-weight: 500;
+    color: #333;
+}
+.cart-table-content table tbody > tr td.product-quantity {
+    width: 435px;
+}
+.cart-table-content table tbody > tr td.product-quantity .cart-plus-minus {
+    display: inline-block;
+    height: 40px;
+    padding: 0;
+    position: relative;
+    width: 110px;
+}
+.cart-table-content table tbody > tr td.product-quantity .cart-plus-minus .qtybutton {
+    color: #333;
+    cursor: pointer;
+    float: inherit;
+    background: none;
+    border: none;
+    font-size: 16px;
+    margin: 0;
+    position: absolute;
+    transition: all 0.3s ease 0s;
+    width: 20px;
+    text-align: center;
+}
+.cart-table-content table tbody > tr td.product-quantity .cart-plus-minus .dec.qtybutton {
+    border-right: 1px solid #e5e5e5;
+    height: 40px;
+    left: 0;
+    top: 0;
+}
+.cart-table-content table tbody > tr td.product-quantity .cart-plus-minus .inc.qtybutton {
+    border-left: 1px solid #e5e5e5;
+    height: 40px;
+    right: 0;
+    top: 0;
+}
+.cart-table-content table tbody > tr td.product-quantity .cart-plus-minus input.cart-plus-minus-box {
+    color: #333;
+    float: left;
+    font-size: 14px;
+    height: 40px;
+    margin: 0;
+    width: 110px;
+    background: transparent none repeat scroll 0 0;
+    border: 1px solid #e1e1e1;
+    padding: 0;
+    text-align: center;
+}
+.cart-table-content table tbody > tr td.product-remove {
+    width: 100px;
+}
+.cart-table-content table tbody > tr td.product-remove a, .cart-table-content table tbody > tr td.product-remove button {
+    color: #666;
+    background: none;
+    border: none;
+    font-size: 17px;
+    margin: 0 13px;
+}
+.cart-table-content table tbody > tr td.product-remove a:hover, .cart-table-content table tbody > tr td.product-remove button:hover {
+    color: #196142;
+}
+.cart-table-content table tbody > tr td.product-wishlist-cart > a, .cart-table-content table tbody > tr td.product-wishlist-cart > button {
+    background: none;
+    border: none;
+    background-color: #196142;
+    border-radius: 50px;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.2;
+    padding: 10px 15px;
+    text-transform: uppercase;
+    display: block;
+    margin: 0 auto;
+}
+.cart-table-content table tbody > tr td.product-wishlist-cart > a:hover, .cart-table-content table tbody > tr td.product-wishlist-cart > button:hover, .cart-table-content table tbody > tr td.product-wishlist-cart > a.active, .cart-table-content table tbody > tr td.product-wishlist-cart > button.active {
+    background-color: #333;
+}
+.cart-table-content table tbody > tr td.product-wishlist-cart > a:disabled, .cart-table-content table tbody > tr td.product-wishlist-cart > button:disabled {
+    cursor: not-allowed;
+}
+.cart-table-content table tbody > tr td {
+    color: #333;
+    font-size: 15px;
+    padding: 30px 0 30px 30px;
+    text-align: center;
+}
+
+.cart-shiping-update-wrapper {
+    display: flex;
+    justify-content: space-between;
+    padding: 30px 0px 55px;
+}
+@media only screen and (min-width: 1200px) and (max-width: 1365px) {
+    .cart-shiping-update-wrapper {
+        display: block;
+        padding: 30px 0px 15px;
+    }
+}
+.cart-shiping-update-wrapper .cart-shiping-update > a, .cart-shiping-update-wrapper .cart-clear > button, .cart-shiping-update-wrapper .cart-clear > a {
+    background-color: #f2f2f2;
+    border-radius: 50px;
+    color: #363f4d;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1;
+    padding: 18px 63px 17px;
+    text-transform: uppercase;
+}
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    .cart-shiping-update-wrapper .cart-shiping-update > a, .cart-shiping-update-wrapper .cart-clear > button, .cart-shiping-update-wrapper .cart-clear > a {
+        padding: 18px 25px 17px;
+        font-size: 13px;
+    }
+}
+@media only screen and (max-width: 767px) {
+    .cart-shiping-update-wrapper .cart-shiping-update > a, .cart-shiping-update-wrapper .cart-clear > button, .cart-shiping-update-wrapper .cart-clear > a {
+        padding: 18px 40px 17px;
+        margin: 0 0 15px;
+    }
+}
+.cart-shiping-update-wrapper .cart-shiping-update > a:hover, .cart-shiping-update-wrapper .cart-clear > button:hover, .cart-shiping-update-wrapper .cart-clear > a:hover {
+    background-color: #196142;
+    color: #fff;
+}
+.cart-shiping-update-wrapper .cart-clear > button {
+    border: medium none;
+    cursor: pointer;
+    margin-right: 27px;
+    transition: all 0.3s ease 0s;
+}
+.cart-shiping-update-wrapper .cart-clear > button:last-child {
+    margin-right: 0;
+}
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    .cart-shiping-update-wrapper .cart-clear > button {
+        margin-right: 15px;
+    }
+}
+.title-wrap {
+    position: relative;
+}
+.title-wrap::before {
+    background-color: #e3e1e1;
+    content: "";
+    height: 1px;
+    left: 0;
+    position: absolute;
+    top: 10px;
+    transition: all 0.4s ease 0s;
+    width: 100%;
+    z-index: 1;
+}
+.title-wrap h4.cart-bottom-title {
+    display: inline-block;
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0;
+    padding-right: 18px;
+}
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+    .title-wrap h4.cart-bottom-title {
+        font-size: 16px;
+    }
+}
+.title-wrap .section-bg-gray {
+    background-color: #f8f9f9;
+    position: relative;
+    z-index: 99;
+}
+.discount-code {
+    margin: 21px 0 0;
+}
+.discount-code p {
+    margin: 0 0 15px;
+}
+.discount-code form input {
+    background: #fff;
+    border: 1px solid #ebebeb;
+    height: 40px;
+    margin-bottom: 30px;
+    padding-left: 10px;
+}
+.discount-code form button.cart-btn-2 {
+    background-color: #196142;
+    border: medium none;
+    border-radius: 50px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 13px 42px 12px;
+    text-transform: uppercase;
+    transition: all 0.3s ease 0s;
+}
+.discount-code form button.cart-btn-2:hover {
+    background-color: #333;
+}
+
+.grand-totall {
+    background-color: #f9f9f9;
+    border: 1px solid #ebebeb;
+    border-radius: 5px;
+    padding: 45px 30px 50px;
+}
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+    .grand-totall {
+        padding: 45px 18px 50px;
+    }
+}
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    .grand-totall {
+        margin-top: 30px;
+    }
+}
+.grand-totall .title-wrap {
+    position: relative;
+}
+.grand-totall .title-wrap::before {
+    background-color: #e3e1e1;
+    content: "";
+    height: 1px;
+    left: 0;
+    position: absolute;
+    top: 10px;
+    transition: all 0.4s ease 0s;
+    width: 100%;
+    z-index: 1;
+}
+.grand-totall .title-wrap h4.cart-bottom-title {
+    display: inline-block;
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0;
+    padding-right: 18px;
+}
+.grand-totall .title-wrap .section-bg-gary-cart {
+    background-color: #f9f9f9;
+    position: relative;
+    z-index: 9;
+}
+.grand-totall h5 {
+    font-size: 14px;
+    margin: 36px 0 27px;
+}
+.grand-totall h5 span {
+    float: right;
+    font-size: 18px;
+    font-weight: 500;
+}
+.grand-totall .total-shipping {
+    border-bottom: 1px solid #ebebeb;
+    border-top: 1px solid #ebebeb;
+    margin: 0 0 27px;
+    padding: 28px 0;
+}
+.grand-totall .total-shipping h5 {
+    font-size: 14px;
+    margin: 0;
+}
+.grand-totall .total-shipping ul {
+    padding: 19px 0 0 0px;
+}
+.grand-totall .total-shipping ul li {
+    color: #242424;
+    list-style: outside none none;
+    margin: 0 0 6px;
+}
+.grand-totall .total-shipping ul li:last-child {
+    margin: 0 0 0px;
+}
+.grand-totall .total-shipping ul li input {
+    background: #e9e9e9 none repeat scroll 0 0;
+    border: 1px solid #d7d7d7;
+    border-radius: 5px !important;
+    color: #626262;
+    cursor: pointer;
+    height: 13px;
+    margin-right: 10px;
+    padding: 0;
+    position: relative;
+    top: 2px;
+    width: 13px;
+}
+.grand-totall .total-shipping ul li span {
+    float: right;
+}
+.grand-totall h4.grand-totall-title {
+    color: #196142;
+    font-size: 20px;
+    font-weight: 500;
+    margin: 0 0 25px;
+}
+.grand-totall h4.grand-totall-title span {
+    float: right;
+}
+.grand-totall a {
+    background-color: #196142;
+    border-radius: 50px;
+    color: #fff;
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1;
+    padding: 18px 10px 17px;
+    text-align: center;
+    text-transform: uppercase;
+}
+.grand-totall a:hover {
+    background-color: #333;
+}

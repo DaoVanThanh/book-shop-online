@@ -35,6 +35,11 @@ const Header = () => {
     navigate("/cart");
   };
 
+  const accountManager = () => {
+    navigate("/accountManager");
+  };
+
+
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
@@ -58,8 +63,8 @@ const Header = () => {
               }
               id="basic-nav-dropdown"
             >
-              <NavDropdown.Item href="#">Quản lý tài khoản</NavDropdown.Item>
-              <NavDropdown.Item href="#">Đơn hàng của tôi</NavDropdown.Item>
+              <NavDropdown.Item onClick={accountManager}>Quản lý tài khoản</NavDropdown.Item>
+              <NavDropdown.Item href="/ordermanagement">Đơn hàng của tôi</NavDropdown.Item>
               <NavDropdown.Item href="#">Đổi mật khẩu</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item href="#">Đăng xuất</NavDropdown.Item>

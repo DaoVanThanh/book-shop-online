@@ -21,7 +21,6 @@ function Login() {
     const handleLogin = () => {
         axios.post('http://localhost:8080/api/auth/authenticate', { username, password })
             .then((response) => {
-                console.log(response.data.accessToken);
                 if (response.data.accessToken) {
                     setLoggedIn(true);
                     setLoginError(null);

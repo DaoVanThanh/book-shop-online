@@ -1,7 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import axios from "axios";
+import React, {useEffect, useState} from 'react'
+
 import { Container, Row, Col, Image, Card, Button, Tab, Tabs, Nav, Form } from "react-bootstrap";
-function AccountManager() {
+import axios from "axios";
+import "./OrderManagement.css";
+import { useHistory, useLocation } from 'react-router-dom';
+
+const OrderManagement = () => {
     const [userData, setUserData] = useState({
         username: '',
         fullName: '',
@@ -58,9 +62,8 @@ function AccountManager() {
             });
         setIsEditing(false);
     };
-
     return (
-        <Tab.Container id="left-tabs-example" defaultActiveKey="my-account">
+        <Tab.Container id="left-tabs-example" defaultActiveKey="my-order">
             <Row>
                 <Col sm={2}>
                     <Nav variant="pills" className="flex-column">
@@ -301,9 +304,7 @@ function AccountManager() {
             </Row>
         </Tab.Container>
 
-    );
+    )
 }
 
-export default AccountManager;
-
-
+export default OrderManagement

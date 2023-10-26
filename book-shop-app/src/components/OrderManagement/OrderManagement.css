@@ -1,0 +1,31 @@
+.nav-link.active {
+    color: white !important;
+    background-color: #196142 !important;
+}
+
+.nav-link {
+    color: #196142 !important;
+    background-color: white !important;
+}
+.card-title {
+    color: #000;
+}
+
+.card-text {
+    color: #666;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #007bff;
+}
+
+.btn-secondary {
+    color: #fff;
+    background-color: #6c757d;
+}
+.card-img {
+    width: 10%;
+    height: 10%;
+    object-fit: cover;
+}

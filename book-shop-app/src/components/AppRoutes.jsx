@@ -9,7 +9,8 @@ import AccountManager from "./AccountManager/AccountManager";
 import Policy from "./Policy/Policy";
 import Footer from "./Footer/Footer";
 import Checkout from "./Checkout/Checkout";
-import Sidebar from "./Sidebar/Sidebar";
+import OrderManagement from "./OrderManagement/OrderManagement";
+
 
 function AppRoutes() {
   return (
@@ -22,7 +23,8 @@ function AppRoutes() {
         <Route path="/accountManager" element={<AccountManager />}></Route>
         <Route path="/policy" element={<Policy />}></Route>
         <Route path="/checkout" element={<Checkout />}></Route>
-        <Route path="/sidebar" element={<Sidebar />}></Route>
+        <Route path="/ordermanagement" element={<OrderManagement />}></Route>
+
 
 
     </Routes>

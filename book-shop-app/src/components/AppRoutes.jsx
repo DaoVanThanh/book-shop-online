@@ -10,12 +10,14 @@ import Policy from "./Policy/Policy";
 import Footer from "./Footer/Footer";
 import Checkout from "./Checkout/Checkout";
 import OrderManagement from "./OrderManagement/OrderManagement";
+import Register from "./Register/register";
 
 
 function AppRoutes() {
   return (
     <Routes>
         <Route path="/login" element={<Login />}></Route>
+        <Route path="/register" element={<Register />}></Route>
         <Route index element={<Home />}></Route>
         <Route path="/about" element={<About />}></Route>
         <Route path="/shop" element={<Shop />}></Route>

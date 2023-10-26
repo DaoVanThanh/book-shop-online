@@ -6,11 +6,13 @@ import Shop from "./Shop/Shop";
 import About from "./About/About";
 import Cart from "./Cart/Cart";
 import Policy from "./Policy/Policy";
+import Register from "./Register/register";
 
 function AppRoutes() {
   return (
     <Routes>
         <Route path="/login" element={<Login />}></Route>
+        <Route path="/register" element={<Register />}></Route>
         <Route index element={<Home />}></Route>
         <Route path="/about" element={<About />}></Route>
         <Route path="/shop" element={<Shop />}></Route>

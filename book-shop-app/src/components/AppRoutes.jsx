@@ -5,12 +5,13 @@ import Login from "./Login/Login";
 import Shop from "./Shop/Shop";
 import About from "./About/About";
 import Cart from "./Cart/Cart";
-import Policy from "./Policy/Policy";
-import Register from "./Register/register";
-import Checkout from "./Checkout/Checkout";
-import InfoManagemant from "./InfoManagement/InfoManagemant";
 import AccountManager from "./AccountManager/AccountManager";
+import Policy from "./Policy/Policy";
+import Footer from "./Footer/Footer";
+import Checkout from "./Checkout/Checkout";
 import OrderManagement from "./OrderManagement/OrderManagement";
+import Register from "./Register/register";
+
 
 function AppRoutes() {
   return (
@@ -21,12 +22,13 @@ function AppRoutes() {
         <Route path="/about" element={<About />}></Route>
         <Route path="/shop" element={<Shop />}></Route>
         <Route path="/cart" element={<Cart />}></Route>
+        <Route path="/accountManager" element={<AccountManager />}></Route>
         <Route path="/policy" element={<Policy />}></Route>
         <Route path="/checkout" element={<Checkout />}></Route>
-        <Route path="/" element={<InfoManagemant />}>
-          <Route path="/info/account" element = {<AccountManager />}></Route>
-          <Route path="/info/order" element = {<OrderManagement />}></Route>
-        </Route>
+        <Route path="/ordermanagement" element={<OrderManagement />}></Route>
+
+
+
     </Routes>
   );
 }

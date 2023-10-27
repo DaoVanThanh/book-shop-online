@@ -33,8 +33,7 @@ function Login() {
 
                     if (storedToken) {
                         if (storedToken === response.data.accessToken) {
-                            alert("Đăng nhập thành công");
-                            navigate("/Home");
+                            navigate("/");
                         }
                     } else {
                         alert("Đăng nhập thất bại");

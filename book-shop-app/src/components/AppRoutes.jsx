@@ -7,28 +7,26 @@ import About from "./About/About";
 import Cart from "./Cart/Cart";
 import AccountManager from "./AccountManager/AccountManager";
 import Policy from "./Policy/Policy";
-import Footer from "./Footer/Footer";
 import Checkout from "./Checkout/Checkout";
 import OrderManagement from "./OrderManagement/OrderManagement";
 import Register from "./Register/register";
-
+import InfoManagement from "./InfoManagement/InfoManagemant";
 
 function AppRoutes() {
   return (
     <Routes>
-        <Route path="/login" element={<Login />}></Route>
-        <Route path="/register" element={<Register />}></Route>
-        <Route index element={<Home />}></Route>
-        <Route path="/about" element={<About />}></Route>
-        <Route path="/shop" element={<Shop />}></Route>
-        <Route path="/cart" element={<Cart />}></Route>
-        <Route path="/accountManager" element={<AccountManager />}></Route>
-        <Route path="/policy" element={<Policy />}></Route>
-        <Route path="/checkout" element={<Checkout />}></Route>
-        <Route path="/ordermanagement" element={<OrderManagement />}></Route>
-
-
-
+      <Route path="/login" element={<Login />}></Route>
+      <Route path="/register" element={<Register />}></Route>
+      <Route index element={<Home />}></Route>
+      <Route path="/about" element={<About />}></Route>
+      <Route path="/shop" element={<Shop />}></Route>
+      <Route path="/cart" element={<Cart />}></Route>
+      <Route path="/policy" element={<Policy />}></Route>
+      <Route path="/checkout" element={<Checkout />}></Route>
+      <Route path="/" element={<InfoManagement />}>
+        <Route path="/info/account" element={<AccountManager />}></Route>
+        <Route path="/info/order" element={<OrderManagement />}></Route>
+      </Route>
     </Routes>
   );
 }

@@ -11,7 +11,7 @@ import Checkout from "./Checkout/Checkout";
 import OrderManagement from "./OrderManagement/OrderManagement";
 import Register from "./Register/register";
 import InfoManagement from "./InfoManagement/InfoManagemant";
-
+import ChangePassword from "./ChangePassword/ChangePassword";
 function AppRoutes() {
   return (
     <Routes>
@@ -27,8 +27,9 @@ function AppRoutes() {
         <Route path="/info/account" element={<AccountManager />}></Route>
         <Route path="/info/order" element={<OrderManagement />}></Route>
       </Route>
+        <Route path="/changePassword" element={<ChangePassword />}></Route>
     </Routes>
-  );
+);
 }
 
 export default AppRoutes;

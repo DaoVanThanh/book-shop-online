@@ -35,7 +35,7 @@ const Header = () => {
             >
               <NavDropdown.Item onClick={() => navigate("/info/account")}>Quản lý tài khoản</NavDropdown.Item>
               <NavDropdown.Item onClick={() => navigate("/info/order")}>Đơn hàng của tôi</NavDropdown.Item>
-              <NavDropdown.Item href="#">Đổi mật khẩu</NavDropdown.Item>
+              <NavDropdown.Item onClick={() => navigate("/changePassword")}>Đổi mật khẩu</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item href="#">Đăng xuất</NavDropdown.Item>
             </NavDropdown>

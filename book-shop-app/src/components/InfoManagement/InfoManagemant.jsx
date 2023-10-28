@@ -1,6 +1,7 @@
 import React from "react";
 import { Row, Col, Tab, Nav } from "react-bootstrap";
 import { Outlet, useNavigate } from "react-router-dom";
+import "./InfoManagement.css";
 
 const InfoManagemant = () => {
   const navigate = useNavigate();

@@ -29,3 +29,59 @@
     height: 10%;
     object-fit: cover;
 }
+
+.card-text {
+    color: #196142;
+}
+
+.shipping {
+    color: #cc8d18;
+}
+
+.cancel {
+    color: red;
+}
+.container-full-height {
+    height: 100vh;
+    overflow-y: auto; /* Add this to enable vertical scrolling if content exceeds screen height */
+}
+
+.order-tabs {
+    margin: 30px; /* Adjust the margin value to your preference */
+}
+
+.cover-text-finish {
+    background-color: rgba( 0, 100, 0, 0.2 ); /* Background color with transparency */
+    padding: 10px; /* Padding for the covering box */
+    border-radius: 5px; /* Rounded corners for the box */
+    position: relative; /* Position the box relative to the text */
+    display: inline-block; /* Make the box only as wide as the text content */
+    z-index: 1; /* Ensure it's above the text */
+}
+
+.cover-text-finish {
+    background-color: rgba( 0, 100, 0, 0.2 ); /* Background color with transparency */
+    padding: 10px; /* Padding for the covering box */
+    border-radius: 5px; /* Rounded corners for the box */
+    position: relative; /* Position the box relative to the text */
+    display: inline-block; /* Make the box only as wide as the text content */
+    z-index: 1; /* Ensure it's above the text */
+}
+
+.cover-text-shipping {
+    background-color: RGBA( 255, 165, 0, 0.2 );	 /* Background color with transparency */
+    padding: 10px; /* Padding for the covering box */
+    border-radius: 5px; /* Rounded corners for the box */
+    position: relative; /* Position the box relative to the text */
+    display: inline-block; /* Make the box only as wide as the text content */
+    z-index: 1; /* Ensure it's above the text */
+}
+
+.cover-text-cancel {
+    background-color: RGBA( 255, 0, 0, 0.2 );	 /* Background color with transparency */
+    padding: 10px; /* Padding for the covering box */
+    border-radius: 5px; /* Rounded corners for the box */
+    position: relative; /* Position the box relative to the text */
+    display: inline-block; /* Make the box only as wide as the text content */
+    z-index: 1; /* Ensure it's above the text */
+}

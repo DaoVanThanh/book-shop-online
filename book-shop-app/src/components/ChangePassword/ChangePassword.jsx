@@ -1,24 +1,20 @@
 import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
-import {changePassword} from "../../api/ChangePasswordApi/apiService";
+import {changePassword} from "../../apiServices/ChangePasswordService";
 
 function ChangePassword() {
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
-    const token = localStorage.getItem('accessToken');
-    const config = {
-        headers: {Authorization: `Bearer ${token}`},
-    };
 
-    const handlePasswordChange = () => {
+    const handlePasswordChange = async () => {
         if (newPassword  !== confirmPassword) {
             setError('Mật khẩu mới và xác nhận mật khẩu không trùng khớp. Vui lòng nhập lại.');
         } else if (!isPasswordValid(newPassword)) {
             setError('Mật khẩu không đáp ứng yêu cầu an toàn. Vui lòng thử lại.');
         } else {
-           changePassword({ oldPassword, newPassword },config)
+           await changePassword({ oldPassword, newPassword })
                 .then((response) => {
                     // Xử lý kết quả từ API nếu cập nhật thành công
                     console.log(response.data);

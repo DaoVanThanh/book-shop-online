@@ -34,9 +34,9 @@ const Header = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link onClick={() => navigate("/")}>Home</Nav.Link>
-            <Nav.Link onClick={() => navigate("/about")}>About</Nav.Link>
-            <Nav.Link onClick={() => navigate("/shop")}>Shop</Nav.Link>
+            <Nav.Link onClick={() => navigate("/")}>Trang chủ</Nav.Link>
+            <Nav.Link onClick={() => navigate("/shop")}>Cửa hàng</Nav.Link>
+            <Nav.Link onClick={() => navigate("/about")}>Về chúng tôi</Nav.Link>
             <Nav.Link onClick={handleCart}>
               <i className="fa-solid fa-cart-shopping"></i>
             </Nav.Link>
@@ -78,6 +78,10 @@ const Header = () => {
                   Đăng ký
                 </NavDropdown.Item>
               </NavDropdown>
+              // <>
+              // <Nav.Link onClick={() => navigate("/register")}>Đăng ký</Nav.Link>
+              // <Nav.Link onClick={() => navigate("/login")}>Đăng nhập</Nav.Link>
+              // </>
             )}
           </Nav>
         </Navbar.Collapse>

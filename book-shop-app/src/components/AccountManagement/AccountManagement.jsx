@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
 import {Button, Col, Container, Form, Row} from "react-bootstrap";
-import { getUserInfo, updateUser } from "../../api/AccountManagementApi/apiService";
+import { getUserInfo, updateUser } from "../../apiServices/AccountManagementService";
 
-function AccountManager() {
+function AccountManagement() {
     const [userData, setUserData] = useState({
         username: "",
         fullName: "",
@@ -11,13 +11,9 @@ function AccountManager() {
     });
     const [initialUserData, setInitialUserData] = useState({});
     const [isEditing, setIsEditing] = useState(false);
-    const token = localStorage.getItem('accessToken');
-    const config = {
-        headers: {Authorization: `Bearer ${token}`},
-    };
 
     useEffect(() => {
-        getUserInfo(config)
+        getUserInfo()
             .then((response) => {
                 const initialData = {
                     username: response.data.username,
@@ -51,7 +47,7 @@ function AccountManager() {
         }
 
         // Gọi hàm updateUser từ apiService
-        updateUser(userData,config)
+        updateUser(userData)
             .then((response) => {
                 setInitialUserData(userData);
                 alert("User information updated successfully.");
@@ -137,4 +133,4 @@ function AccountManager() {
     );
 }
 
-export default AccountManager;
+export default AccountManagement;

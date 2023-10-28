@@ -2,7 +2,7 @@ import React from "react";
 import { Row, Col, Tab, Nav } from "react-bootstrap";
 import { Outlet, useNavigate } from "react-router-dom";
 
-const InfoManagemant = () => {
+const InfoManagement = () => {
   const navigate = useNavigate();
   return (
     <Tab.Container id="left-tabs-example">
@@ -39,4 +39,4 @@ const InfoManagemant = () => {
   );
 };
 
-export default InfoManagemant;
+export default InfoManagement;

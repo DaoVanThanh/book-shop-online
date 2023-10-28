@@ -11,6 +11,22 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 const Header = () => {
   const navigate = useNavigate();
 
+  const logout = () => {
+    localStorage.clear();
+    navigate("/");
+  };
+
+  const handleCart = () => {
+    if(localStorage.getItem("accessToken")) {
+      navigate("cart")
+    } else {
+      const currentURL = "/cart";
+      localStorage.setItem('currentURL', currentURL);
+      console.log(currentURL)
+      navigate("/login")
+    }
+  }
+
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
@@ -21,24 +37,48 @@ const Header = () => {
             <Nav.Link onClick={() => navigate("/")}>Home</Nav.Link>
             <Nav.Link onClick={() => navigate("/about")}>About</Nav.Link>
             <Nav.Link onClick={() => navigate("/shop")}>Shop</Nav.Link>
-            <Nav.Link onClick={() => navigate("/cart")}>
+            <Nav.Link onClick={handleCart}>
               <i className="fa-solid fa-cart-shopping"></i>
             </Nav.Link>
-            <NavDropdown
-              title={
-                <span>
-                  <i className="fa-solid fa-user"></i>
-                  FullName
-                </span>
-              }
-              id="basic-nav-dropdown"
-            >
-              <NavDropdown.Item onClick={() => navigate("/info/account")}>Quản lý tài khoản</NavDropdown.Item>
-              <NavDropdown.Item onClick={() => navigate("/info/order")}>Đơn hàng của tôi</NavDropdown.Item>
-              <NavDropdown.Item onClick={() => navigate("/changePassword")}>Đổi mật khẩu</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#">Đăng xuất</NavDropdown.Item>
-            </NavDropdown>
+            {localStorage.getItem("accessToken") ? (
+              <NavDropdown
+                title={
+                  <span>
+                    <i className="fa-solid fa-user"></i>
+                    FullName
+                  </span>
+                }
+                id="basic-nav-dropdown"
+              >
+                <NavDropdown.Item onClick={() => navigate("/info/account")}>
+                  Quản lý tài khoản
+                </NavDropdown.Item>
+                <NavDropdown.Item onClick={() => navigate("/info/order")}>
+                  Đơn hàng của tôi
+                </NavDropdown.Item>
+                <NavDropdown.Item onClick={() => navigate("/changePassword")}>
+                  Đổi mật khẩu
+                </NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item onClick={logout}>Đăng xuất</NavDropdown.Item>
+              </NavDropdown>
+            ) : (
+              <NavDropdown
+                title={
+                  <span>
+                    <i className="fa-solid fa-user"></i>
+                  </span>
+                }
+                id="basic-nav-dropdown"
+              >
+                <NavDropdown.Item onClick={() => navigate("/login")}>
+                  Đăng nhập
+                </NavDropdown.Item>
+                <NavDropdown.Item onClick={() => navigate("/register")}>
+                  Đăng ký
+                </NavDropdown.Item>
+              </NavDropdown>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>

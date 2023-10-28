@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Button, Col, Container, Form, Row} from "react-bootstrap";
-import { getUserInfo, updateUser } from "./apiService";
+import { getUserInfo, updateUser } from "../../api/AccountManagementApi/apiService";
 
 function AccountManager() {
     const [userData, setUserData] = useState({

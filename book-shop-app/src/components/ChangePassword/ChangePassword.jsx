@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
-import {changePassword} from "./apiService";
+import {changePassword} from "../../api/ChangePasswordApi/apiService";
 
 function ChangePassword() {
     const [oldPassword, setOldPassword] = useState('');

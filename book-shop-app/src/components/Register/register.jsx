@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {
     MDBBtn,
     MDBContainer,
+    MDBRow,
+    MDBCol,
     MDBCard,
     MDBCardBody,
     MDBInput,
-    MDBCheckbox
-} from 'mdb-react-ui-kit';
+    MDBCheckbox,
+    MDBIcon
+}
+    from 'mdb-react-ui-kit';
 
 function Register() {
     const navigate = useNavigate();
@@ -47,7 +51,7 @@ function Register() {
             setPasswordError("");
         } else {
             setPassword(password);
-            setPasswordError("Mật khẩu phải bao gồm 1 chữ in hoa, 1 chữ số, 1 ký tự đặc biệt!");
+            setPasswordError("Mật khẩu phải bao gồm ít nhất 1 chữ in hoa, 1 chữ số, 1 ký tự đặc biệt!");
         }
     };
 
@@ -82,27 +86,65 @@ function Register() {
                 alert("Đăng kí tài khoản không thành công");
             });
     };
-
     return (
-        <MDBContainer fluid className='d-flex align-items-center justify-content-center bg-image'>
-            <div className='mask gradient-custom-3'></div>
-            <MDBCard className='m-5' style={{ maxWidth: '600px' }}>
-                <MDBCardBody className='px-5'>
-                    <h2 className="text-uppercase text-center mb-5">Đăng kí tài khoản</h2>
-                    <MDBInput wrapperClass='mb-4' label='Tên của bạn' size='lg' id='form1' type='text' onChange={handleFullNameChange} />
-                    <MDBInput wrapperClass='mb-4' label='Địa chỉ' size='lg' id='form-address' type='text' onChange={handleAddressChange} />
-                    <MDBInput wrapperClass='mb-4' label='Số điện thoại' size='lg' id='form-phone' type='number' onChange={handlePhoneChange} />
-                    <MDBInput wrapperClass='mb-4' label='Tên người dùng của bạn' size='lg' id='form2' type='text' onChange={handleUsernameChange} />
-                    <MDBInput wrapperClass='mb-4' label='Mật khẩu' size='lg' id='form3' type='password' onChange={handlePasswordChange} />
-                    {passwordError && <div className="text-danger">{passwordError}</div>}
-                    <MDBInput wrapperClass='mb-4' label='Nhập lại mật khẩu' size='lg' id='form4' type='password' onChange={handleConfirmPasswordChange} />
-                    {confirmPasswordError && <div className="text-danger">{confirmPasswordError}</div>}
-                    <div className='d-flex flex-row justify-content-center mb-4'>
-                        <MDBCheckbox name='flexCheck' id='flexCheckDefault' label='Tôi đồng ý tất cả các tuyên bố trong Điều khoản dịch vụ' />
-                    </div>
-                    <MDBBtn className='mb-4 w-100 gradient-custom-4' size='lg' onClick={handleRegister}>Đăng kí</MDBBtn>
-                </MDBCardBody>
-            </MDBCard>
+        <MDBContainer fluid className='p-4 background-radial-gradient overflow-hidden'>
+
+            <MDBRow>
+
+                <MDBCol md='6' className='text-center text-md-start d-flex flex-column justify-content-center'>
+
+                    <h1 className="my-5 display-3 fw-bold ls-tight px-3" style={{color: 'hsl(218, 81%, 95%)'}}>
+                        BookShop <br />
+                        <span style={{color: 'hsl(218, 81%, 75%)'}}>Đăng kí thành viên  </span>
+                    </h1>
+
+                    <p className='px-3' style={{color: 'hsl(218, 81%, 85%)'}}>
+                        Đến với cửa hàng của chúng tôi, bạn không chỉ đến
+                        với nơi bán những cuốn sách chất lượng và uy tín,
+                        hãy cùng cảm nhận và hoà mình vào lý tưởng của tác giả
+                        trong những cuốn sách nổi tiếng, hay và tâm đắc nhất của cửa hàng
+                        chúng tôi.
+                    </p>
+
+                </MDBCol>
+
+                <MDBCol md='6' className='position-relative'>
+
+                    <div id="radius-shape-1" className="position-absolute rounded-circle shadow-5-strong"></div>
+                    <div id="radius-shape-2" className="position-absolute shadow-5-strong"></div>
+
+                    <MDBCard className='my-5 bg-glass'>
+                        <MDBCardBody className='p-5'>
+
+                            <MDBInput wrapperClass='mb-4' id='form3' type='text' placeholder="Tên của bạn" value={fullName} onChange={handleFullNameChange}/>
+                            <MDBInput wrapperClass='mb-4' id='form3' type='text' placeholder="Địa chỉ" value={address} onChange={handleAddressChange}/>
+                            <MDBInput wrapperClass='mb-4' id='form3' type='number' placeholder="Số điện thoại" value={phoneNumber} onChange={handlePhoneChange}/>
+                            <MDBInput wrapperClass='mb-4' id='form3' type='text' placeholder="Tên tài khoản" value={username} onChange={handleUsernameChange}/>
+                            <MDBInput wrapperClass='mb-4' id='form3' type='password' placeholder="Mật khẩu" value={password} onChange={handlePasswordChange}/>
+                            {passwordError && <div style={{ color: 'red' }}>{passwordError}</div>}
+
+                            <MDBInput wrapperClass='mb-4' id='form3' type='password' placeholder="Nhập lại mật khẩu" value={confirmPassword} onChange={handleConfirmPasswordChange}/>
+                            {confirmPasswordError && <div style={{ color: 'red' }}>{confirmPasswordError}</div>}
+
+
+                            <div className='d-flex justify-content-center mb-4'>
+                                <MDBCheckbox name='flexCheck' value='' id='flexCheckDefault' label='Tôi đồng ý với các điều khoản của cửa hàng' />
+                            </div>
+
+                            <MDBBtn className='w-100 mb-4' size='md' onClick={handleRegister}>Đăng kí</MDBBtn>
+
+                            <div className="text-center">
+                                <p>Bạn đã có tài khoản?</p>
+                                <Link to="/login">Đăng nhập</Link>
+                            </div>
+
+                        </MDBCardBody>
+                    </MDBCard>
+
+                </MDBCol>
+
+            </MDBRow>
+
         </MDBContainer>
     );
 }

@@ -9,9 +9,11 @@ import AccountManagement from "./AccountManagement/AccountManagement";
 import Policy from "./Policy/Policy";
 import Checkout from "./Checkout/Checkout";
 import OrderManagement from "./OrderManagement/OrderManagement";
-import Register from "./Register/Register";
+import Register from "./Register/register";
 import InfoManagement from "./InfoManagement/InfoManagement";
 import ChangePassword from "./ChangePassword/ChangePassword";
+import Rate from "./Rate/Rate";
+
 function AppRoutes() {
   return (
     <Routes>
@@ -28,7 +30,9 @@ function AppRoutes() {
         <Route path="/info/order" element={<OrderManagement />}></Route>
       </Route>
         <Route path="/changePassword" element={<ChangePassword />}></Route>
+        <Route path="/rate" element={<Rate />}></Route>
     </Routes>
+
 );
 }
 

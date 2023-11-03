@@ -1,0 +1,55 @@
+.star-rating {
+    font-size: 0;
+}
+.star-rating-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+.content-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.content-container h5 {
+    min-height: 2em; /* Đặt chiều cao tối thiểu cho hai dòng văn bản */
+}
+
+.star-rating .star-filled,
+.star-rating .star-empty {
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    cursor: pointer;
+}
+
+.star-rating .star-filled {
+    background-image: url("star-fill.png");
+}
+
+.star-rating .star-empty {
+    background-image: url("star-empty.png");
+}
+
+button.cart-btn-2:hover {
+    background-color: #333;
+}
+button.cart-btn-2 {
+    background-color: #196142;
+    border: medium none;
+    border-radius: 50px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 13px 42px 12px;
+    text-transform: uppercase;
+    transition: all 0.3s ease 0s;
+}
+

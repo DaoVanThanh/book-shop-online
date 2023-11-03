@@ -2,6 +2,8 @@ package com.example.bookshop.repository;
 
 import com.example.bookshop.entity.Book;
 import com.example.bookshop.entity.Order;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -29,4 +31,32 @@ public interface BookRepository extends JpaRepository<Book, Long>  {
     );
 
     ArrayList<Book> getBooksByBookIdIn(ArrayList<Long> ids);
+
+    @Modifying
+    @Query(
+            value = "SELECT * " +
+                    "FROM books " +
+                    "where book_id = :book_id",
+            nativeQuery = true
+    )
+    @Transactional
+    Optional<Book> getBookDetail(
+            @Param("book_id") Long bookId
+    );
+
+    @Modifying
+    @Query(
+            value = "SELECT bg.book_id " +
+                    "FROM book_genre bg " +
+                    "WHERE bg.genre_id = :genre_id " +
+                    "LIMIT :size OFFSET :offset",
+            nativeQuery = true
+    )
+    @Transactional
+    Optional<ArrayList<Long>> getListBookIdByGenreId(
+            @Param("genre_id") Long genreId,
+            @Param("size") Long size,
+            @Param("offset") Long offset
+    );
+
 }

@@ -1,6 +1,6 @@
 package com.example.bookshop.service;
 
-import com.example.bookshop.entity.Role;
+import com.example.bookshop.entity.enums.Role;
 import com.example.bookshop.entity.User;
 import com.example.bookshop.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

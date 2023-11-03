@@ -1,0 +1,280 @@
+@media only screen and (max-width: 767px) {
+    .checkout-area.pb-100 {
+        padding-bottom: 60px;
+    }
+}
+.billing-info-wrap h3 {
+    font-size: 20px;
+    color: #000;
+    margin: 0 0 20px;
+    font-weight: 500;
+}
+.billing-info-wrap .billing-info label, .billing-info-wrap .billing-select label {
+    color: #000;
+    margin: 0 0 7px;
+}
+.billing-info-wrap .billing-info input, .billing-info-wrap .billing-select input {
+    background: transparent none repeat scroll 0 0;
+    border: 1px solid #e6e6e6;
+    color: #333;
+    font-size: 14px;
+    padding-left: 20px;
+    padding-right: 10px;
+}
+.billing-info-wrap .billing-info input.billing-address, .billing-info-wrap .billing-select input.billing-address {
+    margin-bottom: 10px;
+}
+.billing-info-wrap .billing-select select {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    border: 1px solid #e6e6e6;
+    color: #333;
+    font-size: 14px;
+    height: 45px;
+    padding: 2px 20px;
+    cursor: pointer;
+}
+.billing-info-wrap .checkout-account {
+    align-items: center;
+    display: flex;
+}
+.billing-info-wrap .checkout-account input {
+    border: 1px solid #9fa0a2;
+    display: inline-block;
+    float: left;
+    height: 10px;
+    width: 10px;
+}
+.billing-info-wrap .checkout-account span {
+    color: #333;
+    font-weight: 400;
+    margin: 0 0 0 12px;
+}
+.billing-info-wrap .checkout-account-toggle input {
+    background: transparent none repeat scroll 0 0;
+    border: 1px solid #e6e6e6;
+    color: #333;
+    font-size: 14px;
+    padding-left: 20px;
+    padding-right: 10px;
+    margin: 0 0 20px;
+}
+.billing-info-wrap .checkout-account-toggle button.checkout-btn {
+    background-color: #196142;
+    border: medium none;
+    color: #fff;
+    cursor: pointer;
+    font-weight: 500;
+    padding: 10px 30px;
+    text-transform: uppercase;
+    border-radius: 50px;
+    z-index: 9;
+}
+.billing-info-wrap .checkout-account-toggle button.checkout-btn:hover {
+    background-color: #333;
+}
+.billing-info-wrap .additional-info-wrap h4 {
+    font-size: 16px;
+    font-weight: 500;
+}
+.billing-info-wrap .additional-info-wrap .additional-info label {
+    color: #333;
+    font-size: 14px;
+    margin: 0 0 7px;
+}
+.billing-info-wrap .additional-info-wrap .additional-info textarea {
+    background: transparent none repeat scroll 0 0;
+    border: 1px solid #e6e6e6;
+    color: #333;
+    font-size: 14px;
+    height: 138px;
+    padding: 17px 20px;
+}
+.billing-info-wrap .different-address {
+    display: none;
+}
+.billing-info {
+    margin-bottom: 20px;
+}
+.billing-info label {
+    color: #000;
+    font-size: 14px;
+    text-transform: capitalize;
+}
+.billing-info input {
+    background: transparent none repeat scroll 0 0;
+    border: 1px solid #ebebeb;
+    color: #000;
+    height: 40px;
+    padding: 0 15px;
+}
+
+.billing-select select {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    border: 1px solid #e6e6e6;
+    color: #333;
+    font-size: 14px;
+    height: 45px;
+    padding: 2px 20px;
+    cursor: pointer;
+}
+input.billing-address {
+    margin-bottom: 10px;
+}
+
+
+.additional-info-wrap h4 {
+    font-size: 16px;
+    font-weight: 500;
+}
+.additional-info-wrap .additional-info label {
+    color: #333;
+    font-size: 14px;
+    margin: 0 0 7px;
+}
+.additional-info-wrap .additional-info textarea {
+    background: transparent none repeat scroll 0 0;
+    border: 1px solid #e6e6e6;
+    color: #333;
+    font-size: 14px;
+    height: 138px;
+    padding: 17px 20px;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    .your-order-area {
+        margin-top: 30px;
+    }
+}
+@media only screen and (max-width: 767px) {
+    .your-order-area {
+        margin-top: 30px;
+    }
+}
+.your-order-area h3 {
+    font-size: 20px;
+    font-weight: 500;
+    margin: 0 0 20px;
+    color: #000;
+}
+.your-order-area .your-order-wrap {
+    padding: 38px 45px 44px;
+    background: #f6f6f6;
+}
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+    .your-order-area .your-order-wrap {
+        padding: 30px 20px 36px;
+    }
+}
+@media only screen and (max-width: 767px) {
+    .your-order-area .your-order-wrap {
+        padding: 30px 20px 36px;
+    }
+}
+.your-order-area .your-order-wrap .your-order-product-info .your-order-top ul {
+    display: flex;
+    justify-content: space-between;
+}
+.your-order-area .your-order-wrap .your-order-product-info .your-order-top ul li {
+    font-size: 16px;
+    font-weight: 500;
+    list-style: outside none none;
+}
+.your-order-area .your-order-wrap .your-order-product-info .your-order-middle {
+    border-bottom: 1px solid #dee0e4;
+    border-top: 1px solid #dee0e4;
+    margin: 29px 0;
+    padding: 19px 0 18px;
+}
+.your-order-area .your-order-wrap .your-order-product-info .your-order-middle ul li {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 0 10px;
+}
+.your-order-area .your-order-wrap .your-order-product-info .your-order-bottom ul {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+}
+.your-order-area .your-order-wrap .your-order-product-info .your-order-bottom ul li {
+    font-size: 14px;
+    font-weight: 400;
+    list-style: none;
+}
+.your-order-area .your-order-wrap .your-order-product-info .your-order-bottom ul li.your-order-shipping {
+    font-size: 16px;
+    color: #212121;
+    font-weight: 400;
+}
+.your-order-area .your-order-wrap .your-order-product-info .your-order-total {
+    border-bottom: 1px solid #dee0e4;
+    border-top: 1px solid #dee0e4;
+    margin: 18px 0 33px;
+    padding: 17px 0 19px;
+}
+.your-order-area .your-order-wrap .your-order-product-info .your-order-total ul {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+}
+.your-order-area .your-order-wrap .your-order-product-info .your-order-total ul li.order-total {
+    font-weight: 500;
+    color: #212121;
+    font-size: 18px;
+}
+.your-order-area .your-order-wrap .your-order-product-info .your-order-total ul li {
+    font-weight: 500;
+    color: #196142;
+    font-size: 16px;
+    list-style: outside none none;
+}
+.your-order-area .payment-accordion {
+    margin: 0 0 16px;
+}
+.your-order-area .payment-accordion:last-child {
+    margin: 0 0 0px;
+}
+.your-order-area .payment-accordion h4 {
+    color: #212121;
+    font-size: 16px;
+    margin: 0;
+}
+.your-order-area .payment-accordion h4 a {
+    color: #212121;
+    position: relative;
+    display: block;
+}
+.your-order-area .payment-accordion h4 a:hover {
+    color: #196142;
+}
+.your-order-area .payment-accordion .panel-body {
+    padding: 5px 0 0 0px;
+}
+.your-order-area .payment-accordion .panel-body p {
+    padding: 0 0 0 10px;
+    font-size: 14px;
+    color: #333;
+}
+.your-order-area .place-order > a, .your-order-area .place-order > button {
+    background: none;
+    border: none;
+    background-color: #196142;
+    color: #fff;
+    display: block;
+    width: 100%;
+    font-weight: 500;
+    letter-spacing: 1px;
+    line-height: 1;
+    padding: 18px 20px;
+    text-align: center;
+    text-transform: uppercase;
+    border-radius: 50px;
+    z-index: 9;
+}
+.your-order-area .place-order > a:hover, .your-order-area .place-order > button:hover {
+    background-color: #333;
+}
+.mb-20 {
+    margin-bottom: 20px;
+}

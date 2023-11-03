@@ -50,13 +50,13 @@ const Header = () => {
                 }
                 id="basic-nav-dropdown"
               >
-                <NavDropdown.Item onClick={() => navigate("/info/account")}>
+                <NavDropdown.Item onClick={() => navigate("/user/account")}>
                   Quản lý tài khoản
                 </NavDropdown.Item>
-                <NavDropdown.Item onClick={() => navigate("/info/order")}>
+                <NavDropdown.Item onClick={() => navigate("/user/order")}>
                   Đơn hàng của tôi
                 </NavDropdown.Item>
-                <NavDropdown.Item onClick={() => navigate("/changePassword")}>
+                <NavDropdown.Item onClick={() => navigate("/user/changePassword")}>
                   Đổi mật khẩu
                 </NavDropdown.Item>
                 <NavDropdown.Divider />

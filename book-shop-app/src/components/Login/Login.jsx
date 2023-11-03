@@ -7,8 +7,6 @@ import {
     MDBCard,
     MDBCardBody,
     MDBInput,
-    MDBCheckbox,
-    MDBIcon
 }
     from 'mdb-react-ui-kit';
 
@@ -51,7 +49,7 @@ function Login() {
                     if (storedAccessToken) {
                         if (storedAccessToken === response.data.accessToken) {
                            // alert("Đăng nhập thành công");
-                            navigate("/Home");
+                            navigate("/");
                         }
                     } else {
                        // alert("Đăng nhập thất bại");
@@ -118,10 +116,6 @@ function Login() {
                             <MDBInput wrapperClass='mb-4' id='form3' type='text' placeholder="Tên tài khoản" value={username} onChange={handleUsernameChange}/>
 
                             <MDBInput wrapperClass='mb-4' id='form4' type='password' placeholder="Mật khẩu" value={password} onChange={handlePasswordChange}/>
-
-                            <div className='d-flex justify-content-center mb-4'>
-                                <MDBCheckbox name='flexCheck' value='' id='flexCheckDefault' label='Ghi nhớ mật khẩu' />
-                            </div>
 
                             <MDBBtn className='w-100 mb-4' size='md' onClick={handleLogin}>Đăng nhập</MDBBtn>
 

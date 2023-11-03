@@ -13,7 +13,7 @@ const InfoManagement = () => {
             <Nav.Item>
               <Nav.Link
                 onClick={() => {
-                  navigate("/info/account");
+                  navigate("/user/account");
                 }}
               >
                 Quản lý tài khoản
@@ -22,10 +22,19 @@ const InfoManagement = () => {
             <Nav.Item>
               <Nav.Link
                 onClick={() => {
-                  navigate("/info/order");
+                  navigate("/user/order");
                 }}
               >
                 Đơn hàng của tôi
+              </Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link
+                onClick={() => {
+                  navigate("/user/changePassword");
+                }}
+              >
+                Đổi mật khẩu
               </Nav.Link>
             </Nav.Item>
           </Nav>

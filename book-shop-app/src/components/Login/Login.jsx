@@ -33,18 +33,15 @@ function Login() {
     const handleLogin = () => {
         axios.post('http://localhost:8080/api/auth/authenticate', { username, password })
             .then((response) => {
-                if (response.data.accessToken && response.data.refreshToken) {
+                if (response.data.accessToken) {
                     setLoggedIn(true);
                     setLoginError(null);
 
                     const accessToken = response.data.accessToken;
-                    const refreshToken = response.data.refreshToken;
 
                     localStorage.setItem('accessToken', accessToken);
-                    localStorage.setItem('refreshToken', refreshToken);
 
                     const storedAccessToken = localStorage.getItem('accessToken');
-                    const storedRefreshToken = localStorage.getItem('refreshToken');
 
                     if (storedAccessToken) {
                         if (storedAccessToken === response.data.accessToken) {
@@ -60,28 +57,10 @@ function Login() {
                 }
             })
             .catch((error) => {
+                console.log(error)
                 setLoggedIn(false);
                 setLoginError("Đăng nhập thất bại");
             });
-        axios.interceptors.response.use(
-            response => response,
-            error => {
-                const originalRequest = error.config;
-                if (error.response.status === 401 && !originalRequest._retry) {
-                    originalRequest._retry = true;
-                    const refreshToken = localStorage.getItem('refreshToken');
-                    return axios.post('http://localhost:8080/api/auth/refreshToken', { refreshToken })
-                        .then(res => {
-                            if (res.status === 200) {
-                                localStorage.setItem('accessToken', res.data.accessToken);
-                                axios.defaults.headers.common['Authorization'] = 'Bearer ' + res.data.accessToken;
-                                return axios(originalRequest);
-                            }
-                        });
-                }
-                return Promise.reject(error);
-            }
-        );
     };
     return (
         <MDBContainer fluid className='p-4 background-radial-gradient overflow-hidden'>

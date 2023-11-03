@@ -43,21 +43,8 @@ public class AuthenticationService {
         var user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow();
         var accessToken = jwtService.generateToken(user);
-        var refreshToken = jwtService.generateRefreshToken(user);
         return AuthenticationRespone.builder()
                 .accessToken(accessToken)
-                .refreshToken(refreshToken)
                 .build();
-    }
-
-    public AuthenticationRespone refreshAuthenticationToken(String refreshToken) throws Exception {
-        String username = jwtService.extractUsername(refreshToken);
-        UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
-        if(jwtService.isTokenValid(refreshToken,userDetails)) {
-            String accessToken = jwtService.generateToken(userDetails);
-            return new AuthenticationRespone(accessToken, refreshToken);
-        } else {
-            throw new Exception("Invalid refresh token");
-        }
     }
 }

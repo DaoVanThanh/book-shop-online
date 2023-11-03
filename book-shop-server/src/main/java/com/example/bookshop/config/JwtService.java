@@ -17,8 +17,7 @@ import java.util.function.Function;
 @Component
 public class JwtService {
     private static final String SECRET_KEY = "j2PQl40P5Z5ooFKxCVaPi3mdxyWsgQeG2RU+GQrXNmg=";
-    private static final long jwtExpiration = 1000 * 60 * 1500; // 2 minutes
-    private static final long refreshExpiration = 1000 * 60 * 60 * 24 * 7; // 7 days
+    private static final long jwtExpiration = 1000 * 60 * 60; // 1h
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -35,10 +34,6 @@ public class JwtService {
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
         return createToken(extraClaims, userDetails, jwtExpiration);
-    }
-
-    public String generateRefreshToken(UserDetails userDetails) {
-        return createToken(new HashMap<>(), userDetails, refreshExpiration);
     }
 
     public String createToken(Map<String, Object> extraClaims, UserDetails userDetails, long expiration) {

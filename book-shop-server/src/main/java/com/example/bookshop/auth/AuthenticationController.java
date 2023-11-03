@@ -4,7 +4,6 @@ import com.example.bookshop.repository.UserRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,15 +35,4 @@ public class AuthenticationController {
     ) {
         return ResponseEntity.ok(authenticationService.authenticate(request));
     }
-
-    @PostMapping("/refreshToken")
-    public ResponseEntity<?> refreshAuthenticationToken(@RequestBody AuthenticationRefreshRequest refreshRequest) throws Exception {
-        try {
-            AuthenticationRespone respone = authenticationService.refreshAuthenticationToken(refreshRequest.getRefreshToken());
-            return ResponseEntity.ok(respone);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
-        }
-    }
-
 }

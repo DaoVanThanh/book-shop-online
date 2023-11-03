@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Set;
 
@@ -32,9 +33,9 @@ public class GetBookDetailResponse {
 
     private String imgUrl;
 
-    private Set<Author> authors;
+    private ArrayList<Author> authors;
 
-    private Set<Genre> genres;
+    private ArrayList<Genre> genres;
 
     public void mapping(Book book) {
         this.bookId = book.getBookId();
@@ -44,7 +45,7 @@ public class GetBookDetailResponse {
         this.publication_date = book.getPublication_date();
         this.stockQuantity = book.getStockQuantity();
         this.imgUrl = book.getImgUrl();
-        this.authors = book.getAuthors();
-        this.genres = book.getGenres();
+//        this.authors = book.getAuthors();
+//        this.genres = book.getGenres();
     }
 }

@@ -7,9 +7,12 @@ import com.example.bookshop.entity.Book;
 import com.example.bookshop.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -22,24 +25,23 @@ public class BookController {
     @GetMapping("/detail")
     public ResponseEntity<?> getBookDetail(
             @RequestBody GetBookDetailRequest request
-    ) {
-        try {
+    ) throws ResponseStatusException {
             return ResponseEntity.ok(bookService.getBookDetail(request.getBookId()));
-        } catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("book id not found");
-        }
     }
+
+//    @GetMapping("/genre")
+//    public ResponseEntity<?> getListBookByGenre(
+//            Pageable pageable,
+//            GetListBookByGenreRequest request
+//    ) {
+//        try {
+//            return ResponseEntity.ok(bookService.getListBookByGenre(pageable, request.getGenreId()));
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+//        }
+//    }
+
     /*
-    @GetMapping("genre")
-    public ResponseEntity<?> getListBookGenre(
-            GetListBookByGenreRequest request
-    ) {
-        try {
-            return ResponseEntity.ok(bookService.get)
-        }
-    }
-
-
     @GetMapping("/search/{name}")
     public List<Book> getListBookSearch(@PathVariable String name) {
         return null;

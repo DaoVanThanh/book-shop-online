@@ -1,7 +1,10 @@
 package com.example.bookshop.service.impl;
 
-import com.example.bookshop.dto.BookQuantity;
+import com.example.bookshop.dto.BookSummary;
 import com.example.bookshop.dto.response.GetBookDetailResponse;
+import com.example.bookshop.dto.BookQuantity;
+import com.example.bookshop.dto.request.GetListBookByGenreRequest;
+import com.example.bookshop.dto.response.GetListBookResponse;
 import com.example.bookshop.entity.Book;
 import com.example.bookshop.exception.ParamInvalidException;
 import com.example.bookshop.repository.AuthorRepository;
@@ -50,7 +53,7 @@ public class BookServiceImpl implements BookService {
         }
     }
 
-    public GetBookDetailResponse getBookDetail(long bookId) throws ResponseStatusException {
+    public GetBookDetailResponse getBookDetail(Long bookId) throws ResponseStatusException {
         Book book = bookRepository
                 .findById(bookId)
                 .orElseThrow(() -> new ParamInvalidException("Book Id không hợp lệ"));
@@ -58,6 +61,25 @@ public class BookServiceImpl implements BookService {
         response.mapping(book);
         response.setAuthors(authorRepository.getListAuthorByBookId(bookId));
         response.setGenres(genreRepository.getListGenreByBookId(bookId));
+        return response;
+    }
+
+    public GetListBookResponse getListBookByGenre(GetListBookByGenreRequest request) throws ResponseStatusException {
+        GetListBookResponse response = new GetListBookResponse();
+        ArrayList<Long> listBookId = bookRepository
+                .getListBookIdByGenreId(
+                        request.getGenreId(),
+                        request.getSize(),
+                        request.getSize() * request.getPage()
+                )
+                .orElseThrow(() -> new ParamInvalidException("Genre Id không hợp lệ"));
+        ArrayList<BookSummary> listBook = new ArrayList<>();
+        for(Long bookId : listBookId) {
+            BookSummary bookSummary = new BookSummary();
+            bookSummary.mapping(getBookDetail(bookId));
+            listBook.add(bookSummary);
+        }
+        response.setListBook(listBook);
         return response;
     }
 

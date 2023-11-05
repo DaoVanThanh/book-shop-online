@@ -1,0 +1,11 @@
+.sidebarAd {
+    width: 250px;
+    height: 100%;
+    background-color: #333;
+    color: white;
+    padding: 20px;
+  }
+  
+  .nav-link {
+    color: white;
+  }

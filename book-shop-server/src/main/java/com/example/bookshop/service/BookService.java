@@ -1,5 +1,6 @@
 package com.example.bookshop.service;
 
+import com.example.bookshop.dto.request.GetListBookByPriceRequest;
 import com.example.bookshop.dto.response.GetBookDetailResponse;
 import com.example.bookshop.dto.BookQuantity;
 import com.example.bookshop.dto.request.GetListBookByGenreRequest;
@@ -18,4 +19,6 @@ public interface BookService {
     GetBookDetailResponse getBookDetail (Long bookId) throws ResponseStatusException;
 
     GetListBookResponse getListBookByGenre(GetListBookByGenreRequest request) throws ResponseStatusException;
+
+    GetListBookResponse getListBookByPrice(GetListBookByPriceRequest request) throws ResponseStatusException;
 }

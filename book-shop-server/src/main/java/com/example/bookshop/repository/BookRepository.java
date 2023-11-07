@@ -59,4 +59,19 @@ public interface BookRepository extends JpaRepository<Book, Long>  {
             @Param("offset") Long offset
     );
 
+    @Modifying
+    @Query(
+            value = "SELECT b.book_id " +
+                    "FROM books AS b " +
+                    "WHERE b.price BETWEEN :min_Price AND :max_Price " +
+                    "LIMIT :size OFFSET :offset",
+            nativeQuery = true
+    )
+    @Transactional
+    Optional<ArrayList<Long>> getListBookIdByPrice(
+            @Param("min_Price") Long minPrice,
+            @Param("max_Price") Long maxPrice,
+            @Param("size") Long size,
+            @Param("offset") Long offset
+    );
 }

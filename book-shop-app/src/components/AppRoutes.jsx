@@ -17,20 +17,20 @@ import Rate from "./Rate/Rate";
 function AppRoutes() {
   return (
     <Routes>
-      <Route path="/login" element={<Login />}></Route>
-      <Route path="/register" element={<Register />}></Route>
-      <Route index element={<Home />}></Route>
-      <Route path="/about" element={<About />}></Route>
-      <Route path="/shop" element={<Shop />}></Route>
-      <Route path="/cart" element={<Cart />}></Route>
-      <Route path="/policy" element={<Policy />}></Route>
-      <Route path="/checkout" element={<Checkout />}></Route>
+      <Route path="/login" element={<Login/>}/>
+      <Route path="/register" element={<Register/>}/>
+      <Route index element={<Home/>}/>
+      <Route path="/about" element={<About/>}/>
+      <Route path="/shop" element={<Shop/>}/>
+      <Route path="/cart" element={<Cart/>}/>
+      <Route path="/policy" element={<Policy/>}/>
+      <Route path="/checkout" element={<Checkout/>}/>
       <Route path="/" element={<InfoManagement />}>
-        <Route path="/user/account" element={<AccountManagement />}></Route>
-        <Route path="/user/order" element={<OrderManagement />}></Route>
-        <Route path="/user/changePassword" element={<ChangePassword />}></Route>
+        <Route path="/user/account" element={<AccountManagement/>}/>
+        <Route path="/user/order" element={<OrderManagement/>}/>
+        <Route path="/user/changePassword" element={<ChangePassword/>}/>
       </Route>
-        <Route path="/rate" element={<Rate />}></Route>
+        <Route path="/rate" element={<Rate/>}/>
     </Routes>
 
 );

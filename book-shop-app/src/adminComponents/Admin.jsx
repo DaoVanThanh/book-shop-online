@@ -16,10 +16,10 @@ const Admin = () => {
       <div className="content">
         <Routes>
           <Route>
-            <Route path="/dashboard" element={<Dashboard />}></Route>
-            <Route path="/products" element={<ProductManagement />}></Route>
-            <Route path="/orders" element={<OrderManagement />}></Route>
-            <Route path="/statistics" element={<Statistic />}></Route>
+            <Route path="/dashboard" element={<Dashboard/>}/>
+            <Route path="/products" element={<ProductManagement/>}/>
+            <Route path="/orders" element={<OrderManagement/>}/>
+            <Route path="/statistics" element={<Statistic/>}/>
           </Route>
         </Routes>
       </div>

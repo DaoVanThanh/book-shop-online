@@ -11,12 +11,12 @@ import Admin from "./adminComponents/Admin";
 function App() {
   return (
     <BrowserRouter>
-      <Header />
+      {/*<Header />
       <div className="App">
         <AppRoutes />
       </div>
-      <Footer />
-      {/* <Admin /> */}
+      <Footer />*/}
+      {<Admin /> }
     </BrowserRouter>
   );
 }

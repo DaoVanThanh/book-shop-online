@@ -57,14 +57,14 @@ public class OrderManagementServiceImpl implements OrderManagementService {
             ArrayList<BookQuantity> bookQuantities
     ) throws ResponseStatusException {
         try {
-            if (!bookService.checkBookQuantity(bookQuantities).booleanValue()) {
+            if (!bookService.checkBookQuantity(bookQuantities)) {
                 throw new ParamInvalidException("Không đủ sách trong kho");
             }
             Long total = bookService.calcCost(bookQuantities);
             Order order = Order.builder()
                     .orderDate(Calendar.getInstance().getTime())
                     .deliveryAddress(deliveryAddress)
-                    .status(OrderStatus.CREATING)
+                    .status(OrderStatus.PENDING)
                     .totalAmount(total)
                     .user(userService.getUser())
                     .build();
@@ -93,22 +93,19 @@ public class OrderManagementServiceImpl implements OrderManagementService {
             Long orderId,
             OrderStatus orderStatus
     ) throws ResponseStatusException {
-        if (orderStatus == OrderStatus.CREATING) {
-            throw new ParamInvalidException("Không cập nhật trạng thái CREATING");
+        if (orderStatus == OrderStatus.PENDING) {
+            throw new ParamInvalidException("Không cập nhật trạng thái PENDING");
         }
         Order order = orderRepository
                 .findById(orderId)
                 .orElseThrow(() -> new ElementNotFoundException("order id"));
-        if (orderStatus == OrderStatus.CANCEL && order.getStatus() != OrderStatus.CREATING) {
+        if (orderStatus == OrderStatus.CANCELLED && order.getStatus() != OrderStatus.PENDING) {
             throw new ParamInvalidException("Không thể hủy đơn hàng đang giao");
         }
-        if (orderStatus == OrderStatus.DELIVERING && order.getStatus() != OrderStatus.CREATING) {
+        if (orderStatus == OrderStatus.DELIVERING && order.getStatus() != OrderStatus.PENDING) {
             throw new ParamInvalidException("Cập nhật thất bại");
         }
-        if (orderStatus == OrderStatus.DELIVERING && order.getStatus() != OrderStatus.CREATING) {
-            throw new ParamInvalidException("Cập nhật thất bại");
-        }
-        if (orderStatus == OrderStatus.DONE && order.getStatus() != OrderStatus.DELIVERING) {
+        if (orderStatus == OrderStatus.SUCCESS && order.getStatus() != OrderStatus.DELIVERING) {
             throw new ParamInvalidException("Cập nhật thất bại");
         }
         order.setStatus(orderStatus);

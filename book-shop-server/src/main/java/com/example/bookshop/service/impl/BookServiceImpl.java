@@ -1,30 +1,37 @@
 package com.example.bookshop.service.impl;
 
 import com.example.bookshop.dto.BookSummary;
+import com.example.bookshop.dto.request.ReviewBookRequest;
 import com.example.bookshop.dto.request.GetListBookByPriceRequest;
 import com.example.bookshop.dto.response.GetBookDetailResponse;
 import com.example.bookshop.dto.BookQuantity;
 import com.example.bookshop.dto.request.GetListBookByGenreRequest;
 import com.example.bookshop.dto.response.GetListBookResponse;
 import com.example.bookshop.entity.Book;
+import com.example.bookshop.entity.Review;
+import com.example.bookshop.entity.User;
+import com.example.bookshop.exception.ConflictDataException;
 import com.example.bookshop.exception.ParamInvalidException;
-import com.example.bookshop.repository.AuthorRepository;
-import com.example.bookshop.repository.BookRepository;
-import com.example.bookshop.repository.GenreRepository;
+import com.example.bookshop.repository.*;
 import com.example.bookshop.service.BookService;
+import com.example.bookshop.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
+    private final UserService userService;
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
     private final GenreRepository genreRepository;
+    private final ReviewRepository reviewRepository;
 
     public Boolean checkBookQuantity(ArrayList<BookQuantity> bookQuantities) throws ResponseStatusException {
         for (BookQuantity bookQuantity : bookQuantities) {
@@ -64,6 +71,39 @@ public class BookServiceImpl implements BookService {
         response.setAuthors(authorRepository.getListAuthorByBookId(bookId));
         response.setGenres(genreRepository.getListGenreByBookId(bookId));
         return response;
+    }
+
+    public ArrayList<GetBookDetailResponse> getBookDetails(ArrayList<Long> bookIds) throws ResponseStatusException {
+        ArrayList<GetBookDetailResponse> result = new ArrayList<>();
+        for (Long bookId : bookIds) {
+            result.add(getBookDetail(bookId));
+        }
+        return result;
+    }
+
+    public void reviewBook(ReviewBookRequest request) throws ResponseStatusException {
+        if (request.getPoint() < 1 || request.getPoint() > 5) {
+            throw new ParamInvalidException("Point");
+        }
+        User user = userService.getUser();
+
+        Book book = bookRepository
+                .findById(request.getBookId())
+                .orElseThrow(() -> new ParamInvalidException("Sách không tồn tại"));
+        Review review = Review
+                .builder()
+                .book(book)
+                .user(user)
+                .point(request.getPoint())
+                .review(request.getReview())
+                .reviewDate(new Date())
+                .build();
+
+        try {
+            reviewRepository.save(review);
+        } catch (Exception e) {
+            throw new ConflictDataException("Sách đã được review");
+        }
     }
 
     private void ValidatePageSize(Long page, Long size) throws ResponseStatusException {

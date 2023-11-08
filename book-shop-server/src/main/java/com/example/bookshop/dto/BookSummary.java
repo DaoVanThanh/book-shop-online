@@ -36,4 +36,14 @@ public class BookSummary {
         this.authors = book.getAuthors();
         this.genres = book.getGenres();
     }
+
+    public static ArrayList<BookSummary> mappingFromBookDetails(ArrayList<GetBookDetailResponse> bookDetails) {
+        ArrayList<BookSummary> bookSummaries = new ArrayList<>();
+        for (GetBookDetailResponse bookDetail : bookDetails) {
+            BookSummary bookSummary = new BookSummary();
+            bookSummary.mapping(bookDetail);
+            bookSummaries.add(bookSummary);
+        }
+        return bookSummaries;
+    }
 }

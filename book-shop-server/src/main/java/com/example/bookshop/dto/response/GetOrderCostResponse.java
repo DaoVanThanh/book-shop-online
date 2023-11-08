@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateOrderResponse {
-    private Long orderId;
+public class GetOrderCostResponse {
     private Long totalCost;
 }

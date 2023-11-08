@@ -2,10 +2,10 @@ package com.example.bookshop.service.impl;
 
 
 import com.example.bookshop.dto.BookQuantity;
-import com.example.bookshop.dto.response.CreateOrderResponse;
-import com.example.bookshop.dto.response.GetAllBookPurchasedResponse;
+import com.example.bookshop.dto.BookSummary;
+import com.example.bookshop.dto.request.GetOrderCostRequest;
+import com.example.bookshop.dto.response.*;
 import com.example.bookshop.entity.*;
-import com.example.bookshop.dto.response.GetStatusOrderResponse;
 import com.example.bookshop.entity.enums.OrderStatus;
 import com.example.bookshop.exception.ElementNotFoundException;
 import com.example.bookshop.exception.ParamInvalidException;
@@ -19,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -44,7 +45,9 @@ public class OrderManagementServiceImpl implements OrderManagementService {
         Cart cart = cartRepository
                 .getCartByUserUserId(userId)
                 .orElseThrow(() -> new ParamInvalidException("Rỏ hàng chưa được tạo"));
-
+        bookRepository
+                .findById(bookId)
+                .orElseThrow(() -> new ElementNotFoundException("Book id"));
         if (quantity == 0) {
             cartDetailRepository.deteleByCartIdAndBookId(bookId, cart.getCartId());
         } else {
@@ -81,7 +84,7 @@ public class OrderManagementServiceImpl implements OrderManagementService {
             }
 
             return CreateOrderResponse.builder()
-                    .totalAmount(total)
+                    .totalCost(total)
                     .orderId(order.getOrderId())
                     .build();
         } catch (Exception e) {
@@ -119,7 +122,15 @@ public class OrderManagementServiceImpl implements OrderManagementService {
         Long userId = userService.getUserId();
         ArrayList<Long> orderIds = orderRepository.getOrderIdsByUserId(userId);
         ArrayList<Long> bookIds = orderDetailRepository.getBookIdsByOrderIds(orderIds);
-        ArrayList<Book> books = bookRepository.getBooksByBookIdIn(bookIds);
-        return GetAllBookPurchasedResponse.builder().books(books).build();
+        ArrayList<GetBookDetailResponse> bookDetails = bookService.getBookDetails(bookIds);
+
+        return GetAllBookPurchasedResponse
+                .builder()
+                .books(BookSummary.mappingFromBookDetails(bookDetails))
+                .build();
+    }
+
+    public GetOrderCostResponse getOrderCost(GetOrderCostRequest request) throws ResponseStatusException {
+        return GetOrderCostResponse.builder().totalCost(bookService.calcCost(request.getBookQuantities())).build();
     }
 }

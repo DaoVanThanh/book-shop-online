@@ -59,4 +59,9 @@ public class OrderManagementController {
     ) throws ResponseStatusException {
         return ResponseEntity.ok(orderManagementService.getOrderCost(request));
     }
+
+    @GetMapping("cartdetail")
+    public ResponseEntity<?> GetCartDetail() throws ResponseStatusException {
+        return ResponseEntity.ok(orderManagementService.getCartDetail());
+    }
 }

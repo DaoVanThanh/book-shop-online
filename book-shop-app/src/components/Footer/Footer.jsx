@@ -102,10 +102,7 @@ const Footer = () => {
         className="text-center p-4"
         style={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }}
       >
-        © 2023 Copyright:
-        <a className="text-reset fw-bold" href="https://mdbootstrap.com/">
-          MDBootstrap.com
-        </a>
+        © Copyright 2023
       </div>
     </MDBFooter>
   );

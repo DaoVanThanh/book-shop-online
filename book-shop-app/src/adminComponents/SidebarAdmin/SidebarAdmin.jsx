@@ -1,27 +1,40 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { Nav } from 'react-bootstrap'
-import './Sidebar.css'
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { Nav } from "react-bootstrap";
+import "./Sidebar.css";
 const Sidebar = () => {
+  const navigate = useNavigate();
+  const handleSelectItem = (eventKey) => {
+    navigate(eventKey);
+  };
+  const handleLogout = () => {
+    navigate("/login");
+    localStorage.clear();
+  }
   return (
-    <div className="sidebarAd">
-      <Nav defaultActiveKey="/dashboard" className="flex-column">
+    <div className="sidebar-ad">
+      <Nav
+        onSelect={(eventKey) => {
+          handleSelectItem(eventKey);
+        }}
+        defaultActiveKey="/dashboard"
+        className="flex-column"
+      >
         <Nav.Item>
-          <Link to="/dashboard" className="nav-link">Dashboard</Link>
+          <Nav.Link eventKey="/products">Quản lý sản phẩm</Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Link to="/products" className="nav-link">Quản lý sản phẩm</Link>
+          <Nav.Link eventKey="/orders">Quản lý đơn hàng</Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Link to="/orders" className="nav-link">Quản lý đơn hàng</Link>
+          <Nav.Link eventKey="/statistics">Thống kê</Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Link to="/statistics" className="nav-link">Thống kê</Link>
+          <Nav.Link onClick={handleLogout}>Đăng xuất</Nav.Link>
         </Nav.Item>
-        {/* Thêm các liên kết khác cho các trang Admin của bạn */}
       </Nav>
     </div>
-  )
-}
+  );
+};
 
-export default Sidebar
+export default Sidebar;

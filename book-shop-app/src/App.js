@@ -16,7 +16,7 @@ function App() {
         <AppRoutes />
       </div>
       <Footer />
-      {/* <Admin /> */}
+     {/*  <Admin /> */}
     </BrowserRouter>
   );
 }

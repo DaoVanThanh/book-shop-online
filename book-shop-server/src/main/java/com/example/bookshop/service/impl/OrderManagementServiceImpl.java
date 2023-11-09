@@ -19,7 +19,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -132,5 +131,23 @@ public class OrderManagementServiceImpl implements OrderManagementService {
 
     public GetOrderCostResponse getOrderCost(GetOrderCostRequest request) throws ResponseStatusException {
         return GetOrderCostResponse.builder().totalCost(bookService.calcCost(request.getBookQuantities())).build();
+    }
+
+    public GetCartDetailResponse getCartDetail() throws ResponseStatusException {
+        Long userId = userService.getUserId();
+        Cart cart = cartRepository
+                .getCartByUserUserId(userId)
+                .orElseThrow(() -> new ParamInvalidException("Rỏ hàng chưa được tạo"));
+        ArrayList<CartDetail> cartDetails = cartDetailRepository.getCartDetailsByCart(cart);
+        ArrayList<BookQuantity> bookQuantities = new ArrayList<>();
+        for (CartDetail cartDetail : cartDetails) {
+            bookQuantities.add(BookQuantity.builder()
+                    .bookId(cartDetail.getBook().getBookId())
+                    .quantity(cartDetail.getQuantity())
+                    .build());
+        }
+        return GetCartDetailResponse.builder()
+                .bookQuantities(bookQuantities)
+                .build();
     }
 }

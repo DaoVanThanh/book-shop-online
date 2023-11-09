@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "cart_details")
+@Table(name = "cart_details", uniqueConstraints = {@UniqueConstraint(columnNames = {"book_id", "cart_id"})})
 public class CartDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

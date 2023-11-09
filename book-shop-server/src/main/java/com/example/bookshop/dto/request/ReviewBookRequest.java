@@ -1,4 +1,4 @@
-package com.example.bookshop.dto.response;
+package com.example.bookshop.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateOrderResponse {
-    private Long orderId;
-    private Long totalCost;
+public class ReviewBookRequest {
+    Long bookId;
+    Integer point;
+    String review;
 }

@@ -16,17 +16,11 @@ import java.util.Optional;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
     Optional<Order> getByOrderId(Long orderId);
-    Optional<List<Order>> findByStatus(OrderStatus status);
     @Modifying
     @Query(
             value = "select order_id from orders " +
                     "where user_id = :user_id", nativeQuery = true)
 
-
-    /*@Modifying
-    @Query(
-            value = "select order_id from orders " +
-                    "where order.status = :status", nativeQuery = true)*/
     @Transactional
     ArrayList<Long> getOrderIdsByUserId(
             @Param("user_id") Long userId

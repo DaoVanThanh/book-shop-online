@@ -22,8 +22,12 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/**")
+                        .requestMatchers("/api/auth/**")
                         .permitAll()
+                        .requestMatchers("/api/admin/**")
+                        .hasRole("ADMIN")// nhung thang role_admin thi vao dc nhung api /api/admin/**
+                        .requestMatchers("/api/user/**")
+                        .hasRole("USER")// nhung thang role_user thi vao dc nhung api /api/user/**
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess

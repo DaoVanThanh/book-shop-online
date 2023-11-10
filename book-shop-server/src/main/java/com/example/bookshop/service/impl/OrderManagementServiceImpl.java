@@ -19,7 +19,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -60,14 +59,14 @@ public class OrderManagementServiceImpl implements OrderManagementService {
             ArrayList<BookQuantity> bookQuantities
     ) throws ResponseStatusException {
         try {
-            if (!bookService.checkBookQuantity(bookQuantities).booleanValue()) {
+            if (!bookService.checkBookQuantity(bookQuantities)) {
                 throw new ParamInvalidException("Không đủ sách trong kho");
             }
             Long total = bookService.calcCost(bookQuantities);
             Order order = Order.builder()
                     .orderDate(Calendar.getInstance().getTime())
                     .deliveryAddress(deliveryAddress)
-                    .status(OrderStatus.CREATING)
+                    .status(OrderStatus.PENDING)
                     .totalAmount(total)
                     .user(userService.getUser())
                     .build();
@@ -96,22 +95,19 @@ public class OrderManagementServiceImpl implements OrderManagementService {
             Long orderId,
             OrderStatus orderStatus
     ) throws ResponseStatusException {
-        if (orderStatus == OrderStatus.CREATING) {
-            throw new ParamInvalidException("Không cập nhật trạng thái CREATING");
+        if (orderStatus == OrderStatus.PENDING) {
+            throw new ParamInvalidException("Không cập nhật trạng thái PENDING");
         }
         Order order = orderRepository
                 .findById(orderId)
                 .orElseThrow(() -> new ElementNotFoundException("order id"));
-        if (orderStatus == OrderStatus.CANCEL && order.getStatus() != OrderStatus.CREATING) {
+        if (orderStatus == OrderStatus.CANCELLED && order.getStatus() != OrderStatus.PENDING) {
             throw new ParamInvalidException("Không thể hủy đơn hàng đang giao");
         }
-        if (orderStatus == OrderStatus.DELIVERING && order.getStatus() != OrderStatus.CREATING) {
+        if (orderStatus == OrderStatus.DELIVERING && order.getStatus() != OrderStatus.PENDING) {
             throw new ParamInvalidException("Cập nhật thất bại");
         }
-        if (orderStatus == OrderStatus.DELIVERING && order.getStatus() != OrderStatus.CREATING) {
-            throw new ParamInvalidException("Cập nhật thất bại");
-        }
-        if (orderStatus == OrderStatus.DONE && order.getStatus() != OrderStatus.DELIVERING) {
+        if (orderStatus == OrderStatus.SUCCESS && order.getStatus() != OrderStatus.DELIVERING) {
             throw new ParamInvalidException("Cập nhật thất bại");
         }
         order.setStatus(orderStatus);
@@ -132,5 +128,23 @@ public class OrderManagementServiceImpl implements OrderManagementService {
 
     public GetOrderCostResponse getOrderCost(GetOrderCostRequest request) throws ResponseStatusException {
         return GetOrderCostResponse.builder().totalCost(bookService.calcCost(request.getBookQuantities())).build();
+    }
+
+    public GetCartDetailResponse getCartDetail() throws ResponseStatusException {
+        Long userId = userService.getUserId();
+        Cart cart = cartRepository
+                .getCartByUserUserId(userId)
+                .orElseThrow(() -> new ParamInvalidException("Rỏ hàng chưa được tạo"));
+        ArrayList<CartDetail> cartDetails = cartDetailRepository.getCartDetailsByCart(cart);
+        ArrayList<BookQuantity> bookQuantities = new ArrayList<>();
+        for (CartDetail cartDetail : cartDetails) {
+            bookQuantities.add(BookQuantity.builder()
+                    .bookId(cartDetail.getBook().getBookId())
+                    .quantity(cartDetail.getQuantity())
+                    .build());
+        }
+        return GetCartDetailResponse.builder()
+                .bookQuantities(bookQuantities)
+                .build();
     }
 }

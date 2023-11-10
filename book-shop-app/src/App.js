@@ -11,7 +11,7 @@ import Admin from "./adminComponents/Admin";
 function App() {
   return (
     <BrowserRouter>
-      <Header />
+      {/*<Header />
       <div className="App">
         <AppRoutes />
       </div>

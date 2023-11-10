@@ -1,12 +1,15 @@
 package com.example.bookshop.service.impl;
 
+import com.example.bookshop.dto.BookReview;
 import com.example.bookshop.dto.BookSummary;
+import com.example.bookshop.dto.request.GetUserReviewRequest;
 import com.example.bookshop.dto.request.ReviewBookRequest;
 import com.example.bookshop.dto.request.GetListBookByPriceRequest;
 import com.example.bookshop.dto.response.GetBookDetailResponse;
 import com.example.bookshop.dto.BookQuantity;
 import com.example.bookshop.dto.request.GetListBookByGenreRequest;
 import com.example.bookshop.dto.response.GetListBookResponse;
+import com.example.bookshop.dto.response.GetUserReviewResponse;
 import com.example.bookshop.entity.Book;
 import com.example.bookshop.entity.Review;
 import com.example.bookshop.entity.User;
@@ -104,6 +107,19 @@ public class BookServiceImpl implements BookService {
         } catch (Exception e) {
             throw new ConflictDataException("Sách đã được review");
         }
+    }
+
+    public GetUserReviewResponse getUserReview(GetUserReviewRequest request) throws  ResponseStatusException {
+        User user = userService.getUser();
+        ArrayList<Review> reviews;
+        if (request.getBookIds().isEmpty()) {
+            reviews = reviewRepository.findAllByUser(user);
+        } else {
+            reviews = reviewRepository.getReviewsByUserAndBookBookIdIn(user, request.getBookIds());
+        }
+        return GetUserReviewResponse.builder()
+                .bookReviews(BookReview.mappingFromReviews(reviews))
+                .build();
     }
 
     private void ValidatePageSize(Long page, Long size) throws ResponseStatusException {

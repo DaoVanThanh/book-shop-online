@@ -1,8 +1,10 @@
 package com.example.bookshop.auth;
 
 import com.example.bookshop.config.JwtService;
+import com.example.bookshop.entity.Cart;
 import com.example.bookshop.entity.enums.Role;
 import com.example.bookshop.entity.User;
+import com.example.bookshop.repository.CartRepository;
 import com.example.bookshop.repository.UserRepository;
 import com.example.bookshop.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthenticationService {
     private final UserRepository userRepository;
+    private final CartRepository cartRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final CustomUserDetailsService customUserDetailsService;
@@ -32,6 +35,9 @@ public class AuthenticationService {
                 .role(Role.ROLE_USER)
                 .build();
         userRepository.save(user);
+        Cart cart = new Cart();
+        cart.setUser(user);
+        cartRepository.save(cart);
     }
 
     public AuthenticationRespone authenticate(AuthenticationResquest request) {

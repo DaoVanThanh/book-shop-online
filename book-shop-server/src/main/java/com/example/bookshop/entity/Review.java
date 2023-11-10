@@ -2,13 +2,20 @@ package com.example.bookshop.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.util.Date;
 
 @Data
 @Entity
-@Table(name = "reviews")
+@Builder
+@Table(name = "reviews", uniqueConstraints = {@UniqueConstraint(columnNames = {"book_id", "user_id"})})
+@NoArgsConstructor
+@AllArgsConstructor
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,6 +25,10 @@ public class Review {
     @Lob
     @NotNull
     private String review;
+
+    @Column(name = "point")
+    @NotNull
+    private Integer point;
 
     @Column(name = "review_date")
     private Date reviewDate;

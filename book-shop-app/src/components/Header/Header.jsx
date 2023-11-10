@@ -8,6 +8,8 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
+import logo from '../../logo.png'
+
 const Header = () => {
   const navigate = useNavigate();
 
@@ -17,26 +19,37 @@ const Header = () => {
   };
 
   const handleCart = () => {
-    if(localStorage.getItem("accessToken")) {
-      navigate("cart")
+    if (localStorage.getItem("accessToken")) {
+      navigate("cart");
     } else {
       const currentURL = "/cart";
-      localStorage.setItem('currentURL', currentURL);
-      console.log(currentURL)
-      navigate("/login")
+      localStorage.setItem("currentURL", currentURL);
+      console.log(currentURL);
+      navigate("/login");
     }
-  }
+  };
+
+  const handleSelectItem = (eventKey) => {
+    navigate(eventKey);
+  };
 
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
-        <Navbar.Brand onClick={() => navigate("/")}>BOOK STORE</Navbar.Brand>
+        <Navbar.Brand onClick={() => navigate("/")} style={{marginRight: "50%"}}>
+          <img src={logo} alt="Logo book shop" style={{width: "100px", borderRadius: "50%", cursor: "pointer"}}></img>
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link onClick={() => navigate("/")}>Trang chủ</Nav.Link>
-            <Nav.Link onClick={() => navigate("/shop")}>Cửa hàng</Nav.Link>
-            <Nav.Link onClick={() => navigate("/about")}>Về chúng tôi</Nav.Link>
+          <Nav
+            className="me-auto"
+            onSelect={(eventKey) => {
+              handleSelectItem(eventKey);
+            }}
+          >
+            <Nav.Link eventKey="/">Trang chủ</Nav.Link>
+            <Nav.Link eventKey="/shop">Cửa hàng</Nav.Link>
+            <Nav.Link eventKey="/about">Về chúng tôi</Nav.Link>
             <Nav.Link onClick={handleCart}>
               <i className="fa-solid fa-cart-shopping"></i>
             </Nav.Link>
@@ -50,13 +63,13 @@ const Header = () => {
                 }
                 id="basic-nav-dropdown"
               >
-                <NavDropdown.Item onClick={() => navigate("/user/account")}>
+                <NavDropdown.Item eventKey="/user/account">
                   Quản lý tài khoản
                 </NavDropdown.Item>
-                <NavDropdown.Item onClick={() => navigate("/user/order")}>
+                <NavDropdown.Item eventKey="/user/order">
                   Đơn hàng của tôi
                 </NavDropdown.Item>
-                <NavDropdown.Item onClick={() => navigate("/user/changePassword")}>
+                <NavDropdown.Item eventKey="/user/changePassword">
                   Đổi mật khẩu
                 </NavDropdown.Item>
                 <NavDropdown.Divider />

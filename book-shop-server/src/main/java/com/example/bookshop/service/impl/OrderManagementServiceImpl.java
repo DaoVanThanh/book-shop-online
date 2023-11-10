@@ -2,10 +2,10 @@ package com.example.bookshop.service.impl;
 
 
 import com.example.bookshop.dto.BookQuantity;
-import com.example.bookshop.dto.response.CreateOrderResponse;
-import com.example.bookshop.dto.response.GetAllBookPurchasedResponse;
+import com.example.bookshop.dto.BookSummary;
+import com.example.bookshop.dto.request.GetOrderCostRequest;
+import com.example.bookshop.dto.response.*;
 import com.example.bookshop.entity.*;
-import com.example.bookshop.dto.response.GetStatusOrderResponse;
 import com.example.bookshop.entity.enums.OrderStatus;
 import com.example.bookshop.exception.ElementNotFoundException;
 import com.example.bookshop.exception.ParamInvalidException;
@@ -44,7 +44,9 @@ public class OrderManagementServiceImpl implements OrderManagementService {
         Cart cart = cartRepository
                 .getCartByUserUserId(userId)
                 .orElseThrow(() -> new ParamInvalidException("Rỏ hàng chưa được tạo"));
-
+        bookRepository
+                .findById(bookId)
+                .orElseThrow(() -> new ElementNotFoundException("Book id"));
         if (quantity == 0) {
             cartDetailRepository.deteleByCartIdAndBookId(bookId, cart.getCartId());
         } else {
@@ -81,7 +83,7 @@ public class OrderManagementServiceImpl implements OrderManagementService {
             }
 
             return CreateOrderResponse.builder()
-                    .totalAmount(total)
+                    .totalCost(total)
                     .orderId(order.getOrderId())
                     .build();
         } catch (Exception e) {
@@ -116,7 +118,33 @@ public class OrderManagementServiceImpl implements OrderManagementService {
         Long userId = userService.getUserId();
         ArrayList<Long> orderIds = orderRepository.getOrderIdsByUserId(userId);
         ArrayList<Long> bookIds = orderDetailRepository.getBookIdsByOrderIds(orderIds);
-        ArrayList<Book> books = bookRepository.getBooksByBookIdIn(bookIds);
-        return GetAllBookPurchasedResponse.builder().books(books).build();
+        ArrayList<GetBookDetailResponse> bookDetails = bookService.getBookDetails(bookIds);
+
+        return GetAllBookPurchasedResponse
+                .builder()
+                .books(BookSummary.mappingFromBookDetails(bookDetails))
+                .build();
+    }
+
+    public GetOrderCostResponse getOrderCost(GetOrderCostRequest request) throws ResponseStatusException {
+        return GetOrderCostResponse.builder().totalCost(bookService.calcCost(request.getBookQuantities())).build();
+    }
+
+    public GetCartDetailResponse getCartDetail() throws ResponseStatusException {
+        Long userId = userService.getUserId();
+        Cart cart = cartRepository
+                .getCartByUserUserId(userId)
+                .orElseThrow(() -> new ParamInvalidException("Rỏ hàng chưa được tạo"));
+        ArrayList<CartDetail> cartDetails = cartDetailRepository.getCartDetailsByCart(cart);
+        ArrayList<BookQuantity> bookQuantities = new ArrayList<>();
+        for (CartDetail cartDetail : cartDetails) {
+            bookQuantities.add(BookQuantity.builder()
+                    .bookId(cartDetail.getBook().getBookId())
+                    .quantity(cartDetail.getQuantity())
+                    .build());
+        }
+        return GetCartDetailResponse.builder()
+                .bookQuantities(bookQuantities)
+                .build();
     }
 }

@@ -15,8 +15,8 @@ function App() {
       <div className="App">
         <AppRoutes />
       </div>
-      <Footer />*/}
-      {<Admin /> }
+      <Footer />
+     {/*  <Admin /> */}
     </BrowserRouter>
   );
 }

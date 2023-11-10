@@ -1,12 +1,8 @@
 package com.example.bookshop.controller;
 
-import com.example.bookshop.dto.request.CreateOrderRequest;
-import com.example.bookshop.dto.request.GetStatusOrderRequest;
-import com.example.bookshop.dto.request.UpdateCartRequest;
-import com.example.bookshop.dto.request.UpdateStatusOrderRequest;
+import com.example.bookshop.dto.request.*;
 import com.example.bookshop.service.OrderManagementService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -55,5 +51,17 @@ public class OrderManagementController {
     @GetMapping("book/purchased")
     public ResponseEntity<?> GetAllBookPurchased() throws ResponseStatusException {
         return ResponseEntity.ok(orderManagementService.getAllBookPurchased());
+    }
+
+    @GetMapping("orders/cost")
+    public ResponseEntity<?> GetOrdersCost(
+            @RequestBody GetOrderCostRequest request
+    ) throws ResponseStatusException {
+        return ResponseEntity.ok(orderManagementService.getOrderCost(request));
+    }
+
+    @GetMapping("cartdetail")
+    public ResponseEntity<?> GetCartDetail() throws ResponseStatusException {
+        return ResponseEntity.ok(orderManagementService.getCartDetail());
     }
 }

@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CreateOrderResponse {
     private Long orderId;
-    private Long totalAmount;
+    private Long totalCost;
 }

@@ -1,3 +1,22 @@
-.book-card {
-    margin-bottom: 20px;
+.earth-store {
+    display: flex;
+    flex-direction: column;
+    /* Thêm các styles khác nếu cần */
 }
+
+header {
+    /* Thêm styles cho phần tiêu đề */
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+}
+
+.nav-left, .nav-center, .nav-right {
+    display: flex;
+    align-items: center;
+}
+
+/* Thêm styles cho nội dung chính, thanh bên, thẻ sản phẩm, v.v. */
+

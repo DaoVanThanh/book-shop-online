@@ -9,9 +9,11 @@ import {
     MDBCard,
     MDBCardBody,
     MDBInput,
+    MDBCheckbox,
+    MDBIcon
 }
     from 'mdb-react-ui-kit';
-import "./styleRegister.css"
+import {Button} from "react-bootstrap"
 function Register() {
     const navigate = useNavigate();
 
@@ -76,12 +78,12 @@ function Register() {
                 const token = response.data.token;
                 localStorage.setItem("token", token);
                 setToken(token);
-                alert("Đăng kí tài khoản thành công");
+              //  alert("Đăng kí tài khoản thành công");
                 navigate("/login");
             })
             .catch((error) => {
                 console.error("Đăng kí tài khoản không thành công", error);
-                alert("Đăng kí tài khoản không thành công");
+             //   alert("Đăng kí tài khoản không thành công");
             });
     };
     return (
@@ -114,17 +116,22 @@ function Register() {
                     <MDBCard className='my-5 bg-glass'>
                         <MDBCardBody className='p-5'>
 
-                            <MDBInput wrapperClass='mb-4' id='form1' type='text' placeholder="Tên của bạn" value={fullName} onChange={handleFullNameChange}/>
-                            <MDBInput wrapperClass='mb-4' id='form2' type='text' placeholder="Địa chỉ" value={address} onChange={handleAddressChange}/>
+                            <MDBInput wrapperClass='mb-4' id='form3' type='text' placeholder="Tên của bạn" value={fullName} onChange={handleFullNameChange}/>
+                            <MDBInput wrapperClass='mb-4' id='form3' type='text' placeholder="Địa chỉ" value={address} onChange={handleAddressChange}/>
                             <MDBInput wrapperClass='mb-4' id='form3' type='number' placeholder="Số điện thoại" value={phoneNumber} onChange={handlePhoneChange}/>
-                            <MDBInput wrapperClass='mb-4' id='form4' type='text' placeholder="Tên tài khoản" value={username} onChange={handleUsernameChange}/>
-                            <MDBInput wrapperClass='mb-4' id='form5' type='password' placeholder="Mật khẩu" value={password} onChange={handlePasswordChange}/>
+                            <MDBInput wrapperClass='mb-4' id='form3' type='text' placeholder="Tên tài khoản" value={username} onChange={handleUsernameChange}/>
+                            <MDBInput wrapperClass='mb-4' id='form3' type='password' placeholder="Mật khẩu" value={password} onChange={handlePasswordChange}/>
                             {passwordError && <div style={{ color: 'red' }}>{passwordError}</div>}
 
-                            <MDBInput wrapperClass='mb-4' id='form6' type='password' placeholder="Nhập lại mật khẩu" value={confirmPassword} onChange={handleConfirmPasswordChange}/>
+                            <MDBInput wrapperClass='mb-4' id='form3' type='password' placeholder="Nhập lại mật khẩu" value={confirmPassword} onChange={handleConfirmPasswordChange}/>
                             {confirmPasswordError && <div style={{ color: 'red' }}>{confirmPasswordError}</div>}
 
-                            <MDBBtn className='w-100 mb-4' size='md' onClick={handleRegister}>Đăng kí</MDBBtn>
+
+                            <div className='d-flex justify-content-center mb-4'>
+                                <MDBCheckbox name='flexCheck' value='' id='flexCheckDefault' label='Tôi đồng ý với các điều khoản của cửa hàng' />
+                            </div>
+
+                            <Button className='w-100 mb-4' size='md' onClick={handleRegister}>Đăng kí</Button>
 
                             <div className="text-center">
                                 <p>Bạn đã có tài khoản?</p>

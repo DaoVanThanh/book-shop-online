@@ -11,6 +11,7 @@ import {
     from 'mdb-react-ui-kit';
 
 import './styleLogin.css';
+import {Button} from "react-bootstrap"
 
 import axios from 'axios';
 import {Link, useNavigate} from "react-router-dom";
@@ -21,6 +22,7 @@ function Login() {
     const [password, setPassword] = useState('');
     const [loggedIn, setLoggedIn] = useState(false);
     const [loginError, setLoginError] = useState(null);
+    const [alertLogin, setAlertLogin] = useState(null);
 
     const handleUsernameChange = (event) => {
         setUsername(event.target.value);
@@ -96,7 +98,7 @@ function Login() {
 
                             <MDBInput wrapperClass='mb-4' id='form4' type='password' placeholder="Mật khẩu" value={password} onChange={handlePasswordChange}/>
 
-                            <MDBBtn className='w-100 mb-4' size='md' onClick={handleLogin}>Đăng nhập</MDBBtn>
+                            <Button className='w-100 mb-4' size='md' onClick={handleLogin}>Đăng nhập</Button>
 
                             <div className="text-center">
                                 <p>Bạn chưa có tài khoản?</p>

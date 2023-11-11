@@ -1,32 +1,28 @@
 import React from "react";
 import { Row, Col, Tab, Nav } from "react-bootstrap";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, NavLink } from "react-router-dom";
 import "./InfoManagement.css";
 
 const InfoManagement = () => {
-  const navigate = useNavigate();
-  const handleSelectItem = (eventKey) => {
-    navigate(eventKey);
-  };
   return (
     <Tab.Container id="left-tabs-example">
       <Row>
         <Col sm={2}>
-          <Nav
-            variant="pills"
-            className="flex-column"
-            onSelect={(eventKey) => {
-              handleSelectItem(eventKey);
-            }}
-          >
+          <Nav variant="pills" className="flex-column">
             <Nav.Item>
-              <Nav.Link eventKey="/user/account">Quản lý tài khoản</Nav.Link>
+              <Nav.Link as={NavLink} to="/user/account">
+                Quản lý tài khoản
+              </Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link eventKey="/user/order">Đơn hàng của tôi</Nav.Link>
+              <Nav.Link as={NavLink} to="/user/order">
+                Đơn hàng của tôi
+              </Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link eventKey="/user/changePassword">Đổi mật khẩu</Nav.Link>
+              <Nav.Link as={NavLink} to="/user/changePassword">
+                Đổi mật khẩu
+              </Nav.Link>
             </Nav.Item>
           </Nav>
         </Col>

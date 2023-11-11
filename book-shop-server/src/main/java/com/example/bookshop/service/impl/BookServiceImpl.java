@@ -5,6 +5,7 @@ import com.example.bookshop.dto.BookSummary;
 import com.example.bookshop.dto.request.GetUserReviewRequest;
 import com.example.bookshop.dto.request.ReviewBookRequest;
 import com.example.bookshop.dto.request.GetListBookByPriceRequest;
+import com.example.bookshop.dto.request.GetListBookBySearchRequest;
 import com.example.bookshop.dto.response.GetBookDetailResponse;
 import com.example.bookshop.dto.BookQuantity;
 import com.example.bookshop.dto.request.GetListBookByGenreRequest;
@@ -19,7 +20,6 @@ import com.example.bookshop.repository.*;
 import com.example.bookshop.service.BookService;
 import com.example.bookshop.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -173,12 +173,27 @@ public class BookServiceImpl implements BookService {
                         request.getMinPrice(),
                         request.getMaxPrice(),
                         request.getSize(),
-                        request.getSize() * request.getPage()
+                        request.getSize() * (request.getPage() - 1)
                 )
                 .orElseThrow(() -> new ParamInvalidException("Page này không tồn tại"));
         response.setListBook(getListBookByListBookId(listBookId));
         return response;
     }
 
-
+    public GetListBookResponse getListBookBySearch(GetListBookBySearchRequest request) throws ResponseStatusException {
+        ValidatePageSize(request.getPage(), request.getSize());
+        if(request.getKey() == null || request.getKey().isEmpty()) {
+            throw new ParamInvalidException("key không hợp lệ");
+        }
+        GetListBookResponse response = new GetListBookResponse();
+        ArrayList<Long> listBookId = bookRepository
+                .getListBookIdBySearch(
+                        request.getKey(),
+                        request.getSize(),
+                        request.getSize() * (request.getPage() - 1)
+                )
+                .orElseThrow(() -> new ParamInvalidException("Page này không tồn tại"));
+        response.setListBook(getListBookByListBookId(listBookId));
+        return response;
+    }
 }

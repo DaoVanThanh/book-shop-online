@@ -1,10 +1,12 @@
 package com.example.bookshop.controller;
 
+import com.example.bookshop.dto.request.GetBookDetailRequest;
+import com.example.bookshop.dto.request.GetListBookByGenreRequest;
+import com.example.bookshop.dto.request.GetListBookByPriceRequest;
+import com.example.bookshop.dto.request.GetListBookBySearchRequest;
 import com.example.bookshop.dto.request.*;
 import com.example.bookshop.service.BookService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -51,10 +53,10 @@ public class BookController {
         return ResponseEntity.ok(bookService.getListBookByPrice(request));
     }
 
-    /*
-    @GetMapping("/search/{name}")
-    public List<Book> getListBookSearch(@PathVariable String name) {
-        return null;
+    @GetMapping("/search")
+    public ResponseEntity<?> getListBookBySearch(
+            @RequestBody GetListBookBySearchRequest request
+    ) throws ResponseStatusException {
+        return ResponseEntity.ok(bookService.getListBookBySearch(request));
     }
-    */
 }

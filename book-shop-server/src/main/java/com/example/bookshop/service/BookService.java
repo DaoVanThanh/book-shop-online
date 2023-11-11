@@ -3,6 +3,7 @@ package com.example.bookshop.service;
 import com.example.bookshop.dto.request.GetUserReviewRequest;
 import com.example.bookshop.dto.request.ReviewBookRequest;
 import com.example.bookshop.dto.request.GetListBookByPriceRequest;
+import com.example.bookshop.dto.request.GetListBookBySearchRequest;
 import com.example.bookshop.dto.response.GetBookDetailResponse;
 import com.example.bookshop.dto.BookQuantity;
 import com.example.bookshop.dto.request.GetListBookByGenreRequest;
@@ -30,4 +31,6 @@ public interface BookService {
     GetListBookResponse getListBookByGenre(GetListBookByGenreRequest request) throws ResponseStatusException;
 
     GetListBookResponse getListBookByPrice(GetListBookByPriceRequest request) throws ResponseStatusException;
+
+    GetListBookResponse getListBookBySearch(GetListBookBySearchRequest request) throws ResponseStatusException;
 }

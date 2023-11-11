@@ -1,9 +1,6 @@
 package com.example.bookshop.repository;
 
 import com.example.bookshop.entity.Book;
-import com.example.bookshop.entity.Order;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -34,18 +31,6 @@ public interface BookRepository extends JpaRepository<Book, Long>  {
 
     @Modifying
     @Query(
-            value = "SELECT * " +
-                    "FROM books " +
-                    "where book_id = :book_id",
-            nativeQuery = true
-    )
-    @Transactional
-    Optional<Book> getBookDetail(
-            @Param("book_id") Long bookId
-    );
-
-    @Modifying
-    @Query(
             value = "SELECT bg.book_id " +
                     "FROM book_genre bg " +
                     "WHERE bg.genre_id = :genre_id " +
@@ -71,6 +56,24 @@ public interface BookRepository extends JpaRepository<Book, Long>  {
     Optional<ArrayList<Long>> getListBookIdByPrice(
             @Param("min_Price") Long minPrice,
             @Param("max_Price") Long maxPrice,
+            @Param("size") Long size,
+            @Param("offset") Long offset
+    );
+
+    @Modifying
+    @Query(
+            value = "SELECT DISTINCT(b.book_id) " +
+                    "FROM books AS b " +
+                    "JOIN book_author AS ba ON b.book_id = ba.book_id " +
+                    "JOIN authors AS a ON ba.author_id = a.author_id " +
+                    "WHERE b.title COLLATE utf8mb4_unicode_520_ci LIKE CONCAT('%',:key,'%') " +
+                    "OR a.author_name COLLATE utf8mb4_unicode_520_ci LIKE CONCAT('%', :key, '%') " +
+                    "LIMIT :size OFFSET :offset",
+            nativeQuery = true
+    )
+    @Transactional
+    Optional<ArrayList<Long>> getListBookIdBySearch(
+            @Param("key") String key,
             @Param("size") Long size,
             @Param("offset") Long offset
     );

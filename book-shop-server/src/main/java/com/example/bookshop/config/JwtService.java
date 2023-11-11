@@ -1,5 +1,6 @@
 package com.example.bookshop.config;
 
+import com.example.bookshop.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -37,11 +38,18 @@ public class JwtService {
     }
 
     public String createToken(Map<String, Object> extraClaims, UserDetails userDetails, long expiration) {
+        User user = (User) userDetails; // Cast UserDetails thành lớp User để lấy thông tin
+
+        // Thêm các thông tin cần thiết từ đối tượng User vào claims
+        extraClaims.put("userId", user.getUserId());
+        extraClaims.put("fullName", user.getFullName());
+        extraClaims.put("address", user.getAddress());
+        extraClaims.put("phoneNumber", user.getPhoneNumber());
+        extraClaims.put("role", user.getRole());
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
-                .claim("authorities", userDetails.getAuthorities())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256).compact();

@@ -1,39 +1,26 @@
 import React from "react";
 import { Row, Col, Tab, Nav } from "react-bootstrap";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, NavLink } from "react-router-dom";
 import "./InfoManagement.css";
 
 const InfoManagement = () => {
-  const navigate = useNavigate();
   return (
     <Tab.Container id="left-tabs-example">
       <Row>
         <Col sm={2}>
           <Nav variant="pills" className="flex-column">
             <Nav.Item>
-              <Nav.Link
-                onClick={() => {
-                  navigate("/user/account");
-                }}
-              >
+              <Nav.Link as={NavLink} to="/user/account">
                 Quản lý tài khoản
               </Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link
-                onClick={() => {
-                  navigate("/user/order");
-                }}
-              >
+              <Nav.Link as={NavLink} to="/user/order">
                 Đơn hàng của tôi
               </Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link
-                onClick={() => {
-                  navigate("/user/changePassword");
-                }}
-              >
+              <Nav.Link as={NavLink} to="/user/changePassword">
                 Đổi mật khẩu
               </Nav.Link>
             </Nav.Item>

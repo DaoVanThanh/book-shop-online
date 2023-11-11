@@ -1,0 +1,7 @@
+/* Sidebar container */
+.sidebar-ad {
+  width: 250px; /* Độ rộng của sidebar */
+  background-color: #fff; /* Màu nền của sidebar */
+  color: #000; /* Màu chữ trong sidebar */
+  padding: 20px; /* Khoảng cách giữa nội dung và các cạnh của sidebar */
+}

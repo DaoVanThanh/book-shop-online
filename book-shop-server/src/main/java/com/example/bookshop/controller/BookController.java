@@ -1,7 +1,6 @@
 package com.example.bookshop.controller;
 
-import com.example.bookshop.dto.request.GetBookDetailRequest;
-import com.example.bookshop.dto.request.GetListBookByGenreRequest;
+import com.example.bookshop.dto.request.*;
 import com.example.bookshop.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +27,28 @@ public class BookController {
             @RequestBody GetListBookByGenreRequest request
     ) throws ResponseStatusException {
         return ResponseEntity.ok(bookService.getListBookByGenre(request));
+    }
+
+    @PostMapping("/review")
+    public ResponseEntity<?> reviewBook(
+            @RequestBody ReviewBookRequest request
+    ) throws ResponseStatusException {
+        bookService.reviewBook(request);
+        return ResponseEntity.ok("Review successfully!");
+    }
+
+    @GetMapping("/get/user/review")
+    public ResponseEntity<?> getUserReview(
+            @RequestBody GetUserReviewRequest request
+    ) throws ResponseStatusException {
+        return ResponseEntity.ok(bookService.getUserReview(request));
+    }
+
+    @GetMapping("/price")
+    public ResponseEntity<?> getListBookByPrice(
+            @RequestBody GetListBookByPriceRequest request
+    ) throws ResponseStatusException {
+        return ResponseEntity.ok(bookService.getListBookByPrice(request));
     }
 
     /*

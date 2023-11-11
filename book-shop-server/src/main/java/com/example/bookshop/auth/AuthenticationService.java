@@ -1,14 +1,17 @@
 package com.example.bookshop.auth;
 
 import com.example.bookshop.config.JwtService;
+import com.example.bookshop.entity.Cart;
 import com.example.bookshop.entity.enums.Role;
 import com.example.bookshop.entity.User;
+import com.example.bookshop.repository.CartRepository;
 import com.example.bookshop.repository.UserRepository;
 import com.example.bookshop.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +19,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthenticationService {
     private final UserRepository userRepository;
+    private final CartRepository cartRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final CustomUserDetailsService customUserDetailsService;
@@ -28,9 +32,12 @@ public class AuthenticationService {
                 .phoneNumber(request.getPhoneNumber())
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.USER)
+                .role(Role.ROLE_USER)
                 .build();
         userRepository.save(user);
+        Cart cart = new Cart();
+        cart.setUser(user);
+        cartRepository.save(cart);
     }
 
     public AuthenticationRespone authenticate(AuthenticationResquest request) {
@@ -41,7 +48,7 @@ public class AuthenticationService {
                 )
         );
         var user = userRepository.findByUsername(request.getUsername())
-                .orElseThrow();
+                .orElseThrow(() -> new UsernameNotFoundException("Invalid user request"));
         var accessToken = jwtService.generateToken(user);
         return AuthenticationRespone.builder()
                 .accessToken(accessToken)

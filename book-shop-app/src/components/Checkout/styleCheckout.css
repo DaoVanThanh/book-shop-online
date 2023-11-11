@@ -278,3 +278,8 @@ input.billing-address {
 .mb-20 {
     margin-bottom: 20px;
 }
+.modal-header-custom {
+    background-color: #196142;
+    color: #fff;
+    text-align: center;
+}

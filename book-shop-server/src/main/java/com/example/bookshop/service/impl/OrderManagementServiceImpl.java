@@ -2,7 +2,9 @@ package com.example.bookshop.service.impl;
 
 
 import com.example.bookshop.dto.BookQuantity;
+import com.example.bookshop.dto.BookQuantitySummary;
 import com.example.bookshop.dto.BookSummary;
+import com.example.bookshop.dto.OrderSummary;
 import com.example.bookshop.dto.request.GetOrderCostRequest;
 import com.example.bookshop.dto.response.*;
 import com.example.bookshop.entity.*;
@@ -145,6 +147,40 @@ public class OrderManagementServiceImpl implements OrderManagementService {
         }
         return GetCartDetailResponse.builder()
                 .bookQuantities(bookQuantities)
+                .build();
+    }
+
+    public GetAllOrdersResponse getAllOrders() throws ResponseStatusException {
+        Long userId = userService.getUserId();
+        ArrayList<Order> orders = orderRepository.getOrdersByUserUserId(userId);
+        ArrayList<OrderSummary> orderSummaries = new ArrayList<>();
+        for (Order order : orders) {
+            ArrayList<OrderDetail> orderDetails = orderDetailRepository.getOrderDetailsByOrder(order);
+            ArrayList<BookQuantitySummary> bookQuantitySummaries = new ArrayList<>();
+            for (OrderDetail orderDetail : orderDetails) {
+                GetBookDetailResponse bookDetail = bookService.getBookDetail(orderDetail.getBook().getBookId());
+                BookSummary bookSummary = new BookSummary();
+                bookSummary.mapping(bookDetail);
+                bookQuantitySummaries.add(BookQuantitySummary
+                                .builder()
+                                .bookSummary(bookSummary)
+                                .quantity(orderDetail.getQuantity())
+                                .build()
+                );
+            }
+            orderSummaries.add(OrderSummary
+                    .builder()
+                    .orderId(order.getOrderId())
+                    .orderDate(order.getOrderDate())
+                    .deliveryAddress(order.getDeliveryAddress())
+                    .totalAmount(order.getTotalAmount())
+                    .status(order.getStatus())
+                    .bookQuantitySummaries(bookQuantitySummaries)
+                    .build());
+        }
+        return GetAllOrdersResponse
+                .builder()
+                .orderSummaries(orderSummaries)
                 .build();
     }
 }

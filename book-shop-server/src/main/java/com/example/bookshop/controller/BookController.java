@@ -59,4 +59,11 @@ public class BookController {
     ) throws ResponseStatusException {
         return ResponseEntity.ok(bookService.getListBookBySearch(request));
     }
+
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllBook(
+            @RequestBody GetAllBookRequest request
+    ) throws ResponseStatusException {
+        return ResponseEntity.ok(bookService.getAllBook(request));
+    }
 }

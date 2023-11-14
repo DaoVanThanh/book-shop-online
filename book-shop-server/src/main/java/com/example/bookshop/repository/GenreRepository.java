@@ -9,11 +9,16 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Repository
 public interface GenreRepository extends JpaRepository<Genre, Long> {
 
-    Boolean existsGenreByGenreId(Long genreId);
+    Boolean existsByGenreId(Long genreId);
+
+    Boolean existsByGenreName(String genreName);
+
+    Optional<Genre> findByGenreName(String genreName);
 
     @Modifying
     @Query(

@@ -16,6 +16,10 @@ public interface BookRepository extends JpaRepository<Book, Long>  {
     @Override
     Optional<Book> findById(Long bookId);
 
+    Boolean existsByTitle(String title);
+
+    Optional<Book> findBookByTitle(String title);
+
     @Modifying
     @Query(
             value = "update books " +
@@ -74,6 +78,20 @@ public interface BookRepository extends JpaRepository<Book, Long>  {
     @Transactional
     Optional<ArrayList<Long>> getListBookIdBySearch(
             @Param("key") String key,
+            @Param("size") Long size,
+            @Param("offset") Long offset
+    );
+
+    @Modifying
+    @Query(
+            value = "SELECT DISTINCT(b.book_id) " +
+                    "FROM books AS b " +
+                    "ORDER BY b.publication_date DESC " +
+                    "LIMIT :size OFFSET :offset",
+            nativeQuery = true
+    )
+    @Transactional
+    Optional<ArrayList<Long>> getListBookId(
             @Param("size") Long size,
             @Param("offset") Long offset
     );

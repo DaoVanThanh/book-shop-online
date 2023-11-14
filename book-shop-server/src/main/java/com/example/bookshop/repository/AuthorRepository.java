@@ -13,6 +13,11 @@ import java.util.Optional;
 
 @Repository
 public interface AuthorRepository extends JpaRepository<Author, Long>  {
+
+    Boolean existsByAuthorName(String authorName);
+
+    Optional<Author> findByAuthorName(String authorName);
+
     @Modifying
     @Query(
             value = "SELECT a.* " +

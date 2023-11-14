@@ -16,6 +16,10 @@ public interface BookRepository extends JpaRepository<Book, Long>  {
     @Override
     Optional<Book> findById(Long bookId);
 
+    Boolean existsByTitle(String title);
+
+    Optional<Book> findBookByTitle(String title);
+
     @Modifying
     @Query(
             value = "update books " +

@@ -147,7 +147,7 @@ public class BookServiceImpl implements BookService {
 
     public GetListBookResponse getListBookByGenre(GetListBookByGenreRequest request) throws ResponseStatusException {
         ValidatePageSize(request.getPage(), request.getSize());
-        if(!genreRepository.existsGenreByGenreId(request.getGenreId())) {
+        if(!genreRepository.existsByGenreId(request.getGenreId())) {
             throw new ParamInvalidException("GenreId không tồn tại");
         }
         GetListBookResponse response = new GetListBookResponse();

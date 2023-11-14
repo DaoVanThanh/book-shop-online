@@ -1,12 +1,8 @@
 package com.example.bookshop.service;
 
-import com.example.bookshop.dto.request.GetUserReviewRequest;
-import com.example.bookshop.dto.request.ReviewBookRequest;
-import com.example.bookshop.dto.request.GetListBookByPriceRequest;
-import com.example.bookshop.dto.request.GetListBookBySearchRequest;
+import com.example.bookshop.dto.request.*;
 import com.example.bookshop.dto.response.GetBookDetailResponse;
 import com.example.bookshop.dto.BookQuantity;
-import com.example.bookshop.dto.request.GetListBookByGenreRequest;
 import com.example.bookshop.dto.response.GetListBookResponse;
 import com.example.bookshop.dto.response.GetUserReviewResponse;
 import org.springframework.stereotype.Service;
@@ -33,4 +29,6 @@ public interface BookService {
     GetListBookResponse getListBookByPrice(GetListBookByPriceRequest request) throws ResponseStatusException;
 
     GetListBookResponse getListBookBySearch(GetListBookBySearchRequest request) throws ResponseStatusException;
+
+    GetListBookResponse getAllBook(GetAllBookRequest request) throws ResponseStatusException;
 }

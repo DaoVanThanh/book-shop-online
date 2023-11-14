@@ -81,4 +81,18 @@ public interface BookRepository extends JpaRepository<Book, Long>  {
             @Param("size") Long size,
             @Param("offset") Long offset
     );
+
+    @Modifying
+    @Query(
+            value = "SELECT DISTINCT(b.book_id) " +
+                    "FROM books AS b " +
+                    "ORDER BY b.publication_date DESC " +
+                    "LIMIT :size OFFSET :offset",
+            nativeQuery = true
+    )
+    @Transactional
+    Optional<ArrayList<Long>> getListBookId(
+            @Param("size") Long size,
+            @Param("offset") Long offset
+    );
 }

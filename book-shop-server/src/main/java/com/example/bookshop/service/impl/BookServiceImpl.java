@@ -2,13 +2,9 @@ package com.example.bookshop.service.impl;
 
 import com.example.bookshop.dto.BookReview;
 import com.example.bookshop.dto.BookSummary;
-import com.example.bookshop.dto.request.GetUserReviewRequest;
-import com.example.bookshop.dto.request.ReviewBookRequest;
-import com.example.bookshop.dto.request.GetListBookByPriceRequest;
-import com.example.bookshop.dto.request.GetListBookBySearchRequest;
+import com.example.bookshop.dto.request.*;
 import com.example.bookshop.dto.response.GetBookDetailResponse;
 import com.example.bookshop.dto.BookQuantity;
-import com.example.bookshop.dto.request.GetListBookByGenreRequest;
 import com.example.bookshop.dto.response.GetListBookResponse;
 import com.example.bookshop.dto.response.GetUserReviewResponse;
 import com.example.bookshop.entity.Book;
@@ -25,7 +21,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -196,4 +191,18 @@ public class BookServiceImpl implements BookService {
         response.setListBook(getListBookByListBookId(listBookId));
         return response;
     }
+
+    public GetListBookResponse getAllBook(GetAllBookRequest request) throws ResponseStatusException {
+        ValidatePageSize(request.getPage(), request.getSize());
+        GetListBookResponse response = new GetListBookResponse();
+        ArrayList<Long> listBookId = bookRepository
+                .getListBookId(
+                        request.getSize(),
+                        request.getSize() * (request.getPage() - 1)
+                )
+                .orElseThrow(() -> new ParamInvalidException("Page này không tồn tại"));
+        response.setListBook(getListBookByListBookId(listBookId));
+        return response;
+    }
+
 }

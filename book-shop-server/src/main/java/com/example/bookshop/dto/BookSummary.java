@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 @Data
@@ -20,7 +21,13 @@ public class BookSummary {
 
     private String title;
 
+    private String description;
+
     private Long price;
+
+    private LocalDate publication_date;
+
+    private Integer stockQuantity;
 
     private String imgUrl;
 
@@ -31,7 +38,10 @@ public class BookSummary {
     public void mapping(GetBookDetailResponse book) {
         this.bookId = book.getBookId();
         this.title = book.getTitle();
+        this.description = book.getDescription();
         this.price = book.getPrice();
+        this.publication_date = book.getPublication_date();
+        this.stockQuantity = book.getStockQuantity();
         this.imgUrl = book.getImgUrl();
         this.authors = book.getAuthors();
         this.genres = book.getGenres();

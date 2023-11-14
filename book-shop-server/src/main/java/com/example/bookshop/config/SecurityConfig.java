@@ -44,6 +44,8 @@ public class SecurityConfig {
                         .hasRole("ADMIN")// nhung thang role_admin thi vao dc nhung api /api/admin/**
                         .requestMatchers("/api/user/**")
                         .hasRole("USER")// nhung thang role_user thi vao dc nhung api /api/user/**
+                        .requestMatchers("/api/orm/**")
+                        .permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess

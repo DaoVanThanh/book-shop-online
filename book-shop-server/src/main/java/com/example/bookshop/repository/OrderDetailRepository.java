@@ -1,6 +1,7 @@
 package com.example.bookshop.repository;
 
 import com.example.bookshop.entity.Book;
+import com.example.bookshop.entity.Order;
 import com.example.bookshop.entity.OrderDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -21,4 +22,6 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> 
     ArrayList<Long> getBookIdsByOrderIds(
             @Param("order_ids") ArrayList<Long> orderIds
     );
+
+    ArrayList<OrderDetail> getOrderDetailsByOrder(Order order);
 }

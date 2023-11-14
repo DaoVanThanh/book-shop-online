@@ -16,4 +16,6 @@ public interface OrderManagementService {
     GetAllBookPurchasedResponse getAllBookPurchased() throws ResponseStatusException;
     GetOrderCostResponse getOrderCost(GetOrderCostRequest request) throws ResponseStatusException;
     GetCartDetailResponse getCartDetail() throws ResponseStatusException;
+
+    GetAllOrdersResponse getAllOrders() throws ResponseStatusException;
 }

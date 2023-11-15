@@ -129,8 +129,10 @@ const Cart = () => {
               <h3 className="cart-page-title">Giỏ hàng của bạn</h3>
               <div className="row center-tabl">
                 <div className="col-12">
-                  <div className="table-responsive cart-table-content" >
-
+                  <div className="table-responsive cart-table-content " >
+                      {cartItems.length === 0 ? (
+                          <p>Chưa có sách trong giỏ hàng</p>
+                      ) : (
                     <table>
                       <thead>
                       <tr>
@@ -227,6 +229,7 @@ const Cart = () => {
 
                       </tbody>
                     </table>
+                          )}
                   </div>
                 </div>
               </div>

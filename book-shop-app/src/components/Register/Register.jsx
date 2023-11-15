@@ -26,22 +26,52 @@ function Register() {
     const [token, setToken] = useState("");
     const [passwordError, setPasswordError] = useState("");
     const [confirmPasswordError, setConfirmPasswordError] = useState("");
+    const [fullNameError, setFullNameError] = useState("");
+    const [addressError, setAddressError] = useState("");
+    const [phoneNumberError, setPhoneNumberError] = useState("");
+    const [usernameError, setUsernameError] = useState("");
 
-    const handleUsernameChange = (event) => {
-        setUsername(event.target.value);
+
+    const handleFullNameChange = (event) => {
+        const value = event.target.value;
+        setFullName(value);
+        if (!value) {
+            setFullNameError("Không được để trống thông tin này");
+        } else {
+            setFullNameError("");
+        }
     };
 
     const handleAddressChange = (event) => {
-        setAddress(event.target.value);
+        const value = event.target.value;
+        setAddress(value);
+        if (!value) {
+            setAddressError("Không được để trống thông tin này");
+        } else {
+            setAddressError("");
+        }
     };
 
     const handlePhoneChange = (event) => {
-        setPhoneNumber(event.target.value);
+        const value = event.target.value;
+        setPhoneNumber(value);
+        if (!value) {
+            setPhoneNumberError("Không được để trống thông tin này");
+        } else {
+            setPhoneNumberError("");
+        }
     };
 
-    const handleFullNameChange = (event) => {
-        setFullName(event.target.value);
+    const handleUsernameChange = (event) => {
+        const value = event.target.value;
+        setUsername(value);
+        if (!value) {
+            setUsernameError("Không được để trống thông tin này");
+        } else {
+            setUsernameError("");
+        }
     };
+
 
     const handlePasswordChange = (event) => {
         const password = event.target.value;
@@ -67,8 +97,8 @@ function Register() {
     };
 
     const handleRegister = () => {
-        if (passwordError || confirmPasswordError) {
-            alert("Mật khẩu không hợp lệ !");
+        if (passwordError || confirmPasswordError || fullNameError || addressError || phoneNumberError || usernameError) {
+            alert("Vui lòng điền đầy đủ thông tin và sửa các lỗi trước khi đăng ký!");
             return;
         }
 
@@ -78,12 +108,12 @@ function Register() {
                 const token = response.data.token;
                 localStorage.setItem("token", token);
                 setToken(token);
-              //  alert("Đăng kí tài khoản thành công");
+                alert("Đăng kí tài khoản thành công");
                 navigate("/login");
             })
             .catch((error) => {
                 console.error("Đăng kí tài khoản không thành công", error);
-             //   alert("Đăng kí tài khoản không thành công");
+                alert("Các thông tin nhập không hợp lệ !");
             });
     };
     return (
@@ -116,14 +146,21 @@ function Register() {
                     <MDBCard className='my-5 bg-glass'>
                         <MDBCardBody className='p-5'>
 
-                            <MDBInput wrapperClass='mb-4' id='form3' type='text' placeholder="Tên của bạn" value={fullName} onChange={handleFullNameChange}/>
-                            <MDBInput wrapperClass='mb-4' id='form3' type='text' placeholder="Địa chỉ" value={address} onChange={handleAddressChange}/>
-                            <MDBInput wrapperClass='mb-4' id='form3' type='number' placeholder="Số điện thoại" value={phoneNumber} onChange={handlePhoneChange}/>
-                            <MDBInput wrapperClass='mb-4' id='form3' type='text' placeholder="Tên tài khoản" value={username} onChange={handleUsernameChange}/>
-                            <MDBInput wrapperClass='mb-4' id='form3' type='password' placeholder="Mật khẩu" value={password} onChange={handlePasswordChange}/>
+                            <MDBInput wrapperClass='mb-4' id='fullNameInput' type='text' placeholder="Tên của bạn" value={fullName} onChange={handleFullNameChange}/>
+                            {fullNameError && <div style={{ color: 'red' }}>{fullNameError}</div>}
+
+                            <MDBInput wrapperClass='mb-4' id='addressInput' type='text' placeholder="Địa chỉ" value={address} onChange={handleAddressChange}/>
+                            {addressError && <div style={{ color: 'red' }}>{addressError}</div>}
+
+                            <MDBInput wrapperClass='mb-4' id='phoneInput' type='number' placeholder="Số điện thoại" value={phoneNumber} onChange={handlePhoneChange}/>
+                            {phoneNumberError && <div style={{ color: 'red' }}>{phoneNumberError}</div>}
+
+                            <MDBInput wrapperClass='mb-4' id='usernameInput' type='text' placeholder="Tên tài khoản" value={username} onChange={handleUsernameChange}/>
+                            {usernameError && <div style={{ color: 'red' }}>{usernameError}</div>}
+                            <MDBInput wrapperClass='mb-4' id='passwordInput' type='password' placeholder="Mật khẩu" value={password} onChange={handlePasswordChange}/>
                             {passwordError && <div style={{ color: 'red' }}>{passwordError}</div>}
 
-                            <MDBInput wrapperClass='mb-4' id='form3' type='password' placeholder="Nhập lại mật khẩu" value={confirmPassword} onChange={handleConfirmPasswordChange}/>
+                            <MDBInput wrapperClass='mb-4' id='confirmPasswordInput' type='password' placeholder="Nhập lại mật khẩu" value={confirmPassword} onChange={handleConfirmPasswordChange}/>
                             {confirmPasswordError && <div style={{ color: 'red' }}>{confirmPasswordError}</div>}
 
 

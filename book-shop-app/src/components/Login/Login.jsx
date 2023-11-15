@@ -51,17 +51,19 @@ function Login() {
                             navigate("/");
                         }
                     } else {
-                       // alert("Đăng nhập thất bại");
+                        alert("Tên đăng nhập hoặc mật khẩu không hợp lệ !");
                     }
                 } else {
                     setLoggedIn(false);
                     setLoginError("Tên đăng nhập hoặc mật khẩu không hợp lệ");
+                    alert("Tên đăng nhập hoặc mật khẩu không hợp lệ !");
                 }
             })
             .catch((error) => {
                 console.log(error)
                 setLoggedIn(false);
                 setLoginError("Đăng nhập thất bại");
+                alert("Tên đăng nhập hoặc mật khẩu không hợp lệ !");
             });
     };
     return (

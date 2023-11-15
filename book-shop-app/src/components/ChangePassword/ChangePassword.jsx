@@ -10,7 +10,7 @@ function ChangePassword() {
 
     const handlePasswordChange = async () => {
         if (newPassword  !== confirmPassword) {
-            setError('Mật khẩu mới và xác nhận mật khẩu không trùng khớp. Vui lòng nhập lại.');
+            setError('Mật khẩu xác nhận không trùng khớp. Vui lòng nhập lại.');
         } else if (!isPasswordValid(newPassword)) {
             setError('Mật khẩu không đáp ứng yêu cầu an toàn. Vui lòng thử lại.');
         } else {

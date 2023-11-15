@@ -9,6 +9,8 @@
 .search-bar {
     display: flex;
     align-items: center;
+    margin-bottom: 5px;
+    margin-left: 20px;
 }
 
 .search-bar input[type="text"] {
@@ -76,3 +78,106 @@
     border-radius: 5px;
     height: 200px;
 }
+
+.left-column {
+    width: 30%;
+    float: left;
+    padding: 10px;
+}
+
+.right-column {
+    width: 70%;
+    float: left;
+    padding: 10px;
+}
+
+.sort-options-container {
+    position: relative;
+    display: inline-block;
+}
+
+.sort-button {
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.sort-button:hover {
+    background-color: #45a049;
+}
+
+.sort-options-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border: 1px solid #ccc;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: none;
+    z-index: 1;
+}
+
+.sort-options-list li {
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.sort-options-list li:hover {
+    background-color: #f2f2f2;
+}
+
+.sort-options-container:hover .sort-options-list {
+    display: block;
+}
+
+.view-more-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.view-more-button:hover {
+    background-color: #45a049;
+}
+
+.shop-container {
+    display: flex;
+    background-color: hsl(218, 41%, 15%);
+    background-image: radial-gradient(650px circle at 0% 0%,
+    hsl(218, 41%, 35%) 15%,
+    hsl(218, 41%, 30%) 35%,
+    hsl(218, 41%, 20%) 75%,
+    hsl(218, 41%, 19%) 80%,
+    transparent 100%),
+    radial-gradient(1250px circle at 100% 100%,
+            hsl(218, 41%, 45%) 15%,
+            hsl(218, 41%, 30%) 35%,
+            hsl(218, 41%, 20%) 75%,
+            hsl(218, 41%, 19%) 80%,
+            transparent 100%);
+}
+
+#radius-shape-1 {
+    height: 220px;
+    width: 220px;
+    top: 750px;
+    left: -30px;
+    background: radial-gradient(#44006b, #ad1fff);
+    overflow: hidden;
+}
+

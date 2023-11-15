@@ -1,12 +1,12 @@
 package com.example.bookshop.controller;
 
-import com.example.bookshop.dto.request.GetBookDetailRequest;
 import com.example.bookshop.dto.request.GetListBookByGenreRequest;
 import com.example.bookshop.dto.request.GetListBookByPriceRequest;
 import com.example.bookshop.dto.request.GetListBookBySearchRequest;
 import com.example.bookshop.dto.request.*;
 import com.example.bookshop.service.BookService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -17,11 +17,11 @@ import org.springframework.web.server.ResponseStatusException;
 public class BookController {
     private final BookService bookService;
 
-    @GetMapping("/detail")
+    @GetMapping("/detail/{bookId}")
     public ResponseEntity<?> getBookDetail(
-            @RequestBody GetBookDetailRequest request
+            @PathVariable Long bookId
     ) throws ResponseStatusException {
-        return ResponseEntity.ok(bookService.getBookDetail(request.getBookId()));
+        return ResponseEntity.ok(bookService.getBookDetail(bookId));
     }
 
     @GetMapping("/genre")

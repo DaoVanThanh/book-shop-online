@@ -16,7 +16,7 @@ const Header = () => {
 
   const logout = () => {
     localStorage.clear();
-    navigate("/");
+    window.location.href = "/";
   };
 
   const handleCart = () => {

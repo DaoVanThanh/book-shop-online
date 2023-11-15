@@ -7,8 +7,18 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import Admin from "./adminComponents/Admin";
+import { jwtDecode } from "jwt-decode";
 
 function App() {
+  if (localStorage.getItem("accessToken")) {
+    if (jwtDecode(localStorage.getItem("accessToken")).role === "ROLE_ADMIN") {
+      return (
+        <BrowserRouter>
+          <Admin />
+        </BrowserRouter>
+      );
+    }
+  }
   return (
     <BrowserRouter>
       <Header />
@@ -16,7 +26,6 @@ function App() {
         <AppRoutes />
       </div>
       <Footer />
-      {/*  <Admin /> */}
     </BrowserRouter>
   );
 }

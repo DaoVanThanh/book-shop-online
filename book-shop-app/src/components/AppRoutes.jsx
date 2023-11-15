@@ -13,27 +13,28 @@ import Register from "./Register/Register";
 import InfoManagement from "./InfoManagement/InfoManagement";
 import ChangePassword from "./ChangePassword/ChangePassword";
 import Rate from "./Rate/Rate";
+import NotFound from "./NotFound/NotFound";
 
 function AppRoutes() {
   return (
     <Routes>
-      <Route path="/login" element={<Login/>}/>
-      <Route path="/register" element={<Register/>}/>
-      <Route index element={<Home/>}/>
-      <Route path="/about" element={<About/>}/>
-      <Route path="/shop" element={<Shop/>}/>
-      <Route path="/cart" element={<Cart/>}/>
-      <Route path="/policy" element={<Policy/>}/>
-      <Route path="/checkout" element={<Checkout/>}/>
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route index element={<Home />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/shop" element={<Shop />} />
+      <Route path="/cart" element={<Cart />} />
+      <Route path="/policy" element={<Policy />} />
+      <Route path="/checkout" element={<Checkout />} />
       <Route path="/" element={<InfoManagement />}>
-        <Route path="/user/account" element={<AccountManagement/>}/>
-        <Route path="/user/order" element={<OrderManagement/>}/>
-        <Route path="/user/changePassword" element={<ChangePassword/>}/>
+        <Route path="/user/account" element={<AccountManagement />} />
+        <Route path="/user/order" element={<OrderManagement />} />
+        <Route path="/user/changePassword" element={<ChangePassword />} />
       </Route>
-        <Route path="/rate" element={<Rate/>}/>
+      <Route path="/rate" element={<Rate />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
-
-);
+  );
 }
 
 export default AppRoutes;

@@ -15,6 +15,7 @@ import {Button} from "react-bootstrap"
 
 import axios from 'axios';
 import {Link, useNavigate} from "react-router-dom";
+import { jwtDecode } from 'jwt-decode';
 
 function Login() {
     const navigate = useNavigate();
@@ -44,11 +45,14 @@ function Login() {
                     localStorage.setItem('accessToken', accessToken);
 
                     const storedAccessToken = localStorage.getItem('accessToken');
-
                     if (storedAccessToken) {
                         if (storedAccessToken === response.data.accessToken) {
                            // alert("Đăng nhập thành công");
-                            navigate("/");
+                            if(jwtDecode(storedAccessToken).role == "ROLE_USER") {
+                                window.location.href = "/";
+                            } else if(jwtDecode(storedAccessToken).role == "ROLE_ADMIN") {
+                                window.location.href = "/products"
+                            }
                         }
                     } else {
                         alert("Tên đăng nhập hoặc mật khẩu không hợp lệ !");

@@ -29,9 +29,9 @@ const Sidebar = () => {
         <Nav.Item>
           <Nav.Link eventKey="/statistics">Thống kê</Nav.Link>
         </Nav.Item>
-        <Nav.Item>
+        {/* <Nav.Item>
           <Nav.Link onClick={handleLogout}>Đăng xuất</Nav.Link>
-        </Nav.Item>
+        </Nav.Item> */}
       </Nav>
     </div>
   );

@@ -1,14 +1,20 @@
-import React, {useEffect, useState} from "react";
-import {Button, Col, Container, Form, Row} from "react-bootstrap";
-import { getUserInfo, updateUser } from "../../apiServices/AccountManagementService";
+import React, {useEffect, useState} from 'react';
+import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import {getUserInfo, updateUser} from "../../apiServices/AccountManagementService";
+import {Row} from "react-bootstrap";
 
-function AccountManagement() {
+
+function FormExample() {
+
     const [userData, setUserData] = useState({
         username: "",
         fullName: "",
         phoneNumber: "",
         address: "",
     });
+    const [validated, setValidated] = useState(false);
     const [initialUserData, setInitialUserData] = useState({});
     const [isEditing, setIsEditing] = useState(false);
 
@@ -29,7 +35,6 @@ function AccountManagement() {
             });
     }, []);
 
-
     const handleEditClick = () => {
         setIsEditing(true);
     };
@@ -39,41 +44,42 @@ function AccountManagement() {
         setIsEditing(false);
     };
 
-    const handleSaveClick = () => {
-        if (!userData.fullName || !userData.address || !userData.phoneNumber) {
-            alert("All fields are required.");
-            setUserData(initialUserData);
-            return;
-        }
 
-        // Gọi hàm updateUser từ apiService
-        updateUser(userData)
-            .then((response) => {
-                setInitialUserData(userData);
-                alert("User information updated successfully.");
-            })
-            .catch((error) => {
-                console.error("Error updating user information", error);
-            });
-        setIsEditing(false);
-    }
+    const handleSaveClick = (event) => {
+        if (!userData.fullName || !userData.address || !userData.phoneNumber) {
+            event.preventDefault();
+            event.stopPropagation();
+        } else {
+            // Gọi hàm updateUser từ apiService
+            updateUser(userData)
+                .then((response) => {
+                    setInitialUserData(userData);
+                    alert('User information updated successfully.');
+                })
+                .catch((error) => {
+                    console.error("Error updating user information", error);
+                });
+            setIsEditing(false);
+        }
+        setValidated(true);
+    };
 
     return (
-        <Container>
-            <Row className="mt-5">
-                <Col xs="2" className="d-flex align-items-center font-weight-bold">
-                    Tên đăng nhập
-                </Col>
-                <Col xs="3">
-                    <Form.Control type="text" value={userData.username} disabled={true}/>
-                </Col>
-            </Row>
-            <Row className="mt-2">
-                <Col xs="2" className="d-flex align-items-center font-weight-bold">
-                    Tên người dùng
-                </Col>
-                <Col xs="3">
+        <div className="d-flex justify-content-center" style={{ alignItems: "top" }}>
+            <Form noValidate validated={validated} onSubmit={handleSaveClick} style={{ width: "30%" }}>
+                <Form.Group as={Col} md="20" controlId="validationCustom01">
+                    <Form.Label className="mt-2">Tên đăng nhập</Form.Label>
                     <Form.Control
+                        required
+                        type="text"
+                        value={userData.username} disabled={true}
+                    />
+                </Form.Group>
+
+                <Form.Group as={Col} md="20" controlId="validationCustom02">
+                    <Form.Label className="mt-2">Họ và tên</Form.Label>
+                    <Form.Control
+                        required
                         type="text"
                         value={userData.fullName}
                         disabled={!isEditing}
@@ -81,14 +87,14 @@ function AccountManagement() {
                             setUserData({...userData, fullName: e.target.value})
                         }
                     />
-                </Col>
-            </Row>
-            <Row className="mt-2">
-                <Col xs="2" className="d-flex align-items-center font-weight-bold ">
-                    Số điện thoại
-                </Col>
-                <Col xs="3">
+                    <Form.Control.Feedback type="invalid">
+                        Vui lòng nhập đầy đủ họ và tên.
+                    </Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group as={Col} md="20" controlId="validationCustom02">
+                    <Form.Label className="mt-2">Số điện thoại</Form.Label>
                     <Form.Control
+                        required
                         type="text"
                         value={userData.phoneNumber}
                         disabled={!isEditing}
@@ -96,14 +102,14 @@ function AccountManagement() {
                             setUserData({...userData, phoneNumber: e.target.value})
                         }
                     />
-                </Col>
-            </Row>
-            <Row className="mt-2">
-                <Col xs="2" className="d-flex align-items-center font-weight-bold ">
-                    Địa chỉ
-                </Col>
-                <Col xs="3">
+                    <Form.Control.Feedback type="invalid">
+                        Vui lòng nhập số điện thoại.
+                    </Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group as={Col} md="15" controlId="validationCustom02">
+                    <Form.Label className="mt-2">Địa chỉ</Form.Label>
                     <Form.Control
+                        required
                         type="text"
                         value={userData.address}
                         disabled={!isEditing}
@@ -111,26 +117,34 @@ function AccountManagement() {
                             setUserData({...userData, address: e.target.value})
                         }
                     />
-                </Col>
-            </Row>
-            <Row className="mt-3 mr-3">
-                <Col xs="7">
-                    <Button
-                        variant="success"
-                        onClick={isEditing ? handleSaveClick : handleEditClick}
-                    >
-                        {isEditing ? "Lưu" : "Sửa"}
-                    </Button>
-                    <Button
-                        variant="secondary"
-                        onClick={handleCancelClick}
-                    >
-                        Hủy
-                    </Button>
-                </Col>
-            </Row>
-        </Container>
+                    <Form.Control.Feedback type="invalid">
+                        Vui lòng nhập địa chỉ.
+                    </Form.Control.Feedback>
+                </Form.Group>
+                <Row className="mt-3">
+                    <Col xs={2} md={7}>
+                        <Button
+                            variant="success"
+                            onClick={isEditing ? handleSaveClick : handleEditClick}
+                        >
+                            {isEditing ? "Lưu" : "Sửa"}
+                        </Button>
+                    </Col>
+                    <Col xs={3} md={15} ml={4}>
+                        <Button
+                            variant="secondary"
+                            onClick={handleCancelClick}
+                        >
+                            Hủy
+                        </Button>
+                    </Col>
+                </Row>
+            </Form>
+        </div>
+
     );
 }
 
-export default AccountManagement;
+export default FormExample;
+
+

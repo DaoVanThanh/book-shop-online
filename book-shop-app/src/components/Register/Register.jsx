@@ -36,7 +36,7 @@ function Register() {
         const value = event.target.value;
         setFullName(value);
         if (!value) {
-            setFullNameError("Không được để trống thông tin này");
+            setFullNameError("Vui lòng nhập tên của bạn");
         } else {
             setFullNameError("");
         }
@@ -46,7 +46,7 @@ function Register() {
         const value = event.target.value;
         setAddress(value);
         if (!value) {
-            setAddressError("Không được để trống thông tin này");
+            setAddressError("Vui lòng nhập địa chỉ");
         } else {
             setAddressError("");
         }
@@ -56,7 +56,7 @@ function Register() {
         const value = event.target.value;
         setPhoneNumber(value);
         if (!value) {
-            setPhoneNumberError("Không được để trống thông tin này");
+            setPhoneNumberError("Vui lòng nhập số điện thoại");
         } else {
             setPhoneNumberError("");
         }
@@ -66,7 +66,7 @@ function Register() {
         const value = event.target.value;
         setUsername(value);
         if (!value) {
-            setUsernameError("Không được để trống thông tin này");
+            setUsernameError("Vui lòng nhập tên tài khoản");
         } else {
             setUsernameError("");
         }
@@ -162,11 +162,6 @@ function Register() {
 
                             <MDBInput wrapperClass='mb-4' id='confirmPasswordInput' type='password' placeholder="Nhập lại mật khẩu" value={confirmPassword} onChange={handleConfirmPasswordChange}/>
                             {confirmPasswordError && <div style={{ color: 'red' }}>{confirmPasswordError}</div>}
-
-
-                            <div className='d-flex justify-content-center mb-4'>
-                                <MDBCheckbox name='flexCheck' value='' id='flexCheckDefault' label='Tôi đồng ý với các điều khoản của cửa hàng' />
-                            </div>
 
                             <Button className='w-100 mb-4' size='md' onClick={handleRegister}>Đăng kí</Button>
 

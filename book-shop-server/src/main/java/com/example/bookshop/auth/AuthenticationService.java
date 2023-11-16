@@ -4,6 +4,7 @@ import com.example.bookshop.config.JwtService;
 import com.example.bookshop.entity.Cart;
 import com.example.bookshop.entity.enums.Role;
 import com.example.bookshop.entity.User;
+import com.example.bookshop.exception.ParamInvalidException;
 import com.example.bookshop.repository.CartRepository;
 import com.example.bookshop.repository.UserRepository;
 import com.example.bookshop.service.CustomUserDetailsService;
@@ -41,14 +42,18 @@ public class AuthenticationService {
     }
 
     public AuthenticationRespone authenticate(AuthenticationResquest request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getUsername(),
-                        request.getPassword()
-                )
-        );
         var user = userRepository.findByUsername(request.getUsername())
-                .orElseThrow(() -> new UsernameNotFoundException("Invalid user request"));
+                .orElseThrow(() -> new ParamInvalidException("Tài khoản chưa được đăng kí"));
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.getUsername(),
+                            request.getPassword()
+                    )
+            );
+        } catch (Exception e) {
+            throw new ParamInvalidException("Mật khẩu không chính xác");
+        }
         var accessToken = jwtService.generateToken(user);
         return AuthenticationRespone.builder()
                 .accessToken(accessToken)

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -30,9 +31,9 @@ public class AuthenticationController {
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationRespone> authenticate(
+    public ResponseEntity<?> authenticate(
             @RequestBody AuthenticationResquest request
-    ) {
+    ) throws ResponseStatusException {
         return ResponseEntity.ok(authenticationService.authenticate(request));
     }
 }

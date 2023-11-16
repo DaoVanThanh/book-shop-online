@@ -46,7 +46,7 @@ public class SecurityConfig {
                         .hasRole("USER")// nhung thang role_user thi vao dc nhung api /api/user/**
                         .requestMatchers("/api/orm/**")
                         .permitAll()
-                        .requestMatchers("api/book/**")
+                        .requestMatchers("/api/book/**")
                         .permitAll()
                         .anyRequest().authenticated()
                 )

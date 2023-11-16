@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Form, Tab, Table, Tabs } from 'react-bootstrap';
+import React, {useEffect, useState} from 'react';
+import {Button, Form, Tab, Table, Tabs} from 'react-bootstrap';
+import {getAllOrders} from "../../apiServices/AdminOrmService";
 
 const OrderManagement = () => {
+
     const [orders, setOrders] = useState([]);
     const orderStatuses = ['PENDING', 'ACCEPTED', 'DELIVERING', 'SUCCESS', 'RETURNED', 'CANCELLED'];
-
+    const [allOrders, setAllOrders] = useState({});
+    getAllOrders();
     // Mock data for orders (you can replace this with actual API calls)
     const sampleOrders = [
         {id: 1, status: 'PENDING', details: 'Order details...'},
@@ -30,7 +33,7 @@ const OrderManagement = () => {
     };
 
     const handleEditStatus = (orderId, newStatus) => {
-        const updatedTemporaryStatus = { ...temporaryStatus };
+        const updatedTemporaryStatus = {...temporaryStatus};
         updatedTemporaryStatus[orderId] = newStatus;
         setTemporaryStatus(updatedTemporaryStatus);
     };
@@ -59,14 +62,14 @@ const OrderManagement = () => {
                         <Table striped bordered hover>
                             <thead>
                             <tr>
-                                <th>Order ID</th>
-                                <th>Status</th>
-                                <th>Date</th>
-                                <th>Customer</th>
-                                <th>Address</th>
-                                <th>Phone Number</th>
-                                <th>Quantity</th>
-                                <th>Total Payment</th>
+                                <th>Mã đơn</th>
+                                <th>Ngày đặt hàng</th>
+                                <th>Trạng thái</th>
+                                <th>Tên khách hàng</th>
+                                <th>Tên tài khoản</th>
+                                <th>Số điện thoại</th>
+                                <th>Địa chỉ</th>
+                                <th>Giá trị đơn hàng</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -75,6 +78,7 @@ const OrderManagement = () => {
                                 .map((order) => (
                                     <tr key={order.id}>
                                         <td>{order.id}</td>
+                                        <td>Date</td>
                                         <td>
                                             <Form.Group>
                                                 <Form.Select
@@ -92,11 +96,10 @@ const OrderManagement = () => {
                                                 </Form.Select>
                                             </Form.Group>
                                         </td>
-                                        <td>Date</td>
                                         <td>Tên KH</td>
-                                        <td>Địa chỉ</td>
+                                        <td>TK</td>
                                         <td>SDT</td>
-                                        <td>Số lượng sách</td>
+                                        <td>Địa chỉ</td>
                                         <td>Tổng số tiền</td>
                                     </tr>
                                 ))}

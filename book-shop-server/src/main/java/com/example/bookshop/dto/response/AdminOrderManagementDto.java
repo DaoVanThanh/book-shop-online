@@ -3,14 +3,12 @@ package com.example.bookshop.dto.response;
 import com.example.bookshop.entity.Order;
 import com.example.bookshop.entity.enums.OrderStatus;
 import lombok.Data;
-import org.aspectj.weaver.ast.Or;
 
 import java.util.Date;
-import java.util.Optional;
 
 @Data
 public class AdminOrderManagementDto {
-    Long orderID;
+    Long orderId;
     Date orderDate;
     OrderStatus status;
     Long totalAmount;
@@ -20,7 +18,7 @@ public class AdminOrderManagementDto {
     String userName;
 
     public AdminOrderManagementDto(Order order) {
-        this.orderID = order.getOrderId();
+        this.orderId = order.getOrderId();
         this.orderDate = order.getOrderDate();
         this.status = order.getStatus();
         this.deliveryAddress = order.getDeliveryAddress();

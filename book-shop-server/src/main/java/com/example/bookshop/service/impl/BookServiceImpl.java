@@ -140,65 +140,65 @@ public class BookServiceImpl implements BookService {
         return listBook;
     }
 
-    public GetListBookResponse getListBookByGenre(GetListBookByGenreRequest request) throws ResponseStatusException {
-        ValidatePageSize(request.getPage(), request.getSize());
-        if(!genreRepository.existsByGenreId(request.getGenreId())) {
+    public GetListBookResponse getListBookByGenre(Long genreId, Long page, Long size) throws ResponseStatusException {
+        ValidatePageSize(page, size);
+        if(!genreRepository.existsByGenreId(genreId)) {
             throw new ParamInvalidException("GenreId không tồn tại");
         }
         GetListBookResponse response = new GetListBookResponse();
         ArrayList<Long> listBookId = bookRepository
                 .getListBookIdByGenreId(
-                        request.getGenreId(),
-                        request.getSize(),
-                        request.getSize() * (request.getPage() - 1)
+                        genreId,
+                        size,
+                        size * (page - 1)
                 )
                 .orElseThrow(() -> new ParamInvalidException("Page này không tồn tại"));
         response.setListBook(getListBookByListBookId(listBookId));
         return response;
     }
 
-    public GetListBookResponse getListBookByPrice(GetListBookByPriceRequest request) throws ResponseStatusException {
-        ValidatePageSize(request.getPage(), request.getSize());
-        if(request.getMinPrice() > request.getMaxPrice()) {
+    public GetListBookResponse getListBookByPrice(Long minPrice, Long maxPrice, Long page, Long size) throws ResponseStatusException {
+        ValidatePageSize(page, size);
+        if(minPrice > maxPrice) {
             throw new ParamInvalidException("Khoảng giá trị price không hợp lệ");
         }
         GetListBookResponse response = new GetListBookResponse();
         ArrayList<Long> listBookId = bookRepository
                 .getListBookIdByPrice(
-                        request.getMinPrice(),
-                        request.getMaxPrice(),
-                        request.getSize(),
-                        request.getSize() * (request.getPage() - 1)
+                        minPrice,
+                        maxPrice,
+                        size,
+                        size * (page - 1)
                 )
                 .orElseThrow(() -> new ParamInvalidException("Page này không tồn tại"));
         response.setListBook(getListBookByListBookId(listBookId));
         return response;
     }
 
-    public GetListBookResponse getListBookBySearch(GetListBookBySearchRequest request) throws ResponseStatusException {
-        ValidatePageSize(request.getPage(), request.getSize());
-        if(request.getKey() == null || request.getKey().isEmpty()) {
+    public GetListBookResponse getListBookBySearch(String key, Long page, Long size) throws ResponseStatusException {
+        ValidatePageSize(page, size);
+        if(key == null || key.isEmpty()) {
             throw new ParamInvalidException("key không hợp lệ");
         }
         GetListBookResponse response = new GetListBookResponse();
         ArrayList<Long> listBookId = bookRepository
                 .getListBookIdBySearch(
-                        request.getKey(),
-                        request.getSize(),
-                        request.getSize() * (request.getPage() - 1)
+                        key,
+                        size,
+                        size * (page - 1)
                 )
                 .orElseThrow(() -> new ParamInvalidException("Page này không tồn tại"));
         response.setListBook(getListBookByListBookId(listBookId));
         return response;
     }
 
-    public GetListBookResponse getAllBook(GetAllBookRequest request) throws ResponseStatusException {
-        ValidatePageSize(request.getPage(), request.getSize());
+    public GetListBookResponse getAllBook(Long page, Long size) throws ResponseStatusException {
+        ValidatePageSize(page, size);
         GetListBookResponse response = new GetListBookResponse();
         ArrayList<Long> listBookId = bookRepository
                 .getListBookId(
-                        request.getSize(),
-                        request.getSize() * (request.getPage() - 1)
+                        size,
+                        size * (page - 1)
                 )
                 .orElseThrow(() -> new ParamInvalidException("Page này không tồn tại"));
         response.setListBook(getListBookByListBookId(listBookId));

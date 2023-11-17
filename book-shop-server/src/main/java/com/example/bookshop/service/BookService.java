@@ -24,11 +24,11 @@ public interface BookService {
     void reviewBook(ReviewBookRequest request) throws ResponseStatusException;
 
     GetUserReviewResponse getUserReview(GetUserReviewRequest request) throws  ResponseStatusException;
-    GetListBookResponse getListBookByGenre(GetListBookByGenreRequest request) throws ResponseStatusException;
+    GetListBookResponse getListBookByGenre(Long genreId, Long page, Long size) throws ResponseStatusException;
 
-    GetListBookResponse getListBookByPrice(GetListBookByPriceRequest request) throws ResponseStatusException;
+    GetListBookResponse getListBookByPrice(Long minPrice, Long maxPrice, Long page, Long size) throws ResponseStatusException;
 
-    GetListBookResponse getListBookBySearch(GetListBookBySearchRequest request) throws ResponseStatusException;
+    GetListBookResponse getListBookBySearch(String key, Long page, Long size) throws ResponseStatusException;
 
-    GetListBookResponse getAllBook(GetAllBookRequest request) throws ResponseStatusException;
+    GetListBookResponse getAllBook(Long page, Long size) throws ResponseStatusException;
 }

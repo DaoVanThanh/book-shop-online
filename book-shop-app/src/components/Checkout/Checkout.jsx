@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, {Fragment, useState} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import "./styleCheckout.css";
 import axios from "axios";
 import Modal from 'react-bootstrap/Modal';
@@ -7,14 +7,21 @@ import Button from 'react-bootstrap/Button';
 import 'react-toastify/dist/ReactToastify.css';
 import {ToastContainer,toast} from 'react-toastify'
 import { useNavigate } from "react-router-dom";
+import {getCart, getBookInfo, changeCart} from "../../apiServices/CartService";
+
 const Checkout = () => {
+    const [cartItems, setCartItems] = useState([]);
+    const [totalPrice, setTotalPrice] = useState(0);
+
     const address = "Ha noi";
     const bookId = 1;
     const quantity = 1;
     const accessToken = localStorage.getItem('accessToken');
     const orderData = {
         deliveryAddress: 'Ha Noi',
+
         bookQuantities: [
+
             {
                 bookId: bookId,
                 quantity: quantity
@@ -31,15 +38,81 @@ const Checkout = () => {
         navigate("/shop");
 
     }
+
     const createOrder = () =>
     {
-        axios.post('http://localhost:8080/api/orm/orders/create', orderData, {headers : {'Authorization': 'Bearer '+ accessToken}}).then(()=>{
+        if (cartItems.length === 0) {
+            toast.error("Giỏ hàng của bạn đang trống");
+            return;
+        }
+        const bookQuantities = cartItems.map(item => ({
+            bookId: item.id,
+            quantity: item.quantity,
+
+        }
+        ));
+        cartItems.forEach(item => {
+            changeCart(item.id, 0).then(response => {
+
+            }).catch((error) => {
+                console.log(error)
+            });
+
+        });
+        // Update orderData with the dynamically generated bookQuantities
+        const updatedOrderData = {
+            ...orderData,
+            bookQuantities: bookQuantities,
+        };
+        axios.post('http://localhost:8080/api/orm/orders/create', updatedOrderData, {headers : {'Authorization': 'Bearer '+ accessToken}}).then(()=>{
             handleShow();
+
+
             toast.success("Đặt hàng thành công");
         }).catch((error) => {
             console.error("Error creating order:", error);
         });
     }
+    const cartDetail = () => {
+        getCart()
+            .then((response) => {
+                const bookData = response.data.bookQuantities;
+                const promises = bookData.map((book) =>
+                    getBookInfo(book.bookId)
+                        .then((responseBook) => {
+                            const bookInfo = {
+                                id: book.bookId,
+                                title: responseBook.data.title,
+                                price: responseBook.data.price,
+                                imgUrl: responseBook.data.imgUrl.replace('public/', ''),
+                                quantity: book.quantity,
+                            };
+
+                            return bookInfo;
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        })
+                );
+
+                Promise.all(promises)
+                    .then((bookInfoArray) => {
+                        const totalPrice = bookInfoArray.reduce((total, item) => total + item.price * item.quantity, 0);
+
+                        setCartItems(bookInfoArray);
+                        setTotalPrice(totalPrice);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+    useEffect(() => {
+        cartDetail();
+    }, []);
     return (
         <Fragment>
 
@@ -129,18 +202,23 @@ const Checkout = () => {
                                             </ul>
                                         </div>
                                         <div className="your-order-middle">
-                                            <ul>
+                                            {cartItems.map((item, index) => (
+
+                                                <ul>
 
                                                 <li>
+
                                   <span className="order-middle-left">
-                                    Cây cam ngọt của tôi X 1
+                                    {item.title} X {item.quantity}
                                   </span>{" "}
                                                     <span className="order-price">
-                                   100.000vnđ
+                                                        {item.quantity*item.price}
                                   </span>
                                                 </li>
 
                                             </ul>
+                                            ))}
+
                                         </div>
                                         <div className="your-order-bottom">
                                             <ul>
@@ -152,7 +230,7 @@ const Checkout = () => {
                                             <ul>
                                                 <li className="order-total">Tổng</li>
                                                 <li>
-                                                    100.000vnđ
+                                                    {totalPrice}
                                                 </li>
                                             </ul>
                                         </div>

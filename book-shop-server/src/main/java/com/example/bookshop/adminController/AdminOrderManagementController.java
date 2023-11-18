@@ -45,7 +45,7 @@ public class AdminOrderManagementController {
 
 
     // API cập nhật trạng thái của một đơn hàng dựa trên ID
-    @PutMapping("/update-status")
+    @PutMapping("/updateStatus")
     public ResponseEntity<String> updateOrderStatus(@RequestBody AdminUpdateStatusOrderDto adminUpdateStatusOrderDto) {
         adminOrderManagementService.updateOrderStatus(adminUpdateStatusOrderDto);
         return ResponseEntity.ok("Order status updated successfully");

@@ -1,26 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Form, Tab, Table, Tabs } from 'react-bootstrap';
+import React, {useEffect, useState} from 'react';
+import {Button, Form, Tab, Table, Tabs} from 'react-bootstrap';
+import {getAllOrders,updateStateOrder} from "../../apiServices/AdminApi/AdminOrmService";
 
 const OrderManagement = () => {
+
     const [orders, setOrders] = useState([]);
     const orderStatuses = ['PENDING', 'ACCEPTED', 'DELIVERING', 'SUCCESS', 'RETURNED', 'CANCELLED'];
-
-    // Mock data for orders (you can replace this with actual API calls)
-    const sampleOrders = [
-        {id: 1, status: 'PENDING', details: 'Order details...'},
-        {id: 2, status: 'ACCEPTED', details: 'Order details...'},
-        {id: 3, status: 'SUCCESS', details: 'Order details...'},
-        {id: 4, status: 'RETURNED', details: 'Order details...'},
-        {id: 5, status: 'DELIVERING', details: 'Order details...'},
-        {id: 6, status: 'CANCELLED', details: 'Order details...'},
-        {id: 7, status: 'SUCCESS', details: 'Order details...'},
-        {id: 8, status: 'DELIVERING', details: 'Order details...'},
-        {id: 9, status: 'CANCELLED', details: 'Order details...'},
-        {id: 10, status: 'RETURNED', details: 'Order details...'},
-        {id: 11, status: 'SUCCESS', details: 'Order details...'},
-        {id: 12, status: 'PENDING', details: 'Order details...'},
-        // Thêm dữ liệu mẫu khác ở đây
-    ];
+    useEffect(() => {
+        getAllOrders()
+            .then((response) => {
+                const allOrders = response.data;
+                setOrders(allOrders);
+            })
+            .catch((error) => {
+                console.error("Error fetching account info", error);
+            });
+    }, []);
 
     const [selectedTab, setSelectedTab] = useState(0);
     const [temporaryStatus, setTemporaryStatus] = useState({});
@@ -30,24 +25,31 @@ const OrderManagement = () => {
     };
 
     const handleEditStatus = (orderId, newStatus) => {
-        const updatedTemporaryStatus = { ...temporaryStatus };
+        const updatedTemporaryStatus = {...temporaryStatus};
         updatedTemporaryStatus[orderId] = newStatus;
         setTemporaryStatus(updatedTemporaryStatus);
     };
 
     const handleSaveStatus = () => {
-        // Chuyển đơn hàng sang tab tương ứng với trạng thái mới
         const updatedOrders = orders.map((order) => ({
             ...order,
-            status: temporaryStatus[order.id] || order.status
+            status: temporaryStatus[order.orderId] || order.status
         }));
 
+        updatedOrders.map((order) => {
+            const newState = {
+              orderId:order.orderId,
+              newStatus:order.status
+            };
+            updateStateOrder(newState).then(
+                () => {
+                })})
         setOrders(updatedOrders);
         setTemporaryStatus({});
     };
 
     useEffect(() => {
-        setOrders(sampleOrders);
+        setOrders(orders);
     }, []);
 
     return (
@@ -59,29 +61,30 @@ const OrderManagement = () => {
                         <Table striped bordered hover>
                             <thead>
                             <tr>
-                                <th>Order ID</th>
-                                <th>Status</th>
-                                <th>Date</th>
-                                <th>Customer</th>
-                                <th>Address</th>
-                                <th>Phone Number</th>
-                                <th>Quantity</th>
-                                <th>Total Payment</th>
+                                <th>Mã đơn</th>
+                                <th>Ngày đặt hàng</th>
+                                <th>Trạng thái</th>
+                                <th>Tên khách hàng</th>
+                                <th>Tên tài khoản</th>
+                                <th>Số điện thoại</th>
+                                <th>Địa chỉ</th>
+                                <th>Giá trị đơn hàng</th>
                             </tr>
                             </thead>
                             <tbody>
                             {orders
                                 .filter((order) => order.status === status)
                                 .map((order) => (
-                                    <tr key={order.id}>
-                                        <td>{order.id}</td>
+                                    <tr key={order.orderId}>
+                                        <td>{order.orderId}</td>
+                                        <td>{order.orderDate}</td>
                                         <td>
                                             <Form.Group>
                                                 <Form.Select
                                                     as="select"
-                                                    value={temporaryStatus[order.id] || order.status}
+                                                    value={temporaryStatus[order.orderId] || order.status}
                                                     onChange={(e) =>
-                                                        handleEditStatus(order.id, e.target.value)
+                                                        handleEditStatus(order.orderId, e.target.value)
                                                     }
                                                 >
                                                     {orderStatuses.map((newStatus) => (
@@ -92,12 +95,11 @@ const OrderManagement = () => {
                                                 </Form.Select>
                                             </Form.Group>
                                         </td>
-                                        <td>Date</td>
-                                        <td>Tên KH</td>
-                                        <td>Địa chỉ</td>
-                                        <td>SDT</td>
-                                        <td>Số lượng sách</td>
-                                        <td>Tổng số tiền</td>
+                                        <td>{order.fullName}</td>
+                                        <td>{order.userName}</td>
+                                        <td>{order.phoneNumber}</td>
+                                        <td>{order.deliveryAddress}</td>
+                                        <td>{order.totalAmount}</td>
                                     </tr>
                                 ))}
                             </tbody>

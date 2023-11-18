@@ -6,7 +6,6 @@ import com.example.bookshop.dto.response.AdminOrderManagementDto;
 import com.example.bookshop.entity.Order;
 import com.example.bookshop.entity.enums.OrderStatus;
 import com.example.bookshop.repository.OrderRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +14,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class AdminOrderManagementServiceImpl implements AdminOrderManagementService {
-    private  AdminOrderManagementService adminOrderManagementService;
-    @Autowired
-    private ModelMapper modelMapper;
     @Autowired
     private OrderRepository orderRepository;
 
@@ -28,13 +24,10 @@ public class AdminOrderManagementServiceImpl implements AdminOrderManagementServ
 
     public List<AdminOrderManagementDto> getAllOrders() {
         List<Order> orders = orderRepository.findAll();
-
         return orders.stream()
                 .map(AdminOrderManagementDto::new)
                 .collect(Collectors.toList());
     }
-
-
 
     public void updateOrderStatus(AdminUpdateStatusOrderDto adminUpdateStatusOrderDto) {
         Long orderId = adminUpdateStatusOrderDto.getOrderId();

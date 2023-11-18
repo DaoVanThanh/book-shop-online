@@ -3,13 +3,13 @@ package com.example.bookshop.service;
 import com.example.bookshop.dto.request.*;
 import com.example.bookshop.dto.response.GetBookDetailResponse;
 import com.example.bookshop.dto.BookQuantity;
-import com.example.bookshop.dto.response.GetListBookResponse;
 import com.example.bookshop.dto.response.GetUserReviewResponse;
+import com.example.bookshop.entity.Book;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public interface BookService {
@@ -24,11 +24,11 @@ public interface BookService {
     void reviewBook(ReviewBookRequest request) throws ResponseStatusException;
 
     GetUserReviewResponse getUserReview(GetUserReviewRequest request) throws  ResponseStatusException;
-    GetListBookResponse getListBookByGenre(Long genreId, Long page, Long size) throws ResponseStatusException;
+    Page<Book> getListBookByGenre(Long genreId, Integer page, Integer size) throws ResponseStatusException;
 
-    GetListBookResponse getListBookByPrice(Long minPrice, Long maxPrice, Long page, Long size) throws ResponseStatusException;
+    Page<Book> getListBookByPrice(Long minPrice, Long maxPrice, Integer page, Integer size) throws ResponseStatusException;
 
-    GetListBookResponse getListBookBySearch(String key, Long page, Long size) throws ResponseStatusException;
+    Page<Book> getListBookBySearch(String key, Integer page, Integer size) throws ResponseStatusException;
 
-    GetListBookResponse getAllBook(Long page, Long size) throws ResponseStatusException;
+    Page<Book> getAllBook(Integer page, Integer size) throws ResponseStatusException;
 }

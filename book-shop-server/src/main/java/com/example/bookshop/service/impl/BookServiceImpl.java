@@ -1,11 +1,9 @@
 package com.example.bookshop.service.impl;
 
 import com.example.bookshop.dto.BookReview;
-import com.example.bookshop.dto.BookSummary;
 import com.example.bookshop.dto.request.*;
 import com.example.bookshop.dto.response.GetBookDetailResponse;
 import com.example.bookshop.dto.BookQuantity;
-import com.example.bookshop.dto.response.GetListBookResponse;
 import com.example.bookshop.dto.response.GetUserReviewResponse;
 import com.example.bookshop.entity.Book;
 import com.example.bookshop.entity.Review;
@@ -16,6 +14,9 @@ import com.example.bookshop.repository.*;
 import com.example.bookshop.service.BookService;
 import com.example.bookshop.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -117,8 +118,8 @@ public class BookServiceImpl implements BookService {
                 .build();
     }
 
-    private void ValidatePageSize(Long page, Long size) throws ResponseStatusException {
-        if(page <= 0) {
+    private void ValidatePageSize(Integer page, Integer size) throws ResponseStatusException {
+        if(page < 0) {
             throw new ParamInvalidException("Page không hợp lệ");
         }
         if(size <= 0) {
@@ -126,83 +127,55 @@ public class BookServiceImpl implements BookService {
         }
     }
 
-    private BookSummary getBookSummaryByBookId (Long bookId) throws ResponseStatusException {
-        BookSummary bookSummary = new BookSummary();
-        bookSummary.mapping(getBookDetail(bookId));
-        return bookSummary;
-    }
-
-    private ArrayList<BookSummary> getListBookByListBookId(ArrayList<Long> listBookId) throws ResponseStatusException {
-        ArrayList<BookSummary> listBook = new ArrayList<>();
-        for(Long bookId : listBookId) {
-            listBook.add(getBookSummaryByBookId(bookId));
-        }
-        return listBook;
-    }
-
-    public GetListBookResponse getListBookByGenre(Long genreId, Long page, Long size) throws ResponseStatusException {
+    public Page<Book> getListBookByGenre(Long genreId, Integer page, Integer size) throws ResponseStatusException {
         ValidatePageSize(page, size);
         if(!genreRepository.existsByGenreId(genreId)) {
             throw new ParamInvalidException("GenreId không tồn tại");
         }
-        GetListBookResponse response = new GetListBookResponse();
-        ArrayList<Long> listBookId = bookRepository
-                .getListBookIdByGenreId(
+        Pageable pageable = PageRequest.of(page, size);
+        return bookRepository
+                .findAllByGenreId(
                         genreId,
-                        size,
-                        size * (page - 1)
-                )
-                .orElseThrow(() -> new ParamInvalidException("Page này không tồn tại"));
-        response.setListBook(getListBookByListBookId(listBookId));
-        return response;
+                        pageable
+                );
     }
 
-    public GetListBookResponse getListBookByPrice(Long minPrice, Long maxPrice, Long page, Long size) throws ResponseStatusException {
+    public Page<Book> getListBookByPrice(Long minPrice, Long maxPrice, Integer page, Integer size) throws ResponseStatusException {
         ValidatePageSize(page, size);
         if(minPrice > maxPrice) {
             throw new ParamInvalidException("Khoảng giá trị price không hợp lệ");
         }
-        GetListBookResponse response = new GetListBookResponse();
-        ArrayList<Long> listBookId = bookRepository
-                .getListBookIdByPrice(
+        if(minPrice < 0) {
+            throw new ParamInvalidException("minPrice không được < 0");
+        }
+        Pageable pageable = PageRequest.of(page, size);
+        return bookRepository
+                .findAllByPriceRange(
                         minPrice,
                         maxPrice,
-                        size,
-                        size * (page - 1)
-                )
-                .orElseThrow(() -> new ParamInvalidException("Page này không tồn tại"));
-        response.setListBook(getListBookByListBookId(listBookId));
-        return response;
+                        pageable
+                );
     }
 
-    public GetListBookResponse getListBookBySearch(String key, Long page, Long size) throws ResponseStatusException {
+    public Page<Book> getListBookBySearch(String key, Integer page, Integer size) throws ResponseStatusException {
         ValidatePageSize(page, size);
         if(key == null || key.isEmpty()) {
             throw new ParamInvalidException("key không hợp lệ");
         }
-        GetListBookResponse response = new GetListBookResponse();
-        ArrayList<Long> listBookId = bookRepository
-                .getListBookIdBySearch(
+        Pageable pageable = PageRequest.of(page, size);
+        return bookRepository
+                .findAllBySearchTitle(
                         key,
-                        size,
-                        size * (page - 1)
-                )
-                .orElseThrow(() -> new ParamInvalidException("Page này không tồn tại"));
-        response.setListBook(getListBookByListBookId(listBookId));
-        return response;
+                        pageable
+                );
     }
 
-    public GetListBookResponse getAllBook(Long page, Long size) throws ResponseStatusException {
+    public Page<Book> getAllBook(Integer page, Integer size) throws ResponseStatusException {
         ValidatePageSize(page, size);
-        GetListBookResponse response = new GetListBookResponse();
-        ArrayList<Long> listBookId = bookRepository
-                .getListBookId(
-                        size,
-                        size * (page - 1)
-                )
-                .orElseThrow(() -> new ParamInvalidException("Page này không tồn tại"));
-        response.setListBook(getListBookByListBookId(listBookId));
-        return response;
+        Pageable pageable = PageRequest.of(page, size);
+        return bookRepository
+                .findAll(
+                        pageable
+                );
     }
-
 }

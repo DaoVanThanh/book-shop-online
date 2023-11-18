@@ -1,6 +1,8 @@
 package com.example.bookshop.repository;
 
 import com.example.bookshop.entity.Book;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -18,8 +20,6 @@ public interface BookRepository extends JpaRepository<Book, Long>  {
 
     Boolean existsByTitle(String title);
 
-    Optional<Book> findBookByTitle(String title);
-
     @Modifying
     @Query(
             value = "update books " +
@@ -33,66 +33,42 @@ public interface BookRepository extends JpaRepository<Book, Long>  {
 
     ArrayList<Book> getBooksByBookIdIn(ArrayList<Long> ids);
 
-    @Modifying
     @Query(
-            value = "SELECT bg.book_id " +
-                    "FROM book_genre bg " +
-                    "WHERE bg.genre_id = :genre_id " +
-                    "LIMIT :size OFFSET :offset",
+            value = "SELECT b.* " +
+                    "FROM book_genre AS bg " +
+                    "JOIN books AS b ON b.book_id = bg.book_id " +
+                    "WHERE bg.genre_id = :genre_id",
+            countQuery = "SELECT COUNT(*) " +
+                    "FROM book_genre AS bg " +
+                    "JOIN books AS b ON b.book_id = bg.book_id " +
+                    "WHERE bg.genre_id = :genre_id",
             nativeQuery = true
     )
-    @Transactional
-    Optional<ArrayList<Long>> getListBookIdByGenreId(
+    Page<Book> findAllByGenreId(
             @Param("genre_id") Long genreId,
-            @Param("size") Long size,
-            @Param("offset") Long offset
+            Pageable pageable
     );
 
-    @Modifying
     @Query(
-            value = "SELECT b.book_id " +
+            value = "SELECT * " +
                     "FROM books AS b " +
-                    "WHERE b.price BETWEEN :min_Price AND :max_Price " +
-                    "LIMIT :size OFFSET :offset",
+                    "WHERE b.price BETWEEN :min_price AND :max_price",
             nativeQuery = true
     )
-    @Transactional
-    Optional<ArrayList<Long>> getListBookIdByPrice(
-            @Param("min_Price") Long minPrice,
-            @Param("max_Price") Long maxPrice,
-            @Param("size") Long size,
-            @Param("offset") Long offset
+    Page<Book> findAllByPriceRange(
+            @Param("min_price") Long minPrice,
+            @Param("max_price") Long maxPrice,
+            Pageable pageable
     );
 
-    @Modifying
     @Query(
-            value = "SELECT DISTINCT(b.book_id) " +
+            value = "SELECT * " +
                     "FROM books AS b " +
-                    "JOIN book_author AS ba ON b.book_id = ba.book_id " +
-                    "JOIN authors AS a ON ba.author_id = a.author_id " +
-                    "WHERE b.title COLLATE utf8mb4_unicode_520_ci LIKE CONCAT('%',:key,'%') " +
-                    "OR a.author_name COLLATE utf8mb4_unicode_520_ci LIKE CONCAT('%', :key, '%') " +
-                    "LIMIT :size OFFSET :offset",
+                    "WHERE b.title COLLATE utf8mb4_unicode_520_ci LIKE CONCAT('%',:key,'%')",
             nativeQuery = true
     )
-    @Transactional
-    Optional<ArrayList<Long>> getListBookIdBySearch(
+    Page<Book> findAllBySearchTitle(
             @Param("key") String key,
-            @Param("size") Long size,
-            @Param("offset") Long offset
-    );
-
-    @Modifying
-    @Query(
-            value = "SELECT DISTINCT(b.book_id) " +
-                    "FROM books AS b " +
-                    "ORDER BY b.publication_date DESC " +
-                    "LIMIT :size OFFSET :offset",
-            nativeQuery = true
-    )
-    @Transactional
-    Optional<ArrayList<Long>> getListBookId(
-            @Param("size") Long size,
-            @Param("offset") Long offset
+            Pageable pageable
     );
 }

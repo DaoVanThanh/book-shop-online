@@ -1,12 +1,8 @@
 package com.example.bookshop.controller;
 
-import com.example.bookshop.dto.request.GetListBookByGenreRequest;
-import com.example.bookshop.dto.request.GetListBookByPriceRequest;
-import com.example.bookshop.dto.request.GetListBookBySearchRequest;
 import com.example.bookshop.dto.request.*;
 import com.example.bookshop.service.BookService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -24,11 +20,13 @@ public class BookController {
         return ResponseEntity.ok(bookService.getBookDetail(bookId));
     }
 
-    @GetMapping("/genre")
+    @GetMapping("/genre/{genreId}")
     public ResponseEntity<?> getListBookByGenre(
-            @RequestBody GetListBookByGenreRequest request
+            @PathVariable Long genreId,
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "24") Integer size
     ) throws ResponseStatusException {
-        return ResponseEntity.ok(bookService.getListBookByGenre(request));
+        return ResponseEntity.ok(bookService.getListBookByGenre(genreId, page, size));
     }
 
     @PostMapping("/review")
@@ -48,22 +46,28 @@ public class BookController {
 
     @GetMapping("/price")
     public ResponseEntity<?> getListBookByPrice(
-            @RequestBody GetListBookByPriceRequest request
+            @RequestParam(value = "min_price", defaultValue = "0") Long minPrice,
+            @RequestParam(value = "max_price", defaultValue = "1000000000") Long maxPrice,
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "24") Integer size
     ) throws ResponseStatusException {
-        return ResponseEntity.ok(bookService.getListBookByPrice(request));
+        return ResponseEntity.ok(bookService.getListBookByPrice(minPrice, maxPrice, page, size));
     }
 
     @GetMapping("/search")
     public ResponseEntity<?> getListBookBySearch(
-            @RequestBody GetListBookBySearchRequest request
+            @RequestParam(value = "key") String key,
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "24") Integer size
     ) throws ResponseStatusException {
-        return ResponseEntity.ok(bookService.getListBookBySearch(request));
+        return ResponseEntity.ok(bookService.getListBookBySearch(key, page, size));
     }
 
     @GetMapping("/all")
     public ResponseEntity<?> getAllBook(
-            @RequestBody GetAllBookRequest request
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "24") Integer size
     ) throws ResponseStatusException {
-        return ResponseEntity.ok(bookService.getAllBook(request));
+        return ResponseEntity.ok(bookService.getAllBook(page, size));
     }
 }

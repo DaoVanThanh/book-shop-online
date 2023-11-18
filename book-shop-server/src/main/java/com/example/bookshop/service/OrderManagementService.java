@@ -12,7 +12,7 @@ public interface OrderManagementService {
     GetStatusOrderResponse getStatusOrder(Long orderId) throws ResponseStatusException;
     void updateCart(Long bookId, Integer quantity) throws ResponseStatusException;
     CreateOrderResponse createOrder(String deliveryAddress, ArrayList<BookQuantity> bookQuantities) throws ResponseStatusException;
-    void updateStatusOrder(Long orderId, OrderStatus orderStatus) throws ResponseStatusException;
+    void cancelOrder(Long orderId) throws ResponseStatusException;
     GetAllBookPurchasedResponse getAllBookPurchased() throws ResponseStatusException;
     GetOrderCostResponse getOrderCost(GetOrderCostRequest request) throws ResponseStatusException;
     GetCartDetailResponse getCartDetail() throws ResponseStatusException;

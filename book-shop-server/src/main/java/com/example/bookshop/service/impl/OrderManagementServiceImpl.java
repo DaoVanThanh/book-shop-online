@@ -74,7 +74,7 @@ public class OrderManagementServiceImpl implements OrderManagementService {
                     .build();
 
             orderRepository.save(order);
-            bookService.removeBooksFromWarehouse(bookQuantities);
+            bookService.changeBooksFromWarehouse(bookQuantities);
             for (BookQuantity bookQuantity : bookQuantities) {
                 OrderDetail orderDetail = OrderDetail.builder()
                         .order(order)
@@ -93,26 +93,18 @@ public class OrderManagementServiceImpl implements OrderManagementService {
         }
     }
 
-    public void updateStatusOrder(
-            Long orderId,
-            OrderStatus orderStatus
-    ) throws ResponseStatusException {
-        if (orderStatus == OrderStatus.PENDING) {
-            throw new ParamInvalidException("Không cập nhật trạng thái PENDING");
-        }
+    public void cancelOrder(Long orderId) throws ResponseStatusException {
         Order order = orderRepository
                 .findById(orderId)
                 .orElseThrow(() -> new ElementNotFoundException("order id"));
-        if (orderStatus == OrderStatus.CANCELLED && order.getStatus() != OrderStatus.PENDING) {
-            throw new ParamInvalidException("Không thể hủy đơn hàng đang giao");
+        if (order.getStatus() != OrderStatus.PENDING) {
+            throw new ParamInvalidException("Đơn hàng đã được giao!");
         }
-        if (orderStatus == OrderStatus.DELIVERING && order.getStatus() != OrderStatus.PENDING) {
-            throw new ParamInvalidException("Cập nhật thất bại");
+        order.setStatus(OrderStatus.CANCELLED);
+        ArrayList<OrderDetail> orderDetails = orderDetailRepository.getOrderDetailsByOrder(order);
+        for (OrderDetail orderDetail : orderDetails) {
+            bookRepository.changeBooks(orderDetail.getBook().getBookId(), -orderDetail.getQuantity());
         }
-        if (orderStatus == OrderStatus.SUCCESS && order.getStatus() != OrderStatus.DELIVERING) {
-            throw new ParamInvalidException("Cập nhật thất bại");
-        }
-        order.setStatus(orderStatus);
         orderRepository.save(order);
     }
 

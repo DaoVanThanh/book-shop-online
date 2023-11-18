@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public interface BookService {
     Boolean checkBookQuantity(ArrayList<BookQuantity> bookQuantities) throws ResponseStatusException;
     Long calcCost(ArrayList<BookQuantity> bookQuantities) throws ResponseStatusException;
-    void removeBooksFromWarehouse(ArrayList<BookQuantity> bookQuantities);
+    void changeBooksFromWarehouse(ArrayList<BookQuantity> bookQuantities);
 
     GetBookDetailResponse getBookDetail (Long bookId) throws ResponseStatusException;
 

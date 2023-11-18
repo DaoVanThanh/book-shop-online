@@ -26,7 +26,7 @@ public interface BookRepository extends JpaRepository<Book, Long>  {
                     "set stock_quantity = stock_quantity - :quantity " +
                     "where book_id = :book_id", nativeQuery = true)
     @Transactional
-    void removeBooks(
+    void changeBooks(
             @Param("book_id") Long bookId,
             @Param("quantity") Integer quantity
     );

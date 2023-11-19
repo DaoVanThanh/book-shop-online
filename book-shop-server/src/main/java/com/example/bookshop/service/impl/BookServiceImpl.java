@@ -55,9 +55,9 @@ public class BookServiceImpl implements BookService {
         return res;
     }
 
-    public void removeBooksFromWarehouse(ArrayList<BookQuantity> bookQuantities) {
+    public void changeBooksFromWarehouse(ArrayList<BookQuantity> bookQuantities) {
         for (BookQuantity bookQuantity : bookQuantities) {
-            bookRepository.removeBooks(bookQuantity.getBookId(), bookQuantity.getQuantity());
+            bookRepository.changeBooks(bookQuantity.getBookId(), bookQuantity.getQuantity());
         }
     }
 

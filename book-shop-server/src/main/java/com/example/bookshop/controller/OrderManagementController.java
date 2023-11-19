@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping("/api/orm")
+@RequestMapping("/api/user/orm")
 @RequiredArgsConstructor
 public class OrderManagementController {
     private final OrderManagementService orderManagementService;
@@ -38,14 +38,12 @@ public class OrderManagementController {
                                 request.getBookQuantities()));
     }
 
-    @PutMapping("orders/update/status")
-    public ResponseEntity<?> UpdateStatusOrder(
-            @RequestBody UpdateStatusOrderRequest request
+    @PutMapping("/order/cancel")
+    public ResponseEntity<?> CancelOrder(
+            CancelOrderRequest request
     ) throws ResponseStatusException {
-        orderManagementService.updateStatusOrder(
-                request.getOrderId(),
-                request.getOrderStatus());
-        return ResponseEntity.ok("Update status order successfully");
+        orderManagementService.cancelOrder(request.getOrderId());
+        return ResponseEntity.ok("Cancel order successfully");
     }
 
     @GetMapping("book/purchased")

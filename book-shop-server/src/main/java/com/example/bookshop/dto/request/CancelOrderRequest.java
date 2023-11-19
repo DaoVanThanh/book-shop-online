@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateStatusOrderRequest {
+public class CancelOrderRequest {
     private Long orderId;
     private OrderStatus orderStatus;
 }

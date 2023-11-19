@@ -56,7 +56,7 @@ public class BookController {
 
     @GetMapping("/search")
     public ResponseEntity<?> getListBookBySearch(
-            @RequestParam(value = "key") String key,
+            @RequestParam(value = "key", defaultValue = "") String key,
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "24") Integer size
     ) throws ResponseStatusException {

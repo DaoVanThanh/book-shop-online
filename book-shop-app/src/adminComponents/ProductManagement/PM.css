@@ -1,0 +1,28 @@
+.add-search {
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+  padding: 20px 0;
+}
+
+.admin-add {
+  margin-right: 50%;
+}
+
+th,
+td {
+  vertical-align: middle;
+  text-align: center;
+}
+
+.form-group {
+  display: grid;
+  grid-template-columns: 2fr 8fr;
+  padding: 10px 0;
+}
+
+.form-label {
+  margin: 0;
+  padding: 5px 0;
+  display: flex;
+  align-items: baseline;
+}

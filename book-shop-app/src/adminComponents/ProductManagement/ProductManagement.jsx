@@ -11,16 +11,20 @@ import {
   Image,
   InputGroup,
 } from "react-bootstrap";
+import { MDBIcon } from "mdb-react-ui-kit";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
 import {
   AddBook,
   searchBook,
+  getBookDetail,
 } from "../../apiServices/AdminApi/ProductManagementService";
+import "./PM.css";
 
 const ProductManagement = () => {
-  const [showAdd, setShowAdd] = useState(false);
-  const [showUpdate, setShowUpdate] = useState(false);
+  const ADD = "Thêm";
+  const UPDATE = "Cập nhật";
+  const [showAction, setShowAction] = useState(false);
   const [validated, setValidated] = useState(false);
   const [currentGenre, setCurrentGenre] = useState("");
   const [currentAuthor, setCurrentAuthor] = useState("");
@@ -31,6 +35,18 @@ const ProductManagement = () => {
   const itemsPerPage = 10;
 
   const [searchKey, setSearchKey] = useState("");
+
+  const [action, setAction] = useState("");
+
+  const [newBook, setNewBook] = useState({
+    title: "",
+    genre: [],
+    author: [],
+    publicationDate: new Date(),
+    price: 0,
+    stockQuantity: 0,
+    description: "",
+  });
 
   useEffect(() => {
     const getBooks = async (page, size) => {
@@ -49,19 +65,10 @@ const ProductManagement = () => {
     setCurrentPage(pageNumber);
   };
 
-  const [newBook, setNewBook] = useState({
-    title: "",
-    genre: [],
-    author: [],
-    publicationDate: new Date(),
-    price: 0,
-    stockQuantity: 0,
-    description: "",
-  });
-
-  const handleCloseAdd = () => {
-    setShowAdd(false);
+  const handleClose = () => {
+    setShowAction(false);
     setValidated(false);
+    setAction("");
     clearNewBook();
   };
 
@@ -79,47 +86,57 @@ const ProductManagement = () => {
     setCurrentAuthor("");
   };
 
-  const handleShowAdd = () => setShowAdd(true);
-
-  const handleCloseUpdate = () => {
-    setShowUpdate(false);
-    setValidated(false);
+  const handleShowAdd = () => {
+    setAction(ADD);
+    setShowAction(true);
   };
 
-  const handleShowUpdate = () => setShowUpdate(true);
+  const handleShowUpdate = async (id) => {
+    setAction(UPDATE);
+    setShowAction(true);
+    try {
+      const detail = (await getBookDetail(id)).data;
+      console.log(detail);
+      setNewBook({
+        ...newBook,
+        title: detail.title,
+        description: detail.description,
+        publicationDate: detail.publication_date,
+        price: detail.price,
+        stockQuantity: detail.stockQuantity,
+        author: detail.authors.map((author) => author.authorName),
+        genre: detail.genres.map((genre) => genre.genreName),
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  const handleSubmitAdd = async (event) => {
+  const handleSubmitForm = async (event) => {
     const form = event.currentTarget;
     if (
       form.checkValidity() === true &&
       newBook.genre.length > 0 &&
       newBook.author.length > 0
     ) {
-      try {
-        await AddBook(
-          newBook.title.trim(),
-          newBook.description.trim(),
-          newBook.price,
-          newBook.publicationDate,
-          newBook.stockQuantity,
-          "urlImg",
-          newBook.author,
-          newBook.genre
-        );
-      } catch (error) {
-        console.log(error);
+      if (action == ADD) {
+        try {
+          await AddBook(
+            newBook.title.trim(),
+            newBook.description.trim(),
+            newBook.price,
+            newBook.publicationDate,
+            newBook.stockQuantity,
+            "urlImg",
+            newBook.author,
+            newBook.genre
+          );
+        } catch (error) {
+          console.log(error);
+        }
+      } else if (action == UPDATE) {
+        console.log("update");
       }
-    } else {
-      event.preventDefault();
-      event.stopPropagation();
-      setValidated(true);
-    }
-  };
-
-  const handleSubmitUpdate = (event) => {
-    const form = event.target;
-    if (form.checkValidity() === true) {
-      console.log("ValidUpdate");
     } else {
       event.preventDefault();
       event.stopPropagation();
@@ -129,7 +146,7 @@ const ProductManagement = () => {
 
   const handleTitleAdd = (e) => {
     const title = e.target.value;
-    setNewBook({ ...newBook, title: title});
+    setNewBook({ ...newBook, title: title });
   };
 
   const handleGenre = (e) => {
@@ -155,7 +172,10 @@ const ProductManagement = () => {
   };
 
   const addAuthor = () => {
-    setNewBook({ ...newBook, author: [...newBook.author, currentAuthor.trim()] });
+    setNewBook({
+      ...newBook,
+      author: [...newBook.author, currentAuthor.trim()],
+    });
     setCurrentAuthor("");
   };
 
@@ -198,163 +218,24 @@ const ProductManagement = () => {
 
   return (
     <>
-      <Button variant="success" onClick={handleShowAdd}>
-        Thêm sản phẩm
-      </Button>
-      <Modal show={showAdd} onHide={handleCloseAdd}>
-        <Modal.Header closeButton>
-          <Modal.Title>Thêm sách</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form noValidate validated={validated} onSubmit={handleSubmitAdd}>
-            <Form.Group controlId="validationCustom01">
-              <Form.Label>Tên sách</Form.Label>
-              <Form.Control
-                type="text"
-                required
-                onChange={handleTitleAdd}
-                value={newBook.title}
-              />
-              <Form.Control.Feedback type="invalid">
-                Vui lòng nhập tên sách
-              </Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group controlId="validationCustom02">
-              <Form.Label>Thể loại</Form.Label>
-              <Row>
-                <Col>
-                  <Form.Control
-                    type="text"
-                    required={newBook.genre.length == 0}
-                    onChange={handleGenre}
-                    value={currentGenre}
-                    isInvalid={validated && newBook.genre.length === 0}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    Vui lòng thêm thể loại
-                  </Form.Control.Feedback>
-                </Col>
-                <Col>
-                  <Button variant="success" onClick={addGenre}>
-                    Thêm
-                  </Button>
-                </Col>
-                {newBook.genre.map((genre, id) => (
-                  <ListGroup key={id}>
-                    <ListGroup.Item>
-                      {genre}
-                      <i
-                        className="fa-solid fa-trash"
-                        onClick={() => handleDeleteGenre(genre)}
-                      ></i>
-                    </ListGroup.Item>
-                  </ListGroup>
-                ))}
-              </Row>
-            </Form.Group>
-            <Form.Group controlId="validationCustom03">
-              <Form.Label>Tác giả</Form.Label>
-              <Row>
-                <Col>
-                  <Form.Control
-                    type="text"
-                    required={newBook.author.length === 0}
-                    onChange={handleAuthor}
-                    value={currentAuthor}
-                    isInvalid={validated && newBook.author.length === 0}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    Vui lòng thêm tác giả
-                  </Form.Control.Feedback>
-                </Col>
-                <Col>
-                  <Button variant="success" onClick={addAuthor}>
-                    Thêm
-                  </Button>
-                </Col>
-                {newBook.author.map((author, id) => (
-                  <ListGroup key={id}>
-                    <ListGroup.Item>
-                      {author}
-                      <i
-                        className="fa-solid fa-trash"
-                        onClick={() => handleDeleteAuthor(author)}
-                      ></i>
-                    </ListGroup.Item>
-                  </ListGroup>
-                ))}
-              </Row>
-            </Form.Group>
-            <Form.Group controlId="validationCustom04">
-              <Form.Label>Ngày xuất bản</Form.Label>
-              <Form.Control
-                type="date"
-                required
-                onChange={handlePublicationDate}
-                value={newBook.publicationDate}
-              />
-              <Form.Control.Feedback type="invalid">
-                Vui lòng nhập ngày xuất bản
-              </Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group controlId="validationCustom05">
-              <Form.Label>Giá</Form.Label>
-              <Form.Control
-                type="number"
-                required
-                onChange={handlePrice}
-                value={newBook.price}
-              />
-              <Form.Control.Feedback type="invalid">
-                Vui lòng nhập giá
-              </Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group controlId="validationCustom06">
-              <Form.Label>Số lượng</Form.Label>
-              <Form.Control
-                type="number"
-                required
-                onChange={handleStockQuantity}
-                value={newBook.stockQuantity}
-              />
-              <Form.Control.Feedback type="invalid">
-                Vui lòng nhập số lượng
-              </Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group controlId="validationCustom07">
-              <Form.Label>Mô tả</Form.Label>
-              <Form.Control
-                type="text"
-                as="textarea"
-                required
-                onChange={handleDescription}
-                value={newBook.description}
-              />
-              <Form.Control.Feedback type="invalid">
-                Vui lòng nhập mô tả
-              </Form.Control.Feedback>
-            </Form.Group>
-            <Button variant="secondary" onClick={handleCloseAdd}>
-              Đóng
-            </Button>
-            <Button type="submit" variant="success">
-              Thêm
-            </Button>
-          </Form>
-        </Modal.Body>
-      </Modal>
+      <h1>Quản lý sản phẩm</h1>
+      <div className="add-search">
+        <Button className="admin-add" variant="success" onClick={handleShowAdd}>
+          Thêm sách
+        </Button>
 
-      <InputGroup>
-        <Form.Control
-          type="text"
-          placeholder="Tìm kiếm sách"
-          value={searchKey}
-          onChange={(e) => setSearchKey(e.target.value)}
-        />
-        <Button onClick={handleSearch}>Tìm kiếm</Button>
-        <i className="fa-solid fa-magnifying-glass"></i>
-      </InputGroup>
-
+        <InputGroup>
+          <Form.Control id="search"
+            type="text"
+            placeholder="Tìm kiếm sách ..."
+            value={searchKey}
+            onChange={(e) => setSearchKey(e.target.value)}
+          />
+          <Button onClick={handleSearch}>
+            <MDBIcon icon="search" />
+          </Button>
+        </InputGroup>
+      </div>
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -366,10 +247,11 @@ const ProductManagement = () => {
             <th></th>
           </tr>
         </thead>
+
         <tbody>
           {allBook.map((book) => (
             <tr key={book.bookId}>
-              <td>{book.title}</td>
+              <td style={{ textAlign: "left" }}>{book.title}</td>
               <td>{book.publication_date}</td>
               <td>{book.price}đ</td>
               <td>{book.stockQuantity}</td>
@@ -377,77 +259,12 @@ const ProductManagement = () => {
                 <Image src={book.imgUrl}></Image>
               </td>
               <td>
-                <Button variant="success" onClick={handleShowUpdate}>
+                <Button
+                  variant="success"
+                  onClick={() => handleShowUpdate(book.bookId)}
+                >
                   Cập nhật
                 </Button>{" "}
-                <Modal show={showUpdate} onHide={handleCloseUpdate}>
-                  <Modal.Header closeButton>
-                    <Modal.Title>Cập nhật sách</Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body>
-                    <Form
-                      noValidate
-                      validated={validated}
-                      onSubmit={handleSubmitUpdate}
-                    >
-                      <Form.Group controlId="validationCustom01">
-                        <Form.Label>Tên sách</Form.Label>
-                        <Form.Control type="text" required />
-                        <Form.Control.Feedback type="invalid">
-                          Vui lòng nhập tên sách
-                        </Form.Control.Feedback>
-                      </Form.Group>
-                      <Form.Group controlId="validationCustom02">
-                        <Form.Label>Thể loại</Form.Label>
-                        <Form.Control type="text" required />
-                        <Form.Control.Feedback type="invalid">
-                          Vui lòng nhập tên thể loại
-                        </Form.Control.Feedback>
-                      </Form.Group>
-                      <Form.Group controlId="validationCustom03">
-                        <Form.Label>Tác giả</Form.Label>
-                        <Form.Control type="text" required />
-                        <Form.Control.Feedback type="invalid">
-                          Vui lòng nhập tên tác giả
-                        </Form.Control.Feedback>
-                      </Form.Group>
-                      <Form.Group controlId="validationCustom04">
-                        <Form.Label>Ngày xuất bản</Form.Label>
-                        <Form.Control type="date" required />
-                        <Form.Control.Feedback type="invalid">
-                          Vui lòng nhập ngày xuất bản
-                        </Form.Control.Feedback>
-                      </Form.Group>
-                      <Form.Group controlId="validationCustom05">
-                        <Form.Label>Giá</Form.Label>
-                        <Form.Control type="number" required />
-                        <Form.Control.Feedback type="invalid">
-                          Vui lòng nhập giá
-                        </Form.Control.Feedback>
-                      </Form.Group>
-                      <Form.Group controlId="validationCustom06">
-                        <Form.Label>Số lượng</Form.Label>
-                        <Form.Control type="number" required />
-                        <Form.Control.Feedback type="invalid">
-                          Vui lòng nhập số lượng
-                        </Form.Control.Feedback>
-                      </Form.Group>
-                      <Form.Group controlId="validationCustom07">
-                        <Form.Label>Mô tả</Form.Label>
-                        <Form.Control type="text" as="textarea" required />
-                        <Form.Control.Feedback type="invalid">
-                          Vui lòng nhập mô tả
-                        </Form.Control.Feedback>
-                      </Form.Group>
-                      <Button variant="secondary" onClick={handleCloseUpdate}>
-                        Đóng
-                      </Button>
-                      <Button type="submit" variant="success">
-                        Cập nhật
-                      </Button>
-                    </Form>
-                  </Modal.Body>
-                </Modal>
                 <Button variant="success">Xóa</Button>
               </td>
             </tr>
@@ -475,6 +292,182 @@ const ProductManagement = () => {
         />
         <Pagination.Last onClick={() => handlePageChange(totalPage)} />
       </Pagination>
+      <Modal size="lg" show={showAction} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>{action} sách</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form noValidate validated={validated} onSubmit={handleSubmitForm}>
+            <Form.Group className="form-group" controlId="validationCustom01">
+              <Form.Label className="form-label">Tên sách</Form.Label>
+              <Form.Control
+                type="text"
+                required
+                onChange={handleTitleAdd}
+                value={newBook.title}
+              />
+              <Form.Control.Feedback type="invalid">
+                Vui lòng nhập tên sách
+              </Form.Control.Feedback>
+            </Form.Group>
+            <Form.Group className="form-group" controlId="validationCustom02">
+              <Form.Label className="form-label">Thể loại</Form.Label>
+              <Row>
+                <Col>
+                  <Form.Control
+                    type="text"
+                    required={newBook.genre.length == 0}
+                    onChange={handleGenre}
+                    value={currentGenre}
+                    isInvalid={validated && newBook.genre.length === 0}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    Vui lòng thêm thể loại
+                  </Form.Control.Feedback>
+                </Col>
+                <Col>
+                  <Button variant="success" onClick={addGenre}>
+                    Thêm
+                  </Button>
+                </Col>
+                {newBook.genre.map((genre, id) => (
+                  <ListGroup key={id}>
+                    <ListGroup.Item
+                      style={{
+                        border: "none",
+                        marginTop: "10px",
+                        padding: "0 16px",
+                      }}
+                    >
+                      {genre}
+                      <i
+                        style={{
+                          float: "right",
+                          cursor: "pointer",
+                          marginTop: "5px",
+                        }}
+                        className="fa-solid fa-trash"
+                        onClick={() => handleDeleteGenre(genre)}
+                      ></i>
+                    </ListGroup.Item>
+                  </ListGroup>
+                ))}
+              </Row>
+            </Form.Group>
+            <Form.Group className="form-group" controlId="validationCustom03">
+              <Form.Label className="form-label">Tác giả</Form.Label>
+              <Row>
+                <Col>
+                  <Form.Control
+                    type="text"
+                    required={newBook.author.length === 0}
+                    onChange={handleAuthor}
+                    value={currentAuthor}
+                    isInvalid={validated && newBook.author.length === 0}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    Vui lòng thêm tác giả
+                  </Form.Control.Feedback>
+                </Col>
+                <Col>
+                  <Button variant="success" onClick={addAuthor}>
+                    Thêm
+                  </Button>
+                </Col>
+                {newBook.author.map((author, id) => (
+                  <ListGroup key={id}>
+                    <ListGroup.Item
+                      style={{
+                        border: "none",
+                        marginTop: "10px",
+                        padding: "0 16px",
+                      }}
+                    >
+                      {author}
+                      <i
+                        style={{
+                          float: "right",
+                          cursor: "pointer",
+                          marginTop: "5px",
+                        }}
+                        className="fa-solid fa-trash"
+                        onClick={() => handleDeleteAuthor(author)}
+                      ></i>
+                    </ListGroup.Item>
+                  </ListGroup>
+                ))}
+              </Row>
+            </Form.Group>
+            <Form.Group className="form-group" controlId="validationCustom04">
+              <Form.Label className="form-label">Ngày xuất bản</Form.Label>
+              <Form.Control
+                type="date"
+                required
+                onChange={handlePublicationDate}
+                value={newBook.publicationDate}
+              />
+              <Form.Control.Feedback type="invalid">
+                Vui lòng nhập ngày xuất bản
+              </Form.Control.Feedback>
+            </Form.Group>
+            <Form.Group className="form-group" controlId="validationCustom05">
+              <Form.Label className="form-label">Giá</Form.Label>
+              <Form.Control
+                type="number"
+                required
+                onChange={handlePrice}
+                value={newBook.price}
+              />
+              <Form.Control.Feedback type="invalid">
+                Vui lòng nhập giá
+              </Form.Control.Feedback>
+            </Form.Group>
+            <Form.Group className="form-group" controlId="validationCustom06">
+              <Form.Label className="form-label">Số lượng</Form.Label>
+              <Form.Control
+                type="number"
+                required
+                onChange={handleStockQuantity}
+                value={newBook.stockQuantity}
+              />
+              <Form.Control.Feedback type="invalid">
+                Vui lòng nhập số lượng
+              </Form.Control.Feedback>
+            </Form.Group>
+            <Form.Group className="form-group" controlId="validationCustom07">
+              <Form.Label className="form-label">Mô tả</Form.Label>
+              <Form.Control
+                type="text"
+                as="textarea"
+                required
+                onChange={handleDescription}
+                value={newBook.description}
+              />
+              <Form.Control.Feedback type="invalid">
+                Vui lòng nhập mô tả
+              </Form.Control.Feedback>
+            </Form.Group>
+            <div
+              style={{
+                paddingTop: "20px",
+                display: "flex",
+                justifyContent: "flex-end",
+              }}
+            >
+              <Button
+                style={{ marginRight: "20px" }}
+                variant="secondary"
+                onClick={handleClose}
+              >
+                Đóng
+              </Button>
+              <Button style={{}} type="submit" variant="success">
+                {action}
+              </Button>
+            </div>
+          </Form>
+        </Modal.Body>
+      </Modal>
     </>
   );
 };

@@ -1,9 +1,11 @@
 .nav-link.active {
+    border-radius: 10px;
     color: white !important;
     background-color: #196142 !important;
 }
 
 .nav-link {
+    border-radius: 10px;
     color: #196142 !important;
     background-color: white !important;
 }

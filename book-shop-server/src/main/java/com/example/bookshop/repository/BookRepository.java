@@ -71,4 +71,18 @@ public interface BookRepository extends JpaRepository<Book, Long>  {
             @Param("key") String key,
             Pageable pageable
     );
+
+    @Query(
+            value = "SELECT b.* " +
+                    "FROM books AS b " +
+                    "LEFT JOIN order_details AS od on od.book_id = b.book_id " +
+                    "GROUP BY b.book_id " +
+                    "ORDER BY COALESCE(SUM(od.quantity), 0) DESC",
+            countQuery = "SELECT COUNT(b.book_id) " +
+                    "FROM books AS b",
+            nativeQuery = true
+    )
+    Page<Book> findAllByBestSeller(
+            Pageable pageable
+    );
 }

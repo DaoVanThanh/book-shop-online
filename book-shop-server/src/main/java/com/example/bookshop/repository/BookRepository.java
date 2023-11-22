@@ -85,4 +85,50 @@ public interface BookRepository extends JpaRepository<Book, Long>  {
     Page<Book> findAllByBestSeller(
             Pageable pageable
     );
+
+    @Modifying
+    @Query(
+            value = "DELETE FROM book_author " +
+                    "WHERE book_id = :book_id",
+            nativeQuery = true
+    )
+    @Transactional
+    void deleteBookAuthorByBookId(
+            @Param("book_id") Long bookId
+    );
+
+    @Modifying
+    @Query(
+            value = "DELETE FROM book_genre " +
+                    "WHERE book_id = :book_id",
+            nativeQuery = true
+    )
+    @Transactional
+    void deleteBookGenreByBookId(
+            @Param("book_id") Long bookId
+    );
+
+    @Modifying
+    @Query(
+            value = "INSERT INTO book_author(book_id, author_id) " +
+                    "value (:book_id, :author_id)",
+            nativeQuery = true
+    )
+    @Transactional
+    void addBookAuthor(
+            @Param("book_id") Long bookId,
+            @Param("author_id") Long authorId
+    );
+
+    @Modifying
+    @Query(
+            value = "INSERT INTO book_genre(book_id, genre_id) " +
+                    "value (:book_id, :genre_id)",
+            nativeQuery = true
+    )
+    @Transactional
+    void addBookGenre(
+            @Param("book_id") Long bookId,
+            @Param("genre_id") Long genreId
+    );
 }

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Table, Modal, Form } from "react-bootstrap";
 
 import { AddBook } from "../../apiServices/AdminApi/ProductManagementService";
+import './ProductManagement.css';
 
 const ProductManagement = () => {
   const [showAdd, setShowAdd] = useState(false);

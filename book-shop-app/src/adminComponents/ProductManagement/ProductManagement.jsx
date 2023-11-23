@@ -13,8 +13,7 @@ import {
 } from "react-bootstrap";
 import { MDBIcon } from "mdb-react-ui-kit";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-
-import './ProductManagement.css';
+import FileBase64 from "react-file-base64";
 import {
   AddBook,
   searchBook,
@@ -47,6 +46,7 @@ const ProductManagement = () => {
     price: 0,
     stockQuantity: 0,
     description: "",
+    imgUrl: "",
   });
 
   useEffect(() => {
@@ -107,6 +107,7 @@ const ProductManagement = () => {
         stockQuantity: detail.stockQuantity,
         author: detail.authors.map((author) => author.authorName),
         genre: detail.genres.map((genre) => genre.genreName),
+        imgUrl: detail.imgUrl,
       });
     } catch (error) {
       console.log(error);
@@ -128,7 +129,7 @@ const ProductManagement = () => {
             newBook.price,
             newBook.publicationDate,
             newBook.stockQuantity,
-            "urlImg",
+            newBook.imgUrl,
             newBook.author,
             newBook.genre
           );
@@ -205,7 +206,7 @@ const ProductManagement = () => {
   const handleDescription = (e) => {
     const description = e.target.value;
     setNewBook({ ...newBook, description: description });
-    console.log(newBook)
+    console.log(newBook);
   };
 
   const handleSearch = async () => {
@@ -226,7 +227,8 @@ const ProductManagement = () => {
         </Button>
 
         <InputGroup>
-          <Form.Control id="search"
+          <Form.Control
+            id="search"
             type="text"
             placeholder="Tìm kiếm sách ..."
             value={searchKey}
@@ -271,8 +273,6 @@ const ProductManagement = () => {
             </tr>
           ))}
         </tbody>
-        <div id="radius-shape-1" className="position-absolute rounded-circle shadow-5-strong"></div>
-        <div id="radius-shape-2" className="position-absolute shadow-5-strong"></div>
       </Table>
       <Pagination>
         <Pagination.First onClick={() => handlePageChange(1)} />
@@ -445,6 +445,20 @@ const ProductManagement = () => {
                 required
                 onChange={handleDescription}
                 value={newBook.description}
+              />
+              <Form.Control.Feedback type="invalid">
+                Vui lòng nhập mô tả
+              </Form.Control.Feedback>
+            </Form.Group>
+            <Form.Group className="form-group" controlId="validationCustom07">
+              <Form.Label className="form-label">Ảnh</Form.Label>
+              <FileBase64
+                multiple={false}
+                type="file"
+                value={newBook.imgUrl}
+                onDone={({ base64 }) =>
+                  setNewBook({ ...newBook, imgUrl: base64 })
+                }
               />
               <Form.Control.Feedback type="invalid">
                 Vui lòng nhập mô tả

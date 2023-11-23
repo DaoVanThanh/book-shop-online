@@ -34,7 +34,8 @@ public class Book {
     @Column(name = "stock_quantity")
     private Integer stockQuantity;
 
-    @Column(name = "img_url")
+    @Column(name = "img_url", columnDefinition = "LONGTEXT")
+    @Lob
     private String imgUrl;
 
     @ManyToMany

@@ -14,6 +14,7 @@ import {
 import { MDBIcon } from "mdb-react-ui-kit";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
+import './ProductManagement.css';
 import {
   AddBook,
   searchBook,
@@ -270,6 +271,8 @@ const ProductManagement = () => {
             </tr>
           ))}
         </tbody>
+        <div id="radius-shape-1" className="position-absolute rounded-circle shadow-5-strong"></div>
+        <div id="radius-shape-2" className="position-absolute shadow-5-strong"></div>
       </Table>
       <Pagination>
         <Pagination.First onClick={() => handlePageChange(1)} />

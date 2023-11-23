@@ -22,7 +22,7 @@
 
 .search-bar button {
     padding: 5px 10px;
-    background-color: #4CAF50;
+    background-color: #3366FF;
     color: white;
     border: none;
     border-radius: 4px;
@@ -36,7 +36,7 @@
 
 .search-bar button:hover,
 .search-bar button:focus {
-    background-color: #45a049;
+    background-color: #3333CC;
 }
 
 .price-filter {
@@ -57,7 +57,7 @@
 }
 
 .product {
-    border: 1px solid #ddd;
+    border: 1px solid #6633FF;
     padding: 10px;
     text-align: center;
     display: flex;
@@ -66,7 +66,7 @@
     overflow: hidden;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    background-color: #fff;
+    color: #6699CC;
     margin-bottom: 20px;
 }
 
@@ -97,7 +97,7 @@
 }
 
 .sort-button {
-    background-color: #4CAF50;
+    background-color: #3366FF;
     color: #fff;
     border: none;
     padding: 8px 16px;
@@ -107,7 +107,7 @@
 }
 
 .sort-button:hover {
-    background-color: #45a049;
+    background-color: #3333CC;
 }
 
 .sort-options-list {
@@ -141,7 +141,7 @@
 .view-more-button {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #4CAF50;
+    background-color: #3366FF;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -152,7 +152,7 @@
 }
 
 .view-more-button:hover {
-    background-color: #45a049;
+    background-color: #003399;
 }
 
 .shop-container {

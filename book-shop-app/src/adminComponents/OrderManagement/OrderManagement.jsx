@@ -1,5 +1,7 @@
-import React, {useEffect, useState} from 'react';
-import {Button, Form, Tab, Table, Tabs} from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { Button, Form, Tab, Table, Tabs } from 'react-bootstrap';
+import './OrderManagement.css';
+
 import {getAllOrders,updateStateOrder} from "../../apiServices/AdminApi/AdminOrmService";
 
 const OrderManagement = () => {
@@ -107,6 +109,8 @@ const OrderManagement = () => {
                     </Tab>
                 ))}
             </Tabs>
+            <div id="radius-shape-1" className="position-absolute rounded-circle shadow-5-strong"></div>
+            <div id="radius-shape-2" className="position-absolute shadow-5-strong"></div>
             <Button variant="primary" onClick={handleSaveStatus}>
                 Update
             </Button>

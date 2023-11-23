@@ -4,6 +4,8 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import {getUserInfo, updateUser} from "../../apiServices/AccountManagementService";
 import {Row} from "react-bootstrap";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 function FormExample() {
@@ -54,7 +56,7 @@ function FormExample() {
             updateUser(userData)
                 .then((response) => {
                     setInitialUserData(userData);
-                    alert('User information updated successfully.');
+                    toast("Cập nhật tài khoản thành công")
                 })
                 .catch((error) => {
                     console.error("Error updating user information", error);
@@ -84,14 +86,14 @@ function FormExample() {
                         value={userData.fullName}
                         disabled={!isEditing}
                         onChange={(e) =>
-                            setUserData({...userData, fullName: e.target.value})
+                            setUserData({...userData, fullName: e.target.value.trim()})
                         }
                     />
                     <Form.Control.Feedback type="invalid">
                         Vui lòng nhập đầy đủ họ và tên.
                     </Form.Control.Feedback>
                 </Form.Group>
-                <Form.Group as={Col} md="20" controlId="validationCustom02">
+                <Form.Group as={Col} md="20" controlId="validationCustom03">
                     <Form.Label className="mt-2">Số điện thoại</Form.Label>
                     <Form.Control
                         required
@@ -99,14 +101,14 @@ function FormExample() {
                         value={userData.phoneNumber}
                         disabled={!isEditing}
                         onChange={(e) =>
-                            setUserData({...userData, phoneNumber: e.target.value})
+                            setUserData({...userData, phoneNumber: e.target.value.trim()})
                         }
                     />
                     <Form.Control.Feedback type="invalid">
                         Vui lòng nhập số điện thoại.
                     </Form.Control.Feedback>
                 </Form.Group>
-                <Form.Group as={Col} md="15" controlId="validationCustom02">
+                <Form.Group as={Col} md="15" controlId="validationCustom04">
                     <Form.Label className="mt-2">Địa chỉ</Form.Label>
                     <Form.Control
                         required
@@ -140,6 +142,7 @@ function FormExample() {
                     </Col>
                 </Row>
             </Form>
+            <ToastContainer/>
         </div>
 
     );

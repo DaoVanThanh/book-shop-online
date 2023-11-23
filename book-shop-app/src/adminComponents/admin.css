@@ -1,10 +1,17 @@
 /* CSS cho admin-container */
 .admin-container {
-  display: flex; /* Sử dụng flexbox để chia sidebar và nội dung */
+  display: grid; /* Sử dụng flexbox để chia sidebar và nội dung */
+  grid-template-columns: 2fr 7fr;
+}
+
+.admin-sidebar {
+  background-color: #fff; /* Màu nền của sidebar */
+  color: #fff; /* Màu chữ của sidebar */
+  padding: 20px; /* Padding của sidebar */
 }
 
 /* CSS cho nội dung */
-.content {
-  flex: 1; /* Nội dung sẽ mở rộng để lấp đầy không gian trống */
+.admin-content {
+  background-color: #EEEEEE;
   padding: 20px; /* Khoảng cách lề bên trong nội dung */
 }

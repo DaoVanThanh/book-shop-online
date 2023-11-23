@@ -22,4 +22,18 @@ const AddBook = async (
   });
 };
 
-export {AddBook}
+const searchBook = async (key, page, size) => {
+  return await instance.get("/api/book/search", {
+    params: {
+      key: key,
+      page: page,
+      size: size,
+    },
+  });
+};
+
+const getBookDetail = async (bookId) => {
+  return await instance.get(`/api/book/detail/${bookId}`);
+};
+
+export { AddBook, searchBook, getBookDetail };

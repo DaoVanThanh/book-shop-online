@@ -55,9 +55,9 @@ public class BookServiceImpl implements BookService {
         return res;
     }
 
-    public void removeBooksFromWarehouse(ArrayList<BookQuantity> bookQuantities) {
+    public void changeBooksFromWarehouse(ArrayList<BookQuantity> bookQuantities) {
         for (BookQuantity bookQuantity : bookQuantities) {
-            bookRepository.removeBooks(bookQuantity.getBookId(), bookQuantity.getQuantity());
+            bookRepository.changeBooks(bookQuantity.getBookId(), bookQuantity.getQuantity());
         }
     }
 
@@ -159,7 +159,7 @@ public class BookServiceImpl implements BookService {
 
     public Page<Book> getListBookBySearch(String key, Integer page, Integer size) throws ResponseStatusException {
         ValidatePageSize(page, size);
-        if(key == null || key.isEmpty()) {
+        if(key == null) {
             throw new ParamInvalidException("key không hợp lệ");
         }
         Pageable pageable = PageRequest.of(page, size);

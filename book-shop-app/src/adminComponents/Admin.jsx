@@ -4,16 +4,25 @@ import SidebarAdmin from "./SidebarAdmin/SidebarAdmin";
 import ProductManagement from "./ProductManagement/ProductManagement";
 import OrderManagement from "./OrderManagement/OrderManagement";
 import Statistic from "./Statistics/Statistic";
-import './admin.css'
+import "./admin.css";
 import NotFound from "../components/NotFound/NotFound";
-
+import logo from "../logo.png";
 const Admin = () => {
   return (
     <div className="admin-container">
-      <div className="sidebar">
+      <div className="admin-sidebar">
+        <img
+          src={logo}
+          alt="Logo book shop"
+          style={{
+            width: "100px",
+            borderRadius: "50%",
+            margin: "20px",
+          }}
+        ></img>
         <SidebarAdmin />
       </div>
-      <div className="content">
+      <div className="admin-content">
         <Routes>
           <Route>
             <Route path="/products" element={<ProductManagement />}></Route>

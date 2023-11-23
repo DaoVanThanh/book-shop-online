@@ -178,4 +178,13 @@ public class BookServiceImpl implements BookService {
                         pageable
                 );
     }
+
+    public Page<Book> getAllByBestSeller(Integer page, Integer size) throws ResponseStatusException {
+        ValidatePageSize(page, size);
+        Pageable pageable = PageRequest.of(page, size);
+        return bookRepository
+                .findAllByBestSeller(
+                        pageable
+                );
+    }
 }

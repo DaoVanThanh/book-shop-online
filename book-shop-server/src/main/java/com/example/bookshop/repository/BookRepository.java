@@ -71,4 +71,64 @@ public interface BookRepository extends JpaRepository<Book, Long>  {
             @Param("key") String key,
             Pageable pageable
     );
+
+    @Query(
+            value = "SELECT b.* " +
+                    "FROM books AS b " +
+                    "LEFT JOIN order_details AS od on od.book_id = b.book_id " +
+                    "GROUP BY b.book_id " +
+                    "ORDER BY COALESCE(SUM(od.quantity), 0) DESC",
+            countQuery = "SELECT COUNT(b.book_id) " +
+                    "FROM books AS b",
+            nativeQuery = true
+    )
+    Page<Book> findAllByBestSeller(
+            Pageable pageable
+    );
+
+    @Modifying
+    @Query(
+            value = "DELETE FROM book_author " +
+                    "WHERE book_id = :book_id",
+            nativeQuery = true
+    )
+    @Transactional
+    void deleteBookAuthorByBookId(
+            @Param("book_id") Long bookId
+    );
+
+    @Modifying
+    @Query(
+            value = "DELETE FROM book_genre " +
+                    "WHERE book_id = :book_id",
+            nativeQuery = true
+    )
+    @Transactional
+    void deleteBookGenreByBookId(
+            @Param("book_id") Long bookId
+    );
+
+    @Modifying
+    @Query(
+            value = "INSERT INTO book_author(book_id, author_id) " +
+                    "value (:book_id, :author_id)",
+            nativeQuery = true
+    )
+    @Transactional
+    void addBookAuthor(
+            @Param("book_id") Long bookId,
+            @Param("author_id") Long authorId
+    );
+
+    @Modifying
+    @Query(
+            value = "INSERT INTO book_genre(book_id, genre_id) " +
+                    "value (:book_id, :genre_id)",
+            nativeQuery = true
+    )
+    @Transactional
+    void addBookGenre(
+            @Param("book_id") Long bookId,
+            @Param("genre_id") Long genreId
+    );
 }

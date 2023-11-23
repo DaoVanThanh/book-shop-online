@@ -31,4 +31,6 @@ public interface BookService {
     Page<Book> getListBookBySearch(String key, Integer page, Integer size) throws ResponseStatusException;
 
     Page<Book> getAllBook(Integer page, Integer size) throws ResponseStatusException;
+
+    Page<Book> getAllByBestSeller(Integer page, Integer size) throws ResponseStatusException;
 }

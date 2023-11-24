@@ -28,6 +28,9 @@ public class OrderDetail {
     @NotNull
     private Book book;
 
+    @Column(name = "price")
+    private Long price;
+
     @Column(name = "quantity")
     private Integer quantity;
 }

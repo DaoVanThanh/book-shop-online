@@ -1,26 +1,72 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Card, Button, Tab, Tabs } from "react-bootstrap";
+import {Container, Row, Col, Card, Button, Tab, Tabs, Modal} from "react-bootstrap";
 import axios from "axios";
 import "./OrderManagement.css";
 import "../AppRoutes";
-import { getOrder } from "../../apiServices/OrderManagementService";
+import { getOrder, cancelOrder } from "../../apiServices/OrderManagementService";
+import 'react-toastify/dist/ReactToastify.css';
+import {ToastContainer,toast} from 'react-toastify'
+const ConfirmationModal = ({ show, handleClose, handleConfirm }) => {
+  return (
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Xác nhận huỷ đơn hàng</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Bạn có chắc chắn muốn huỷ đơn hàng này?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Đóng
+          </Button>
+          <Button variant="danger" onClick={handleConfirm}>
+            Xác nhận
+          </Button>
+        </Modal.Footer>
+      </Modal>
+  );
+};
 
 const OrderManagement = () => {
   const storedAccessToken = localStorage.getItem('accessToken');
   const [orders, setOrders] = useState([]);
+
   const [orderStatuses, setOrderStatuses] = useState([
     "PENDING",
-    "Chờ lấy hàng",
-    "Đang giao",
-    "Đã giao",
-    "Đã hủy"
+    "ACCEPTED",
+    "DELIVERING",
+    "SUCCESS",
+    "RETURNED",
+    "CANCELLED"
   ]);
-
+  const translateStatus = (status) => {
+    switch (status) {
+      case "PENDING":
+        return "Chờ xác nhận";
+      case "ACCEPTED":
+        return "Chờ lấy hàng";
+      case "DELIVERING":
+        return "Đang giao";
+      case "SUCCESS":
+        return "Đã giao";
+      case "RETURNED":
+        return "Trả hàng";
+      case "CANCELLED":
+        return "Đã huỷ";
+      default:
+        return status;
+    }
+  };
   const getOrderDetail = () => {
     getOrder().then(response => {
       setOrders(response.data);
+    }).catch(error => {
+      console.log(error)
     })
   }
+
+  const actioncCancelOrder = (orderId) => {
+
+  }
+
   useEffect(() => {
     getOrderDetail();
   }, []);
@@ -33,7 +79,7 @@ const OrderManagement = () => {
           defaultActiveKey={orderStatuses[0]} // Set the default active tab
       >
         {orderStatuses.map((status) => (
-            <Tab key={status} eventKey={status} title={status}>
+            <Tab key={status} eventKey={status} title={translateStatus(status)}>
               {/* Render orders based on the current status */}
               <OrderList status={status} orders={orders} />
             </Tab>
@@ -44,11 +90,38 @@ const OrderManagement = () => {
 
 const OrderList = ({ status, orders }) => {
   // Ensure that orders is an array before using filter
-
+  const [showModal, setShowModal] = useState(false);
+  const [orderIdToCancel, setOrderIdToCancel] = useState(null);
   const filteredOrders = orders && Array.isArray(orders.orderSummaries)
       ? orders.orderSummaries.filter((order) => order.status === status)
       : [];
+  const refresh = () => window.location.reload(true)
+  const handleCancelClick = (orderId) => {
+    setOrderIdToCancel(orderId);
+    setShowModal(true);
+  };
+
+  const handleConfirmCancel = () => {
+    if (orderIdToCancel) {
+      // Perform cancellation logic here
+      cancelOrder(orderIdToCancel)
+          .then((response) => {
+            toast.success("Huỷ đơn thành công");
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+          .finally(() => {
+
+            refresh();
+            setShowModal(false);
+
+          });
+    }
+  };
+
   return (
+
       <div className="container-full-height order-tabs">
         {filteredOrders.map((order) => (
 
@@ -101,29 +174,46 @@ const OrderList = ({ status, orders }) => {
                   </Col>
                 </Row>
               </Card.Footer>
-              <Card.Footer>
-                <Row>
-                  <Col sm={4}>
-                    <Button className="mb-2 mr-10" variant="success">
-                      Mua lại
-                    </Button>
-                  </Col>
-                  <Col sm={4}>
-                    <Button className="mb-2" variant="secondary">
-                      Xem đánh giá
-                    </Button>
-                  </Col>
-                  <Col sm={4}>
-                    <Button className="mb-2" variant="danger" disabled>
-                      Huỷ đơn
-                    </Button>
-                  </Col>
-                </Row>
-              </Card.Footer>
+            <Card.Footer>
+              <Row>
+                <Col sm={4}>
+                  {/*<Button*/}
+                  {/*    className="mb-2 mr-10"*/}
+                  {/*    variant="success"*/}
+                  {/*    disabled={status !== "PENDING"}*/}
+                  {/*>*/}
+                  {/*  Mua lại*/}
+                  {/*</Button>*/}
+                </Col>
+                <Col sm={4}>
+                  {status === "SUCCESS" && (
+                      <Button className="mb-2" variant="secondary" href='/rate'>
+                        Xem đánh giá
+                      </Button>
+                  )}
+                </Col>
+                <Col sm={4}>
+                  <Button
+                      className="mb-2"
+                      variant="danger"
+                      disabled={status !== "PENDING"}
+                      onClick={() => handleCancelClick(order.orderId)}
+                  >
+                    Huỷ đơn
+                  </Button>
+                </Col>
+              </Row>
+            </Card.Footer>
             </Card>
 
 
         ))}
+        <ToastContainer />
+        <ConfirmationModal
+            show={showModal}
+            handleClose={() => setShowModal(false)}
+            handleConfirm={handleConfirmCancel}
+        />
       </div>
   );
 };

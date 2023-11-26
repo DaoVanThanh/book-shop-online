@@ -64,7 +64,7 @@ const Checkout = () => {
             ...orderData,
             bookQuantities: bookQuantities,
         };
-        axios.post('http://localhost:8080/api/orm/orders/create', updatedOrderData, {headers : {'Authorization': 'Bearer '+ accessToken}}).then(()=>{
+        axios.post('http://localhost:8080/api/user/orm/orders/create', updatedOrderData, {headers : {'Authorization': 'Bearer '+ accessToken}}).then(()=>{
             handleShow();
 
 

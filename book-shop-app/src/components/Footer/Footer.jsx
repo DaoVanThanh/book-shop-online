@@ -7,6 +7,7 @@ import {
   MDBIcon,
 } from "mdb-react-ui-kit";
 import { useNavigate } from "react-router-dom";
+import logo from "../../logo.png";
 const Footer = () => {
   const navigate = useNavigate();
   const handleAbout = () => {
@@ -52,7 +53,15 @@ const Footer = () => {
                 <MDBIcon icon="gem" className="me-3" />
                 Book Store
               </h6>
-              <p>Bookstore</p>
+              <img
+                src={logo}
+                alt="Logo book shop"
+                style={{
+                  width: "100px",
+                  borderRadius: "50%",
+                  cursor: "pointer",
+                }}
+              ></img>
             </MDBCol>
 
             <MDBCol md="3" lg="2" xl="2" className="mx-auto mb-4">

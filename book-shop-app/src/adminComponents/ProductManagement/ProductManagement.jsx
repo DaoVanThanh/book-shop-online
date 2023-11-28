@@ -18,6 +18,7 @@ import {
   AddBook,
   searchBook,
   getBookDetail,
+  updateBook
 } from "../../apiServices/AdminApi/ProductManagementService";
 import "./PM.css";
 
@@ -48,6 +49,7 @@ const ProductManagement = () => {
     description: "",
     imgUrl: "",
   });
+  const [idUpdate, setIdUpdate] = useState(-1)
 
   useEffect(() => {
     const getBooks = async (page, size) => {
@@ -70,6 +72,7 @@ const ProductManagement = () => {
     setShowAction(false);
     setValidated(false);
     setAction("");
+    setIdUpdate(-1)
     clearNewBook();
   };
 
@@ -109,6 +112,7 @@ const ProductManagement = () => {
         genre: detail.genres.map((genre) => genre.genreName),
         imgUrl: detail.imgUrl,
       });
+      setIdUpdate(id)
     } catch (error) {
       console.log(error);
     }
@@ -137,7 +141,21 @@ const ProductManagement = () => {
           console.log(error);
         }
       } else if (action == UPDATE) {
-        console.log("update");
+        try {
+          await updateBook(
+            idUpdate,
+            newBook.title.trim(),
+            newBook.description.trim(),
+            newBook.price,
+            newBook.publicationDate,
+            newBook.stockQuantity,
+            newBook.imgUrl,
+            newBook.author,
+            newBook.genre
+          );
+        } catch (error) {
+          console.log(error);
+        }
       }
     } else {
       event.preventDefault();
@@ -145,7 +163,6 @@ const ProductManagement = () => {
       setValidated(true);
     }
   };
-
   const handleTitleAdd = (e) => {
     const title = e.target.value;
     setNewBook({ ...newBook, title: title });
@@ -219,10 +236,10 @@ const ProductManagement = () => {
   };
 
   return (
-    <>
+    <div className="ad-container">
       <h1>Quản lý sản phẩm</h1>
       <div className="add-search">
-        <Button className="admin-add" variant="success" onClick={handleShowAdd}>
+        <Button className="admin-add" variant="primary" onClick={handleShowAdd}>
           Thêm sách
         </Button>
 
@@ -259,7 +276,7 @@ const ProductManagement = () => {
               <td>{book.price}đ</td>
               <td>{book.stockQuantity}</td>
               <td>
-                <Image src={book.imgUrl}></Image>
+                <Image src={book.imgUrl} style={{width: "100px"}}></Image>
               </td>
               <td>
                 <Button
@@ -485,7 +502,7 @@ const ProductManagement = () => {
           </Form>
         </Modal.Body>
       </Modal>
-    </>
+    </div>
   );
 };
 

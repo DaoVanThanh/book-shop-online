@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Form, Tab, Table, Tabs } from 'react-bootstrap';
-import './OrderManagement.css';
 
 import {getAllOrders,updateStateOrder} from "../../apiServices/AdminApi/AdminOrmService";
 

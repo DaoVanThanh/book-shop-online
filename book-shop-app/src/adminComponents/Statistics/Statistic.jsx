@@ -1,5 +1,4 @@
 import React from 'react'
-import './Statistics.css';
 
 const Statistic = () => {
   return (

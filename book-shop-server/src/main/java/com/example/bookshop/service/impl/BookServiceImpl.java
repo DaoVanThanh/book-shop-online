@@ -5,6 +5,7 @@ import com.example.bookshop.dto.request.*;
 import com.example.bookshop.dto.response.GetBookDetailResponse;
 import com.example.bookshop.dto.BookQuantity;
 import com.example.bookshop.dto.response.GetUserReviewResponse;
+import com.example.bookshop.entity.Author;
 import com.example.bookshop.entity.Book;
 import com.example.bookshop.entity.Review;
 import com.example.bookshop.entity.User;
@@ -186,5 +187,11 @@ public class BookServiceImpl implements BookService {
                 .findAllByBestSeller(
                         pageable
                 );
+    }
+
+    public Page<Author> getFamousAuthor(Integer page, Integer size) throws ResponseStatusException {
+        ValidatePageSize(page, size);
+        Pageable pageable = PageRequest.of(page, size);
+        return authorRepository.findAllByFamous(pageable);
     }
 }

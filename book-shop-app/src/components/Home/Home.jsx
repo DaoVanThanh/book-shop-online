@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Row, Col} from 'react-bootstrap';
+import {getBestSellerBooks, getFamousAuthors} from "../../apiServices/AdminApi/ProductManagementService";
 
 function formatVND(n) {
     return n.toFixed(0).replace(/./g, function(c, i, a) {
@@ -8,11 +9,34 @@ function formatVND(n) {
 }
 
 const Home = () => {
-    const bestSellerBooks = [
-        { id: 4, name: 'Book 1', price: 70000, imageUrl: 'https://websitedemos.net/earth-store-02/wp-content/uploads/sites/1171/2022/10/Poster5-1000x1000.jpg'},
-        { id: 5, name: 'Book 2', price: 136000, imageUrl: 'https://websitedemos.net/earth-store-02/wp-content/uploads/sites/1171/2022/10/Poster5-1000x1000.jpg'},
-        { id: 6, name: 'Book 3', price: 247000, imageUrl: 'https://websitedemos.net/earth-store-02/wp-content/uploads/sites/1171/2022/10/Poster5-1000x1000.jpg'},
-    ];
+    useEffect(() => {
+        handleBestSellerBooks(4);
+        handleFamousAuthors(6);
+    }, []);
+
+    const [bestSellerBooks, setBestSellerBooks] = useState([]);
+    const [famousAuthors, setFamousAuthors] = useState([]);
+
+    const handleBestSellerBooks = async (size) => {
+         await getBestSellerBooks(size)
+            .then((response) => {
+                setBestSellerBooks(response.data.content)
+            })
+            .catch((error) => {
+                console.log(error)
+            });
+    }
+
+    const handleFamousAuthors = async (size) => {
+        await getFamousAuthors(size)
+            .then((response) => {
+                setFamousAuthors(response.data.content)
+            })
+            .catch((error) => {
+                console.log(error)
+            });
+    }
+
     const reviewFromCustomers = [
         {
             id: 1,
@@ -33,38 +57,6 @@ const Home = () => {
             avartar: 'https://websitedemos.net/earth-store-02/wp-content/uploads/sites/1171/2022/11/earth-store-testimonial-avatar-img.jpeg',
         }
     ]
-    const hotAuthors = [
-        {
-            id: 1,
-            name: 'Trần Quang Tài',
-            avartar: 'https://bizweb.dktcdn.net/100/363/455/articles/elizabeth-kolbert.jpg?v=1699331216893',
-        },
-        {
-            id: 2,
-            name: 'Trần Quang Tài',
-            avartar: 'https://bizweb.dktcdn.net/100/363/455/articles/elizabeth-kolbert.jpg?v=1699331216893',
-        },
-        {
-            id: 3,
-            name: 'Trần Quang Tài',
-            avartar: 'https://bizweb.dktcdn.net/100/363/455/articles/elizabeth-kolbert.jpg?v=1699331216893'
-        },
-        {
-            id: 4,
-            name: 'Trần Quang Tài',
-            avartar: 'https://bizweb.dktcdn.net/100/363/455/articles/elizabeth-kolbert.jpg?v=1699331216893',
-        },
-        {
-            id: 5,
-            name: 'Trần Quang Tài',
-            avartar: 'https://bizweb.dktcdn.net/100/363/455/articles/elizabeth-kolbert.jpg?v=1699331216893',
-        },
-        {
-            id: 6,
-            name: 'Trần Quang Tài',
-            avartar: 'https://bizweb.dktcdn.net/100/363/455/articles/elizabeth-kolbert.jpg?v=1699331216893',
-        }
-    ]
     return (
         <div style={{
             backgroundColor: 'hsl(0, 0%, 100%)',
@@ -75,11 +67,10 @@ const Home = () => {
             margin: '10px 10%',
             backgroundColor: 'none',
         }}>
-
             <HomeBook bestSellerBooks={bestSellerBooks}/>
             <Line/>
             <Heading text={'Các tác giả'}/>
-            <HotAuthor hotAuthors={hotAuthors}/>
+            <HotAuthor famousAuthors={famousAuthors}/>
             <Line/>
             <Heading text={'Đánh giá của khách hàng'}/>
             <ReviewBookShop reviewFromCustomers={reviewFromCustomers}/>
@@ -90,34 +81,33 @@ const Home = () => {
 
 const HomeBook = ({bestSellerBooks}) => {
     return (
-        <Row>
+        <Row style={{overflow: 'hidden'}}>
             {bestSellerBooks.map((book) => (
                 <Col
-                    key={book.id}
+                    className="overflow-hidden"
+                    key={book.bookId}
                     style={{
                         margin: '15px 1% 30px',
                     }}
                 >
                     <img
-                        src={book.imageUrl}
-                        alt={book.name}
+                        src={book.imgUrl}
+                        alt={book.title}
                         style={{
                             padding: '10px',
-                            width: '100%'
+                            height: '300px',
                         }}
                     />
                     <p style={{
                         color: 'hsl(0, 0%, 0%)',
                         fontWeight: 'bold',
-                        textAlign: 'left',
-                        marginLeft: '10px',
+                        textAlign: 'center',
                         fontSize: '16px',
-                    }}>{book.name}</p>
+                    }}>{book.title}</p>
                     <p style={{
                         color: 'hsl(0, 0%, 22.7%)',
                         fontWeight: 'bold',
-                        textAlign: 'left',
-                        marginLeft: '10px',
+                        textAlign: 'center',
                         marginTop: '-10px',
                         fontSize: '14.4px',
                     }}>{formatVND(book.price)}</p>
@@ -168,19 +158,21 @@ const ReviewBookShop = ({reviewFromCustomers}) => {
     );
 }
 
-const HotAuthor = ({hotAuthors}) => {
+const HotAuthor = ({famousAuthors}) => {
+    console.log(famousAuthors)
     return (
         <Row>
-            {hotAuthors.map((author) => (
+            {famousAuthors.map((author) => (
                 <Col
-                    key={author.id}
+                    className="overflow-hidden"
+                    key={author.authorId}
                     style={{
-                        margin: '15px 1% 30px',
+                        margin: '15px 1% 30px'
                     }}
                 >
                     <img
-                        src={author.avartar}
-                        alt={author.name}
+                        src={author.imgUrl}
+                        alt={author.authorName}
                         style={{
                             display: 'block',
                             marginLeft: 'auto',
@@ -195,7 +187,7 @@ const HotAuthor = ({hotAuthors}) => {
                         textAlign: 'center',
                         fontSize: '12px',
                         marginTop: '10px',
-                    }}>{author.name}</p>
+                    }}>{author.authorName}</p>
                 </Col>
             ))}
         </Row>

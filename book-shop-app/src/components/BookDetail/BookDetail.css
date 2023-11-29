@@ -1,0 +1,95 @@
+body {
+    background-color: #1e1e1e;
+    color: #ffffff;
+    font-family: 'Arial', sans-serif;
+}
+
+.book-detail-container {
+    display: flex;
+    max-width: 1200px;
+    margin: 40px auto;
+    background: #2a2a2a;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    padding: 20px;
+}
+
+.book-detail-image-and-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.book-detail-image img {
+    max-width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.book-detail-info {
+    text-align: center;
+}
+
+.book-detail-info h1 {
+    margin: 0;
+    color: #6699CC; /* Màu của tên sách */
+    font-size: 24px; /* Kích cỡ chữ của tên sách */
+}
+
+.book-detail-info .price {
+    margin-top: 10px;
+    color: #6699CC; /* Màu giá tiền */
+    font-weight: bold; /* Đậm chữ */
+}
+
+/* Phần mô tả sản phẩm */
+.description {
+    flex: 2;
+    border-left: 1px solid #444; /* Viền ngăn cách */
+    padding-left: 20px; /* Khoảng cách từ viền đến nội dung mô tả */
+    margin-left: 20px; /* Khoảng cách từ viền đến container ảnh và thông tin nhanh */
+    color: #6699CC;
+}
+
+/* Button thêm vào giỏ hàng */
+.add-to-cart button {
+    background-color: #007bff; /* Màu xanh dương */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px; /* Khoảng cách từ giá đến button */
+}
+
+.add-to-cart button:hover {
+    background-color: #0056b3; /* Màu xanh đậm hơn khi hover */
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .book-detail-container {
+        flex-direction: column;
+    }
+
+    .description {
+        border-left: none;
+        padding-left: 0;
+        margin-left: 0;
+        margin-top: 20px; /* Khoảng cách giữa phần mô tả và ảnh thông tin nhanh */
+    }
+}
+
+.book-detail-info h1,
+.book-detail-info .price,
+.book-detail-info .author,
+.book-detail-info .publication-year,
+.book-detail-info .genre,
+.book-detail-info .reviews-count {
+    color: #6699CC; /* Áp dụng màu sắc cho chữ */
+}

@@ -14,6 +14,7 @@ import InfoManagement from "./InfoManagement/InfoManagement";
 import ChangePassword from "./ChangePassword/ChangePassword";
 import Rate from "./Rate/Rate";
 import NotFound from "./NotFound/NotFound";
+import BookDetail from "./BookDetail/BookDetail";
 
 function AppRoutes() {
   return (
@@ -23,6 +24,7 @@ function AppRoutes() {
       <Route index element={<Home />} />
       <Route path="/about" element={<About />} />
       <Route path="/shop" element={<Shop />} />
+        <Route path="/shop/:bookId" element={<BookDetail />} />
       <Route path="/cart" element={<Cart />} />
       <Route path="/policy" element={<Policy />} />
       <Route path="/checkout" element={<Checkout />} />

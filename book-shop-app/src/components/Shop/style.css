@@ -191,32 +191,3 @@
 .product-list-container {
     position: relative;
 }
-
-.pagination {
-    bottom: 0;
-    left: 50%;
-    transform: translateX(0);
-    list-style: none;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-}
-
-.pagination li {
-    margin: 0 5px;
-
-}
-
-.pagination .page-link {
-    background-color: #007bff;
-    color: #fff;
-    border: 1px solid #007bff;
-    border-radius: 4px;
-
-}
-
-.pagination .page-link:hover {
-    background-color: #0056b3;
-}
-
-

@@ -78,4 +78,12 @@ public class BookController {
     ) throws ResponseStatusException {
         return ResponseEntity.ok(bookService.getAllByBestSeller(page, size));
     }
+
+    @GetMapping("/famousAuthor")
+    ResponseEntity<?> getFamousAuthor(
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "24") Integer size
+    ) throws ResponseStatusException {
+        return ResponseEntity.ok(bookService.getFamousAuthor(page, size));
+    }
 }

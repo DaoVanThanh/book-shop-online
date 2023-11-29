@@ -76,10 +76,12 @@ public class OrderManagementServiceImpl implements OrderManagementService {
             orderRepository.save(order);
             bookService.changeBooksFromWarehouse(bookQuantities);
             for (BookQuantity bookQuantity : bookQuantities) {
+                Book book = bookRepository.findById(bookQuantity.getBookId()).orElseThrow();
                 OrderDetail orderDetail = OrderDetail.builder()
                         .order(order)
                         .book(bookRepository.findById(bookQuantity.getBookId()).orElseThrow())
                         .quantity(bookQuantity.getQuantity())
+                        .price(book.getPrice())
                         .build();
                 orderDetailRepository.save(orderDetail);
             }
@@ -153,6 +155,7 @@ public class OrderManagementServiceImpl implements OrderManagementService {
                 GetBookDetailResponse bookDetail = bookService.getBookDetail(orderDetail.getBook().getBookId());
                 BookSummary bookSummary = new BookSummary();
                 bookSummary.mapping(bookDetail);
+                bookSummary.setPrice(orderDetail.getPrice());
                 bookQuantitySummaries.add(BookQuantitySummary
                                 .builder()
                                 .bookSummary(bookSummary)

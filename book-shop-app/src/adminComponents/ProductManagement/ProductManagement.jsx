@@ -18,6 +18,7 @@ import {
   AddBook,
   searchBook,
   getBookDetail,
+  updateBook,
 } from "../../apiServices/AdminApi/ProductManagementService";
 import "./PM.css";
 
@@ -48,6 +49,7 @@ const ProductManagement = () => {
     description: "",
     imgUrl: "",
   });
+  const [idUpdate, setIdUpdate] = useState(-1);
 
   useEffect(() => {
     const getBooks = async (page, size) => {
@@ -70,6 +72,7 @@ const ProductManagement = () => {
     setShowAction(false);
     setValidated(false);
     setAction("");
+    setIdUpdate(-1);
     clearNewBook();
   };
 
@@ -109,6 +112,7 @@ const ProductManagement = () => {
         genre: detail.genres.map((genre) => genre.genreName),
         imgUrl: detail.imgUrl,
       });
+      setIdUpdate(id);
     } catch (error) {
       console.log(error);
     }
@@ -137,7 +141,21 @@ const ProductManagement = () => {
           console.log(error);
         }
       } else if (action == UPDATE) {
-        console.log("update");
+        try {
+          await updateBook(
+            idUpdate,
+            newBook.title.trim(),
+            newBook.description.trim(),
+            newBook.price,
+            newBook.publicationDate,
+            newBook.stockQuantity,
+            newBook.imgUrl,
+            newBook.author,
+            newBook.genre
+          );
+        } catch (error) {
+          console.log(error);
+        }
       }
     } else {
       event.preventDefault();
@@ -145,7 +163,6 @@ const ProductManagement = () => {
       setValidated(true);
     }
   };
-
   const handleTitleAdd = (e) => {
     const title = e.target.value;
     setNewBook({ ...newBook, title: title });
@@ -219,10 +236,10 @@ const ProductManagement = () => {
   };
 
   return (
-    <>
+    <div className="ad-container">
       <h1>Quản lý sản phẩm</h1>
       <div className="add-search">
-        <Button className="admin-add" variant="success" onClick={handleShowAdd}>
+        <Button className="admin-add" variant="primary" onClick={handleShowAdd}>
           Thêm sách
         </Button>
 
@@ -247,7 +264,7 @@ const ProductManagement = () => {
             <th>Giá</th>
             <th>Số lượng</th>
             <th>Ảnh</th>
-            <th></th>
+            <th>Chỉnh sửa</th>
           </tr>
         </thead>
 
@@ -259,16 +276,15 @@ const ProductManagement = () => {
               <td>{book.price}đ</td>
               <td>{book.stockQuantity}</td>
               <td>
-                <Image src={book.imgUrl}></Image>
+                <Image src={book.imgUrl} style={{ width: "100px" }}></Image>
               </td>
               <td>
-                <Button
-                  variant="success"
+                <i
+                  className="fa-regular fa-pen-to-square"
+                  style={{ cursor: "pointer", marginRight: "20px" }}
                   onClick={() => handleShowUpdate(book.bookId)}
-                >
-                  Cập nhật
-                </Button>{" "}
-                <Button variant="success">Xóa</Button>
+                ></i>
+                <i className="fa-solid fa-trash"></i>
               </td>
             </tr>
           ))}
@@ -301,157 +317,178 @@ const ProductManagement = () => {
         </Modal.Header>
         <Modal.Body>
           <Form noValidate validated={validated} onSubmit={handleSubmitForm}>
-            <Form.Group className="form-group" controlId="validationCustom01">
-              <Form.Label className="form-label">Tên sách</Form.Label>
+            <Form.Floating className="mb-3" id="validationCustom01">
               <Form.Control
+                id="fl1"
                 type="text"
+                placeholder="Tên sách"
                 required
                 onChange={handleTitleAdd}
                 value={newBook.title}
               />
+              <label htmlFor="fl1">Tên sách</label>
               <Form.Control.Feedback type="invalid">
                 Vui lòng nhập tên sách
               </Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group className="form-group" controlId="validationCustom02">
-              <Form.Label className="form-label">Thể loại</Form.Label>
-              <Row>
-                <Col>
-                  <Form.Control
-                    type="text"
-                    required={newBook.genre.length == 0}
-                    onChange={handleGenre}
-                    value={currentGenre}
-                    isInvalid={validated && newBook.genre.length === 0}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    Vui lòng thêm thể loại
-                  </Form.Control.Feedback>
-                </Col>
-                <Col>
-                  <Button variant="success" onClick={addGenre}>
-                    Thêm
-                  </Button>
-                </Col>
-                {newBook.genre.map((genre, id) => (
-                  <ListGroup key={id}>
-                    <ListGroup.Item
-                      style={{
-                        border: "none",
-                        marginTop: "10px",
-                        padding: "0 16px",
-                      }}
-                    >
-                      {genre}
-                      <i
-                        style={{
-                          float: "right",
-                          cursor: "pointer",
-                          marginTop: "5px",
-                        }}
-                        className="fa-solid fa-trash"
-                        onClick={() => handleDeleteGenre(genre)}
-                      ></i>
-                    </ListGroup.Item>
-                  </ListGroup>
-                ))}
-              </Row>
-            </Form.Group>
-            <Form.Group className="form-group" controlId="validationCustom03">
-              <Form.Label className="form-label">Tác giả</Form.Label>
-              <Row>
-                <Col>
-                  <Form.Control
-                    type="text"
-                    required={newBook.author.length === 0}
-                    onChange={handleAuthor}
-                    value={currentAuthor}
-                    isInvalid={validated && newBook.author.length === 0}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    Vui lòng thêm tác giả
-                  </Form.Control.Feedback>
-                </Col>
-                <Col>
-                  <Button variant="success" onClick={addAuthor}>
-                    Thêm
-                  </Button>
-                </Col>
-                {newBook.author.map((author, id) => (
-                  <ListGroup key={id}>
-                    <ListGroup.Item
-                      style={{
-                        border: "none",
-                        marginTop: "10px",
-                        padding: "0 16px",
-                      }}
-                    >
-                      {author}
-                      <i
-                        style={{
-                          float: "right",
-                          cursor: "pointer",
-                          marginTop: "5px",
-                        }}
-                        className="fa-solid fa-trash"
-                        onClick={() => handleDeleteAuthor(author)}
-                      ></i>
-                    </ListGroup.Item>
-                  </ListGroup>
-                ))}
-              </Row>
-            </Form.Group>
-            <Form.Group className="form-group" controlId="validationCustom04">
-              <Form.Label className="form-label">Ngày xuất bản</Form.Label>
+            </Form.Floating>
+            <Form.Floating
+              className="mb-3 genre-author"
+              id="validationCustom02"
+            >
               <Form.Control
+                id="fl2"
+                type="text"
+                placeholder="Thể loại"
+                required={newBook.genre.length == 0}
+                onChange={handleGenre}
+                value={currentGenre}
+                isInvalid={validated && newBook.genre.length === 0}
+              />
+              <label htmlFor="fl2">Thể loại</label>
+              <Form.Control.Feedback type="invalid" style={{marginLeft: "10px"}}>
+                Vui lòng thêm thể loại
+              </Form.Control.Feedback>
+
+              <Button
+                variant="success"
+                className="add-genre-author"
+                style={{}}
+                onClick={addGenre}
+              >
+                Thêm
+              </Button>
+            </Form.Floating>
+            <div className="list-genre-author">
+              {newBook.genre.map((genre, id) => (
+                <ListGroup key={id}>
+                  <ListGroup.Item
+                    style={{
+                      border: "none",
+                      padding: "0 0 0 16px",
+                    }}
+                  >
+                    <i
+                      style={{
+                        cursor: "pointer",
+                        marginRight: "20px",
+                      }}
+                      className="fa-solid fa-trash"
+                      onClick={() => handleDeleteGenre(genre)}
+                    ></i>
+                    {genre}
+                  </ListGroup.Item>
+                </ListGroup>
+              ))}
+            </div>
+
+            <Form.Floating
+              className="mb-3 genre-author"
+              id="validationCustom03"
+            >
+              <Form.Control
+                id="fl3"
+                type="text"
+                placeholder="Tác giả"
+                required={newBook.author.length === 0}
+                onChange={handleAuthor}
+                value={currentAuthor}
+                isInvalid={validated && newBook.author.length === 0}
+              />
+              <label htmlFor="fl3">Tác giả</label>
+              <Form.Control.Feedback type="invalid" style={{marginLeft: "10px"}}>
+                Vui lòng thêm tác giả
+              </Form.Control.Feedback>
+
+              <Button
+                variant="success"
+                className="add-genre-author"
+                onClick={addAuthor}
+              >
+                Thêm
+              </Button>
+            </Form.Floating>
+            <div className="list-genre-author">
+              {newBook.author.map((author, id) => (
+                <ListGroup key={id}>
+                  <ListGroup.Item
+                    style={{
+                      border: "none",
+                      padding: "0 0 0 16px",
+                    }}
+                  >
+                    <i
+                      style={{
+                        cursor: "pointer",
+                        marginRight: "20px",
+                      }}
+                      className="fa-solid fa-trash"
+                      onClick={() => handleDeleteAuthor(author)}
+                    ></i>
+                    {author}
+                  </ListGroup.Item>
+                </ListGroup>
+              ))}
+            </div>
+
+            <Form.Floating className="mb-3" id="validationCustom04">
+              <Form.Control
+                id="fl4"
                 type="date"
+                placeholder="Ngày xuất bản"
                 required
                 onChange={handlePublicationDate}
                 value={newBook.publicationDate}
               />
+              <label htmlFor="fl4">Ngày xuất bản</label>
               <Form.Control.Feedback type="invalid">
                 Vui lòng nhập ngày xuất bản
               </Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group className="form-group" controlId="validationCustom05">
-              <Form.Label className="form-label">Giá</Form.Label>
+            </Form.Floating>
+            <Form.Floating className="mb-3" id="validationCustom05">
               <Form.Control
+                id="fl5"
                 type="number"
+                placeholder="Giá"
                 required
                 onChange={handlePrice}
                 value={newBook.price}
               />
+              <label htmlFor="fl5">Giá</label>
               <Form.Control.Feedback type="invalid">
                 Vui lòng nhập giá
               </Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group className="form-group" controlId="validationCustom06">
-              <Form.Label className="form-label">Số lượng</Form.Label>
+            </Form.Floating>
+            <Form.Floating className="mb-3" id="validationCustom06">
               <Form.Control
+                id="fl6"
                 type="number"
+                placeholder="Số lượng"
                 required
                 onChange={handleStockQuantity}
                 value={newBook.stockQuantity}
               />
+              <label htmlFor="fl6">Số lượng</label>
               <Form.Control.Feedback type="invalid">
                 Vui lòng nhập số lượng
               </Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group className="form-group" controlId="validationCustom07">
-              <Form.Label className="form-label">Mô tả</Form.Label>
+            </Form.Floating>
+            <Form.Floating className="mb-3" id="validationCustom07">
               <Form.Control
+                id="fl7"
                 type="text"
                 as="textarea"
+                placeholder="Mô tả"
                 required
                 onChange={handleDescription}
                 value={newBook.description}
               />
+              <label htmlFor="fl7">Mô tả</label>
               <Form.Control.Feedback type="invalid">
                 Vui lòng nhập mô tả
               </Form.Control.Feedback>
-            </Form.Group>
+            </Form.Floating>
             <Form.Group className="form-group" controlId="validationCustom07">
-              <Form.Label className="form-label">Ảnh</Form.Label>
+              <Form.Label className="form-label"></Form.Label>
               <FileBase64
                 multiple={false}
                 type="file"
@@ -460,9 +497,6 @@ const ProductManagement = () => {
                   setNewBook({ ...newBook, imgUrl: base64 })
                 }
               />
-              <Form.Control.Feedback type="invalid">
-                Vui lòng nhập mô tả
-              </Form.Control.Feedback>
             </Form.Group>
             <div
               style={{
@@ -487,7 +521,7 @@ const ProductManagement = () => {
           <div id="radius-shape-2" className="position-absolute shadow-5-strong"></div>
         </Modal.Body>
       </Modal>
-    </>
+    </div>
   );
 };
 

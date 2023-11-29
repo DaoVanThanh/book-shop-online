@@ -64,7 +64,7 @@ const Checkout = () => {
             ...orderData,
             bookQuantities: bookQuantities,
         };
-        axios.post('http://localhost:8080/api/orm/orders/create', updatedOrderData, {headers : {'Authorization': 'Bearer '+ accessToken}}).then(()=>{
+        axios.post('http://localhost:8080/api/user/orm/orders/create', updatedOrderData, {headers : {'Authorization': 'Bearer '+ accessToken}}).then(()=>{
             handleShow();
 
 
@@ -121,73 +121,64 @@ const Checkout = () => {
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-7">
-                            <div className="billing-info-wrap">
+                            <form className="billing-info-wrap rounded shadow p-5">
                                 <h3>Thông tin đặt hàng</h3>
-                                <div className="row">
-                                    <div>
-                                        <div className="billing-info">
-                                            <label>Họ</label>
-                                            <input type="text" />
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div className="billing-info mb-20">
-                                            <label>Tên</label>
-                                            <input type="text" />
-                                        </div>
-                                    </div>
 
-                                    <div>
-                                        <div className="billing-info mb-20">
-                                            <label>Tỉnh / Thành phố</label>
-                                            <input type="text" />
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div className="billing-info mb-20">
-                                            <label>Quận / Huyện</label>
-                                            <input type="text" />
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div className="billing-info mb-20">
-                                            <label>Phường / Xã</label>
-                                            <input type="text" />
-                                        </div>
-                                    </div>
+                                <div className="billing-info form-group">
+                                    <label>Họ</label>
+                                    <input type="text" className="form-control"/>
+                                </div>
 
-                                    <div>
-                                        <div className="billing-info mb-20">
-                                            <label>Địa chỉ cụ thể</label>
-                                            <input type="text" />
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div className="billing-info mb-20">
-                                            <label>Số điện thoại</label>
-                                            <input type="text" />
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div className="billing-info mb-20">
-                                            <label>Email</label>
-                                            <input type="text" />
-                                        </div>
-                                    </div>
+                                <div className="billing-info mb-20 form-group">
+                                    <label>Tên</label>
+                                    <input type="text" className="form-control"/>
+                                </div>
+
+                                <div className="billing-info mb-20 form-group">
+                                    <label>Tỉnh / Thành phố</label>
+                                    <input type="text" className="form-control"/>
+                                </div>
+
+                                <div className="billing-info mb-20 form-group">
+                                    <label>Quận / Huyện</label>
+                                    <input type="text" className="form-control"/>
+                                </div>
+
+                                <div className="billing-info mb-20 form-group">
+                                    <label>Phường / Xã</label>
+                                    <input type="text" className="form-control"/>
+                                </div>
+
+                                <div className="billing-info mb-20 form-group">
+                                    <label>Địa chỉ cụ thể</label>
+                                    <input type="text" className="form-control"/>
+                                </div>
+
+                                <div className="billing-info mb-20 form-group">
+                                    <label>Số điện thoại</label>
+                                    <input type="text" className="form-control"/>
+                                </div>
+
+                                <div className="billing-info mb-20 form-group">
+                                    <label>Email</label>
+                                    <input type="text" className="form-control"/>
                                 </div>
 
                                 <div>
                                     <h4>Thông tin bổ sung</h4>
-                                    <div className="additional-info">
+                                    <div className="additional-info form-group">
                                         <label>Ghi chú</label>
                                         <textarea
+                                            className="form-control"
                                             placeholder="Ghi chú cho cửa hàng và đơn vị vận chuyển "
                                             name="message"
                                             defaultValue={""}
                                         />
                                     </div>
                                 </div>
-                            </div>
+                            </form>
+
+
                         </div>
 
                         <div className="col-lg-5">

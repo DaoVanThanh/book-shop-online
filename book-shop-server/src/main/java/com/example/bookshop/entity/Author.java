@@ -20,6 +20,10 @@ public class Author {
     @NotNull
     private String authorName;
 
+    @Column(name = "img_url", columnDefinition = "LONGTEXT")
+    @Lob
+    private String imgUrl;
+
     @ManyToMany(mappedBy = "authors")
     @JsonIgnore
     private Set<Book> books = new HashSet<>();

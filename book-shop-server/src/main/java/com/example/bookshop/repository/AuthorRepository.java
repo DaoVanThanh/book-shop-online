@@ -1,6 +1,9 @@
 package com.example.bookshop.repository;
 
 import com.example.bookshop.entity.Author;
+import com.example.bookshop.entity.Book;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -27,5 +30,14 @@ public interface AuthorRepository extends JpaRepository<Author, Long>  {
     @Transactional
     ArrayList<Author> getListAuthorByBookId(
             @Param("book_id") Long bookId
+    );
+
+    @Query(
+            value = "SELECT * " +
+                    "FROM authors",
+            nativeQuery = true
+    )
+    Page<Author> findAllByFamous(
+            Pageable pageable
     );
 }

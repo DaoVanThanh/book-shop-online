@@ -4,6 +4,7 @@ import com.example.bookshop.dto.request.*;
 import com.example.bookshop.dto.response.GetBookDetailResponse;
 import com.example.bookshop.dto.BookQuantity;
 import com.example.bookshop.dto.response.GetUserReviewResponse;
+import com.example.bookshop.entity.Author;
 import com.example.bookshop.entity.Book;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -33,4 +34,6 @@ public interface BookService {
     Page<Book> getAllBook(Integer page, Integer size) throws ResponseStatusException;
 
     Page<Book> getAllByBestSeller(Integer page, Integer size) throws ResponseStatusException;
+
+    Page<Author> getFamousAuthor(Integer page, Integer size) throws ResponseStatusException;
 }

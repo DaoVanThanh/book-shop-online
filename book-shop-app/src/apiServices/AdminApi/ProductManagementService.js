@@ -60,4 +60,23 @@ const updateBook = async (
   });
 };
 
-export { AddBook, searchBook, getBookDetail, updateBook };
+const getBestSellerBooks = async (size) => {
+  return await instance.get("/api/book/bestSeller", {
+    params: {
+      page: 0,
+      size: size,
+    }
+  });
+};
+
+const getFamousAuthors = async (size) => {
+  return await instance.get("/api/book/famousAuthor", {
+    params: {
+      page: 0,
+      size: size,
+    }
+  });
+};
+
+
+export { AddBook, searchBook, getBookDetail, updateBook, getBestSellerBooks, getFamousAuthors };

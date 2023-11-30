@@ -27,7 +27,7 @@ public interface BookService {
     GetUserReviewResponse getUserReview(GetUserReviewRequest request) throws  ResponseStatusException;
     Page<Book> getListBookByGenre(Long genreId, Integer page, Integer size) throws ResponseStatusException;
 
-    Page<Book> getListBookByPrice(Long minPrice, Long maxPrice, Integer page, Integer size) throws ResponseStatusException;
+    Page<Book> getListBookByPrice(Long minPrice, Long maxPrice, Integer page, Integer size, String sort) throws ResponseStatusException;
 
     Page<Book> getListBookBySearch(String key, Integer page, Integer size) throws ResponseStatusException;
 

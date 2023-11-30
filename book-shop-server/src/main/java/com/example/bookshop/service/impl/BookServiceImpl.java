@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -141,7 +142,7 @@ public class BookServiceImpl implements BookService {
                 );
     }
 
-    public Page<Book> getListBookByPrice(Long minPrice, Long maxPrice, Integer page, Integer size) throws ResponseStatusException {
+    public Page<Book> getListBookByPrice(Long minPrice, Long maxPrice, Integer page, Integer size, String sort) throws ResponseStatusException {
         ValidatePageSize(page, size);
         if(minPrice > maxPrice) {
             throw new ParamInvalidException("Khoảng giá trị price không hợp lệ");
@@ -149,7 +150,16 @@ public class BookServiceImpl implements BookService {
         if(minPrice < 0) {
             throw new ParamInvalidException("minPrice không được < 0");
         }
-        Pageable pageable = PageRequest.of(page, size);
+        if(!sort.equals("asc") && !sort.equals("desc")) {
+            throw new ParamInvalidException("sort không hợp lệ");
+        }
+
+        Pageable pageable;
+        if(sort.equals("asc")) {
+            pageable = PageRequest.of(page, size, Sort.by("price").ascending());
+        } else {
+            pageable = PageRequest.of(page, size, Sort.by("price").descending());
+        }
         return bookRepository
                 .findAllByPriceRange(
                         minPrice,

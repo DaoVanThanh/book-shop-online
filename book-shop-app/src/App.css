@@ -36,3 +36,23 @@
     transform: rotate(360deg);
   }
 }
+
+.nav-link.active {
+  border-radius: 10px;
+  color: white !important;
+  background-color: #196142 !important;
+  /* color: red !important; */
+}
+
+.nav-link {
+  margin: 5px;
+  border-radius: 10px;
+  padding: 8px !important;
+  color: #196142 !important;
+  background-color: white !important;
+}
+
+.nav-link:hover {
+  background-color: #196142 !important;
+  color: white !important;
+}

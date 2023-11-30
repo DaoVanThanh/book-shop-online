@@ -10,6 +10,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 
 import logo from "../../logo.png";
 import { jwtDecode } from "jwt-decode";
+import { toast, ToastContainer } from "react-toastify";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -26,6 +27,7 @@ const Header = () => {
       const currentURL = "/cart";
       localStorage.setItem("currentURL", currentURL);
       navigate("/login");
+      toast("Vui lòng đăng nhập để xem giỏ hàng");
     }
   };
 
@@ -34,7 +36,7 @@ const Header = () => {
       <Container>
         <Navbar.Brand
           onClick={() => navigate("/")}
-          style={{ marginRight: "40%" }}
+          style={{ marginRight: "20%" }}
         >
           <img
             src={logo}
@@ -94,6 +96,7 @@ const Header = () => {
           </Nav>
         </Navbar.Collapse>
       </Container>
+      <ToastContainer />
     </Navbar>
   );
 };

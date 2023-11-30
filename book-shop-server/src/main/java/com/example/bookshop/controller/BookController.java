@@ -49,9 +49,10 @@ public class BookController {
             @RequestParam(value = "min_price", defaultValue = "0") Long minPrice,
             @RequestParam(value = "max_price", defaultValue = "1000000000") Long maxPrice,
             @RequestParam(value = "page", defaultValue = "0") Integer page,
-            @RequestParam(value = "size", defaultValue = "24") Integer size
+            @RequestParam(value = "size", defaultValue = "24") Integer size,
+            @RequestParam(value = "sort", defaultValue = "asc") String sort
     ) throws ResponseStatusException {
-        return ResponseEntity.ok(bookService.getListBookByPrice(minPrice, maxPrice, page, size));
+        return ResponseEntity.ok(bookService.getListBookByPrice(minPrice, maxPrice, page, size, sort));
     }
 
     @GetMapping("/search")

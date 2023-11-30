@@ -5,15 +5,20 @@ import com.example.bookshop.adminService.AdminBookService;
 import com.example.bookshop.adminService.AdminGenreService;
 import com.example.bookshop.dto.request.AddBookRequest;
 import com.example.bookshop.dto.request.UpdateBookRequest;
+import com.example.bookshop.dto.response.GetBookStatisticResponse;
 import com.example.bookshop.entity.*;
 import com.example.bookshop.exception.ParamInvalidException;
 import com.example.bookshop.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 
 @Service
@@ -107,4 +112,25 @@ public class AdminBookServiceImpl implements AdminBookService {
 
         bookRepository.save(book);
     }
+
+    public Page<GetBookStatisticResponse> getBookStatistic(Integer page, Integer size, Date startDate, Date endDate) {
+        if(page < 0) {
+            throw new ParamInvalidException("Page không hợp lệ");
+        }
+        if(size <= 0) {
+            throw new ParamInvalidException("Size không hợp lệ");
+        }
+        if(startDate.after(endDate)) {
+            throw new ParamInvalidException("Start Date và End Date không hợp lệ");
+        }
+
+        Pageable pageable = PageRequest.of(page, size);
+        return bookRepository
+                .getBookStatistic(
+                        pageable,
+                        startDate,
+                        endDate
+                );
+    }
+
 }

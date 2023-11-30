@@ -1,26 +1,5 @@
-.header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    background-color: #f5f5f5;
-}
 
-.shop-container {
-    background-color: hsl(218, 41%, 15%);
-    background-image: radial-gradient(650px circle at 0% 0%,
-    hsl(218, 41%, 35%) 15%,
-    hsl(218, 41%, 30%) 35%,
-    hsl(218, 41%, 20%) 75%,
-    hsl(218, 41%, 19%) 80%,
-    transparent 100%),
-    radial-gradient(1250px circle at 100% 100%,
-            hsl(218, 41%, 45%) 15%,
-            hsl(218, 41%, 30%) 35%,
-            hsl(218, 41%, 20%) 75%,
-            hsl(218, 41%, 19%) 80%,
-            transparent 100%);
-}
+
 
 .search-bar {
     display: flex;
@@ -38,7 +17,7 @@
 
 .search-bar button {
     padding: 5px 10px;
-    background-color: #3366FF;
+    background-color: green;
     color: white;
     border: none;
     border-radius: 4px;
@@ -52,7 +31,7 @@
 
 .search-bar button:hover,
 .search-bar button:focus {
-    background-color: #3333CC;
+    background-color: #006600;
 }
 
 .price-filter {
@@ -73,7 +52,7 @@
 }
 
 .product {
-    border: 1px solid #6633FF;
+    border: 1px solid green;
     padding: 10px;
     text-align: center;
     display: flex;
@@ -82,7 +61,7 @@
     overflow: hidden;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    color: #6699CC;
+    color: #333;
     margin-bottom: 20px;
 }
 
@@ -113,7 +92,7 @@
 }
 
 .sort-button {
-    background-color: #3366FF;
+    background-color: green;
     color: #fff;
     border: none;
     padding: 8px 16px;
@@ -123,7 +102,7 @@
 }
 
 .sort-button:hover {
-    background-color: #3333CC;
+    background-color: #006600;
 }
 
 .sort-options-list {
@@ -157,7 +136,7 @@
 .view-more-button {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #3366FF;
+    background-color: green;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -168,25 +147,10 @@
 }
 
 .view-more-button:hover {
-    background-color: #003399;
+    background-color: #006600;
 }
 
-.shop-container {
-    display: flex;
-    background-color: hsl(218, 41%, 15%);
-    background-image: radial-gradient(650px circle at 0% 0%,
-    hsl(218, 41%, 35%) 15%,
-    hsl(218, 41%, 30%) 35%,
-    hsl(218, 41%, 20%) 75%,
-    hsl(218, 41%, 19%) 80%,
-    transparent 100%),
-    radial-gradient(1250px circle at 100% 100%,
-            hsl(218, 41%, 45%) 15%,
-            hsl(218, 41%, 30%) 35%,
-            hsl(218, 41%, 20%) 75%,
-            hsl(218, 41%, 19%) 80%,
-            transparent 100%);
-}
+
 
 .product-list-container {
     position: relative;
@@ -202,21 +166,13 @@
     justify-content: center;
 }
 
-.pagination li {
-    margin: 0 5px;
-
+.search-sort-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    margin-right: 20px;
 }
 
-.pagination .page-link {
-    background-color: #007bff;
-    color: #fff;
-    border: 1px solid #007bff;
-    border-radius: 4px;
-
-}
-
-.pagination .page-link:hover {
-    background-color: #0056b3;
-}
 
 

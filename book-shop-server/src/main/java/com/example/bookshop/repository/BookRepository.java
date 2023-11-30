@@ -1,5 +1,6 @@
 package com.example.bookshop.repository;
 
+import com.example.bookshop.dto.response.GetBookStatisticResponse;
 import com.example.bookshop.entity.Book;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Optional;
 
 @Repository
@@ -130,5 +132,28 @@ public interface BookRepository extends JpaRepository<Book, Long>  {
     void addBookGenre(
             @Param("book_id") Long bookId,
             @Param("genre_id") Long genreId
+    );
+
+    @Query(
+            value = "SELECT b.book_id AS bookId, " +
+                        "b.title AS title, " +
+                        "COALESCE(SUM(od.quantity), 0) AS totalSold, " +
+                        "COALESCE(SUM(od.quantity * od.price), 0) AS revenue " +
+                    "FROM books AS b " +
+                    "LEFT JOIN ( " +
+                        "SELECT book_id, quantity, price " +
+                        "FROM order_details AS od " +
+                        "LEFT JOIN orders AS o ON o.order_id = od.order_id " +
+                        "WHERE o.order_date BETWEEN :start_date AND :end_date " +
+                        "AND o.status = 'SUCCESS' " +
+                    ") AS od ON od.book_id = b.book_id " +
+                    "GROUP BY b.book_id " +
+                    "ORDER BY revenue DESC",
+            nativeQuery = true
+    )
+    Page<GetBookStatisticResponse> getBookStatistic(
+            Pageable pageable,
+            @Param("start_date") Date startDate,
+            @Param("end_date") Date endDate
     );
 }

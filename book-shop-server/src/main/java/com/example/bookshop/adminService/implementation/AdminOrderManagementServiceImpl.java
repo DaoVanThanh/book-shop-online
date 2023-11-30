@@ -3,12 +3,16 @@ package com.example.bookshop.adminService.implementation;
 import com.example.bookshop.adminService.AdminOrderManagementService;
 import com.example.bookshop.dto.request.AdminUpdateStatusOrderDto;
 import com.example.bookshop.dto.response.AdminOrderManagementDto;
+import com.example.bookshop.dto.response.GetOrderStatisticResponse;
 import com.example.bookshop.entity.Order;
 import com.example.bookshop.entity.enums.OrderStatus;
+import com.example.bookshop.exception.ParamInvalidException;
 import com.example.bookshop.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,6 +41,14 @@ public class AdminOrderManagementServiceImpl implements AdminOrderManagementServ
             order.setStatus(newStatus);
             orderRepository.save(order);
         }
+    }
+
+    public GetOrderStatisticResponse getOrderStatistic(Date startDate, Date endDate) throws ResponseStatusException {
+        if(startDate.after(endDate)) {
+            throw new ParamInvalidException("Start Date và End Date không hợp lệ");
+        }
+
+        return orderRepository.getOrderStatistic(startDate, endDate);
     }
 
 }

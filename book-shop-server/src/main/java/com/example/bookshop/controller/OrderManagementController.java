@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
+
 @RestController
 @RequestMapping("/api/user/orm")
 @RequiredArgsConstructor
@@ -64,7 +66,9 @@ public class OrderManagementController {
     }
 
     @GetMapping("orders")
-    public ResponseEntity<?> GetAllOrders() throws ResponseStatusException {
-        return ResponseEntity.ok(orderManagementService.getAllOrders());
+    public ResponseEntity<?> GetAllOrders(
+            @RequestParam(value = "ids", defaultValue = "") ArrayList<Long> ids
+    ) throws ResponseStatusException {
+        return ResponseEntity.ok(orderManagementService.getAllOrders(ids));
     }
 }

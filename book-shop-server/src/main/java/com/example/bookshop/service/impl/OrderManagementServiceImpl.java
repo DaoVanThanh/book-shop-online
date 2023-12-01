@@ -144,9 +144,15 @@ public class OrderManagementServiceImpl implements OrderManagementService {
                 .build();
     }
 
-    public GetAllOrdersResponse getAllOrders() throws ResponseStatusException {
+    public GetAllOrdersResponse getAllOrders(ArrayList<Long> ids) throws ResponseStatusException {
         Long userId = userService.getUserId();
-        ArrayList<Order> orders = orderRepository.getOrdersByUserUserId(userId);
+        ArrayList<Order> orders;
+        if (ids.isEmpty()) {
+            orders = orderRepository.getOrdersByUserUserId(userId);
+        } else {
+            orders = orderRepository.getOrdersByUserUserIdAndOrderIdIn(userId, ids);
+        }
+
         ArrayList<OrderSummary> orderSummaries = new ArrayList<>();
         for (Order order : orders) {
             ArrayList<OrderDetail> orderDetails = orderDetailRepository.getOrderDetailsByOrder(order);

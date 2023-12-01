@@ -28,6 +28,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     ArrayList<Order> getOrdersByUserUserId(Long userId);
 
+    ArrayList<Order> getOrdersByUserUserIdAndOrderIdIn(Long userId, ArrayList<Long> ids);
+
     @Query(
             value = "SELECT COUNT(*) AS numberOfOrder, SUM(total_amount) AS revenue " +
                     "FROM orders AS o " +

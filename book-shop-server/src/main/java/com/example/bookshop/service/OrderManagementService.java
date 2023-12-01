@@ -17,5 +17,5 @@ public interface OrderManagementService {
     GetOrderCostResponse getOrderCost(GetOrderCostRequest request) throws ResponseStatusException;
     GetCartDetailResponse getCartDetail() throws ResponseStatusException;
 
-    GetAllOrdersResponse getAllOrders() throws ResponseStatusException;
+    GetAllOrdersResponse getAllOrders(ArrayList<Long> ids) throws ResponseStatusException;
 }

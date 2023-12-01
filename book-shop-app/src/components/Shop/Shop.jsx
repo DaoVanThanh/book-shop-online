@@ -128,22 +128,45 @@ const PriceFilter = ({ priceRange, onPriceChange }) => {
 };
 
 
-const Categories = ({ categories }) => {
-    return (
-        <div className="categories">
-            <h3>Thể loại sách</h3>
-            <ul>
-                {categories.map((category, index) => (
-                    <li key={index}>{category}</li>
-                ))}
-            </ul>
-        </div>
-    );
-};
+// const Categories = ({ onSelectGenre }) => {
+//     const [categories, setCategories] = useState([]);
+//     const [showAll, setShowAll] = useState(false);
+//
+//     useEffect(() => {
+//         axios.get('http://localhost:8080/api/genre/all')
+//             .then(response => {
+//                 setCategories(response.data);
+//             })
+//             .catch(error => {
+//                 console.error('Lỗi khi lấy dữ liệu thể loại: ', error);
+//             });
+//     }, []);
+//
+//     const displayCategories = showAll ? categories : categories.slice(0, 5);
+//
+//     return (
+//         <div className="categories">
+//             <h3>Thể loại sách</h3>
+//             <ul>
+//                 {displayCategories.map((category) => (
+//                     <li key={category.genreId} onClick={() => onSelectGenre(category.genreId)}>
+//                         {category.genreName}
+//                     </li>
+//                 ))}
+//             </ul>
+//             {categories.length >= 5 && (
+//                 <button onClick={() => setShowAll(!showAll)}>
+//                     {showAll ? 'Thu Gọn' : 'Xem Thêm'}
+//                 </button>
+//             )}
+//         </div>
+//     );
+// };
+
 
 
 const LeftColumn = ({ priceRange, onPriceChange }) => {
-    const categories = ['Tiểu thuyết', 'Kinh doanh', 'Kỹ năng sống', 'Lịch sử'];
+    // const categories = [];
 
     return (
         <div className="left-column">
@@ -151,7 +174,7 @@ const LeftColumn = ({ priceRange, onPriceChange }) => {
                 priceRange={priceRange}
                 onPriceChange={onPriceChange}
             />
-            <Categories categories={categories} />
+            {/*<Categories categories={categories} />*/}
         </div>
     );
 };
@@ -177,8 +200,29 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         pageNumbers.push(i);
     }
 
+    const goToNextPage = () => {
+        if (currentPage < totalPages) {
+            onPageChange(currentPage + 1);
+        }
+    }
+
+    const goToPrevPage = () => {
+        if (currentPage > 1) {
+            onPageChange(currentPage - 1);
+        }
+    }
+
     return (
         <ul className="pagination">
+            <li>
+                <button
+                    className="page-link"
+                    onClick={goToPrevPage}
+                    disabled={currentPage === 1}
+                >
+                    Trang trước
+                </button>
+            </li>
             {pageNumbers.map((pageNumber) => (
                 <li
                     key={pageNumber}
@@ -192,9 +236,19 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
                     </button>
                 </li>
             ))}
+            <li>
+                <button
+                    className="page-link"
+                    onClick={goToNextPage}
+                    disabled={currentPage === totalPages}
+                >
+                    Trang sau
+                </button>
+            </li>
         </ul>
     );
 };
+
 
 const Shop = () => {
     const [products, setProducts] = useState([]);
@@ -224,6 +278,21 @@ const Shop = () => {
         setPriceRange(newRange);
     };
 
+    const handleSelectGenre = (genreId) => {
+        axios.get(`http://localhost:8080/api/book/genre/${genreId}?page=${currentPage}&size=${pageSize}`)
+            .then(response => {
+                if (response.data && Array.isArray(response.data.content)) {
+                    setProducts(response.data.content);
+                    setTotalPages(response.data.totalPages);
+                } else {
+                    console.error('Nhận dữ liệu không hợp lệ');
+                }
+            })
+            .catch(error => {
+                console.error('Lỗi khi lấy dữ liệu sách theo thể loại: ', error);
+            });
+    };
+
     useEffect(() => {
         axios.get(`http://localhost:8080/api/book/all?page=${currentPage}&size=${pageSize}`)
             .then(response => {
@@ -249,7 +318,9 @@ const Shop = () => {
 
     const handlePageChange = (newPage) => {
         setCurrentPage(newPage);
+        window.scrollTo(0, 0);
     };
+
 
     const sortedProducts = () => {
         if (!Array.isArray(products)) {
@@ -282,6 +353,7 @@ const Shop = () => {
                 totalPages={totalPages}
                 handlePageChange={handlePageChange}
             />
+            {/*<Categories onSelectGenre={handleSelectGenre} />*/}
         </div>
     );
 };

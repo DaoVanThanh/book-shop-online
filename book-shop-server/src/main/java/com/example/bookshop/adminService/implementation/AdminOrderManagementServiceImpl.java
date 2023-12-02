@@ -47,8 +47,11 @@ public class AdminOrderManagementServiceImpl implements AdminOrderManagementServ
         if(startDate.after(endDate)) {
             throw new ParamInvalidException("Start Date và End Date không hợp lệ");
         }
-
-        return orderRepository.getOrderStatistic(startDate, endDate);
+        GetOrderStatisticResponse response = new GetOrderStatisticResponse();
+        response.setNumberOfOrder(orderRepository.getStatisticNumberOfOrder(startDate, endDate));
+        response.setRevenue(orderRepository.getStatisticRevenue(startDate, endDate));
+        response.setNumberOfBook(orderRepository.getStatisticNumberOfBook(startDate, endDate));
+        return response;
     }
 
 }

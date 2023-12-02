@@ -8,7 +8,8 @@
   margin-right: 50%;
 }
 
-.ad-container th, td {
+th,
+td {
   vertical-align: middle;
   text-align: center;
 }
@@ -38,3 +39,4 @@
   display: flex;
   align-items: baseline;
 }
+

@@ -6,6 +6,8 @@ import "../AppRoutes";
 import { getOrder, cancelOrder } from "../../apiServices/OrderManagementService";
 import 'react-toastify/dist/ReactToastify.css';
 import {ToastContainer,toast} from 'react-toastify'
+import { Link } from 'react-router-dom';
+
 const ConfirmationModal = ({ show, handleClose, handleConfirm }) => {
   return (
       <Modal show={show} onHide={handleClose}>
@@ -167,7 +169,7 @@ const OrderList = ({ status, orders }) => {
                 <Row>
                   <Col sm={3}></Col>
                   <Col className="text-muted" sm={6}>
-                    Ngày đặt hàng: {new Date(order.orderDate).toLocaleDateString()}
+                    Ngày đặt hàng: {new Date(order.orderDate).toLocaleString()}
                   </Col>
                   <Col sm={3} className="fw-bold">
                     <Card.Text>Tổng: {order.totalAmount}vnđ</Card.Text>
@@ -187,9 +189,9 @@ const OrderList = ({ status, orders }) => {
                 </Col>
                 <Col sm={4}>
                   {status === "SUCCESS" && (
-                      <Button className="mb-2" variant="secondary" href='/rate'>
+                      <Link to={`/rate?orderId=${order.orderId}`} className="btn btn-secondary mb-2">
                         Xem đánh giá
-                      </Button>
+                      </Link>
                   )}
                 </Col>
                 <Col sm={4}>

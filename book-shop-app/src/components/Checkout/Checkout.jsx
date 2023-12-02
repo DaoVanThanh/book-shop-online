@@ -8,17 +8,23 @@ import 'react-toastify/dist/ReactToastify.css';
 import {ToastContainer,toast} from 'react-toastify'
 import { useNavigate } from "react-router-dom";
 import {getCart, getBookInfo, changeCart} from "../../apiServices/CartService";
-
+import {getUserInfo} from "../../apiServices/CheckoutService"
 const Checkout = () => {
     const [cartItems, setCartItems] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
+    const [userInfo, setUserInfo] = useState({
+        fullName: '',
+        phoneNumber: '',
+        address: '',
+        email: ''
+    });
 
-    const address = "Ha noi";
+    const { fullName, address, phoneNumber, email } = userInfo;
     const bookId = 1;
     const quantity = 1;
     const accessToken = localStorage.getItem('accessToken');
     const orderData = {
-        deliveryAddress: 'Ha Noi',
+        deliveryAddress: address,
 
         bookQuantities: [
 
@@ -110,8 +116,27 @@ const Checkout = () => {
                 console.log(error);
             });
     };
+
+    const updateUserInfo = (user) => {
+        setUserInfo({
+            fullName: user.fullName,
+            address: user.address,
+            phoneNumber: user.phoneNumber,
+            email: user.email
+        });
+    };
+    const getInfo = () => {
+        getUserInfo().then(response => {
+            console.log(response.data);
+            updateUserInfo(response.data);
+        }).catch(error => {
+            console.error("Error getting user info:", error);
+        });
+    }
+
     useEffect(() => {
         cartDetail();
+        getInfo();
     }, []);
     return (
         <Fragment>
@@ -124,44 +149,26 @@ const Checkout = () => {
                             <form className="billing-info-wrap rounded shadow p-5">
                                 <h3>Thông tin đặt hàng</h3>
 
-                                <div className="billing-info form-group">
-                                    <label>Họ</label>
-                                    <input type="text" className="form-control"/>
+                                <div className="billing-info mb-20 form-group">
+                                    <label>Tên đầy đủ</label>
+                                    <input type="text" className="form-control" value={fullName}/>
                                 </div>
 
-                                <div className="billing-info mb-20 form-group">
-                                    <label>Tên</label>
-                                    <input type="text" className="form-control"/>
-                                </div>
+
 
                                 <div className="billing-info mb-20 form-group">
-                                    <label>Tỉnh / Thành phố</label>
-                                    <input type="text" className="form-control"/>
-                                </div>
-
-                                <div className="billing-info mb-20 form-group">
-                                    <label>Quận / Huyện</label>
-                                    <input type="text" className="form-control"/>
-                                </div>
-
-                                <div className="billing-info mb-20 form-group">
-                                    <label>Phường / Xã</label>
-                                    <input type="text" className="form-control"/>
-                                </div>
-
-                                <div className="billing-info mb-20 form-group">
-                                    <label>Địa chỉ cụ thể</label>
-                                    <input type="text" className="form-control"/>
+                                    <label>Địa chỉ</label>
+                                    <input type="text" className="form-control" value={address}/>
                                 </div>
 
                                 <div className="billing-info mb-20 form-group">
                                     <label>Số điện thoại</label>
-                                    <input type="text" className="form-control"/>
+                                    <input type="text" className="form-control" value={phoneNumber}/>
                                 </div>
 
                                 <div className="billing-info mb-20 form-group">
                                     <label>Email</label>
-                                    <input type="text" className="form-control"/>
+                                    <input type="text" className="form-control" value={email}/>
                                 </div>
 
                                 <div>

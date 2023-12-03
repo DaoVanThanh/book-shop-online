@@ -33,8 +33,14 @@ public interface AuthorRepository extends JpaRepository<Author, Long>  {
     );
 
     @Query(
-            value = "SELECT * " +
-                    "FROM authors",
+            value = "SELECT a.* " +
+                    "FROM authors a " +
+                    "left join book_author ba on a.author_id = ba.author_id " +
+                    "left join order_details od on ba.book_id = od.book_id " +
+                    "group by a.author_id " +
+                    "order by coalesce(SUM(od.quantity), 0) desc ",
+            countQuery = "SELECT COUNT(a.author_id) " +
+                    "FROM authors a",
             nativeQuery = true
     )
     Page<Author> findAllByFamous(

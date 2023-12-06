@@ -4,12 +4,9 @@ import com.example.bookshop.adminService.AdminOrderManagementService;
 import com.example.bookshop.dto.request.AdminUpdateStatusOrderDto;
 import com.example.bookshop.dto.response.AdminOrderManagementDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -51,15 +48,4 @@ public class AdminOrderManagementController {
         adminOrderManagementService.updateOrderStatus(adminUpdateStatusOrderDto);
         return ResponseEntity.ok("Order status updated successfully");
     }
-
-    @GetMapping("/statistic")
-    public ResponseEntity<?> getOrderStatistic(
-            @RequestParam(value = "start_date", defaultValue = "1900-01-01")
-            @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
-            @RequestParam(value = "end_date", defaultValue = "2100-01-01")
-            @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate
-    ) throws ResponseStatusException {
-        return ResponseEntity.ok(adminOrderManagementService.getOrderStatistic(startDate, endDate));
-    }
-
 }

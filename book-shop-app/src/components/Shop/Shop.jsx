@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import './style.css';
 import { Link } from "react-router-dom";
 import axios from "axios";
+import Box from '@mui/material/Box';
+import Slider from '@mui/material/Slider';
+import Typography from '@mui/material/Typography';
 
 const SearchBar = ({ onSearch }) => {
     const [searchText, setSearchText] = useState('');
@@ -83,49 +86,105 @@ const SortOptions = ({ onSort }) => {
     );
 };
 
-const RecommendedBooks = ({ recommendedBooks }) => {
-    if (!recommendedBooks || recommendedBooks.length === 0) {
-        return (
-            <div className="recommended-books">
-                <h3>Gợi ý của chúng tôi</h3>
-                <p>none</p>
-            </div>
-        );
-    }
+const PriceFilter = ({ priceRange, onPriceChange }) => {
+    const handleSliderChange = (event, newValue) => {
+        if (newValue[0] <= newValue[1]) {
+            onPriceChange(newValue);
+        }
+    };
 
     return (
-        <div className="recommended-books">
-            <h3 style={{ color: 'hsl(218, 81%, 75%)' }}>Gợi ý của chúng tôi</h3>
-            <div className="recommended-books-list">
-                {recommendedBooks.map((book) => (
-                    <div key={book.bookId} className="recommended-book">
-                        <a href={book.link} target="_blank" rel="noopener noreferrer">
-                            <img
-                                src={book.imgUrl}
-                                alt={book.title}
-                                style={{ maxWidth: '200px', maxHeight: '200px' }}
-                            />
-                            <div style={{ color: 'hsl(218, 81%, 85%)' }}>{book.title}</div>
-                        </a>
-                        <p style={{ color: 'hsl(218, 81%, 85%)' }}>{book.name}</p>
-                    </div>
-                ))}
-            </div>
-        </div>
-    );
+        <Box sx={{ width: 300 }}>
+            <Typography
+                id="range-slider"
+                gutterBottom
+                sx={{
+                    fontWeight: 'bold',
+                    color: 'green',
+                    mb: 2,
+                    mt: 2,
+                    fontSize: '1.8rem',
+                    textAlign: 'center'
+                }}
+            >
+                Khoảng giá
+            </Typography>
 
+            <Slider
+                getAriaLabel={() => 'Price range'}
+                value={priceRange}
+                onChange={handleSliderChange}
+                valueLabelDisplay="auto"
+                min={0}
+                max={999}
+                getAriaValueText={(value) => `${value}đ`}
+            />
+            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Typography>{priceRange[0]}.000đ</Typography>
+                <Typography>{priceRange[1]}.000đ</Typography>
+            </Box>
+        </Box>
+    );
 };
 
-const LeftColumn = ({ onSort, recommendedBooks }) => (
-    <div className="left-column">
-        <SortOptions onSort={onSort} />
-        <RecommendedBooks recommendedBooks={recommendedBooks} />
-    </div>
-);
 
-const RightColumn = ({ products, onSearch, searchKeyword, currentPage, totalPages, handlePageChange }) => (
+// const Categories = ({ onSelectGenre }) => {
+//     const [categories, setCategories] = useState([]);
+//     const [showAll, setShowAll] = useState(false);
+//
+//     useEffect(() => {
+//         axios.get('http://localhost:8080/api/genre/all')
+//             .then(response => {
+//                 setCategories(response.data);
+//             })
+//             .catch(error => {
+//                 console.error('Lỗi khi lấy dữ liệu thể loại: ', error);
+//             });
+//     }, []);
+//
+//     const displayCategories = showAll ? categories : categories.slice(0, 5);
+//
+//     return (
+//         <div className="categories">
+//             <h3>Thể loại sách</h3>
+//             <ul>
+//                 {displayCategories.map((category) => (
+//                     <li key={category.genreId} onClick={() => onSelectGenre(category.genreId)}>
+//                         {category.genreName}
+//                     </li>
+//                 ))}
+//             </ul>
+//             {categories.length >= 5 && (
+//                 <button onClick={() => setShowAll(!showAll)}>
+//                     {showAll ? 'Thu Gọn' : 'Xem Thêm'}
+//                 </button>
+//             )}
+//         </div>
+//     );
+// };
+
+
+
+const LeftColumn = ({ priceRange, onPriceChange }) => {
+    // const categories = [];
+
+    return (
+        <div className="left-column">
+            <PriceFilter
+                priceRange={priceRange}
+                onPriceChange={onPriceChange}
+            />
+            {/*<Categories categories={categories} />*/}
+        </div>
+    );
+};
+
+const RightColumn = ({ products, onSearch, searchKeyword, currentPage, totalPages, handlePageChange, onSort }) => (
     <div className="right-column">
-        <SearchBar onSearch={onSearch} />
+        <div className="search-sort-container">
+            <SearchBar onSearch={onSearch} />
+            <SortOptions onSort={onSort} />
+        </div>
         <ProductGrid products={products} searchKeyword={searchKeyword} />
         <Pagination
             currentPage={currentPage}
@@ -141,8 +200,29 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         pageNumbers.push(i);
     }
 
+    const goToNextPage = () => {
+        if (currentPage < totalPages) {
+            onPageChange(currentPage + 1);
+        }
+    }
+
+    const goToPrevPage = () => {
+        if (currentPage > 1) {
+            onPageChange(currentPage - 1);
+        }
+    }
+
     return (
         <ul className="pagination">
+            <li>
+                <button
+                    className="page-link"
+                    onClick={goToPrevPage}
+                    disabled={currentPage === 1}
+                >
+                    Trang trước
+                </button>
+            </li>
             {pageNumbers.map((pageNumber) => (
                 <li
                     key={pageNumber}
@@ -156,52 +236,62 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
                     </button>
                 </li>
             ))}
+            <li>
+                <button
+                    className="page-link"
+                    onClick={goToNextPage}
+                    disabled={currentPage === totalPages}
+                >
+                    Trang sau
+                </button>
+            </li>
         </ul>
     );
 };
 
-const Shop = () => {
-    const recommendedBooks = [
-        {
-            "bookId": 35,
-            "title": "Luật Im Lặng",
-            "price": 135000,
-            "publication_date": "2023-01-01",
-            "stockQuantity": 62,
-            "imgUrl": "/book_image/luat-im-lang.jpg"
-        },
-        {
-            "bookId": 31,
-            "title": "Chuyện Tình Yêu Loài Người",
-            "price": 80100,
-            "publication_date": "2023-01-01",
-            "stockQuantity": 13,
-            "imgUrl": "/book_image/chuyen-tinh-yeu-loai-nguoi.jpg"
-        },
-        {
-            "bookId": 32,
-            "title": "Tần Số Cô Đơn",
-            "price": 85500,
-            "publication_date": "2023-01-01",
-            "stockQuantity": 37,
-            "imgUrl": "/book_image/tan-so-co-don.jpg"
-        },
-        {
-            "bookId": 33,
-            "title": "Ở Quán Cà Phê Của Tuổi Trẻ Lạc Lối",
-            "price": 62100,
-            "publication_date": "2023-01-01",
-            "stockQuantity": 13,
-            "imgUrl": "/book_image/o-quan-ca-phe-cua-tuoi-tre-lac-loi.jpg"
-        },
-    ];
 
+const Shop = () => {
     const [products, setProducts] = useState([]);
     const [searchKeyword, setSearchKeyword] = useState('');
     const [sortOption, setSortOption] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(12);
     const [totalPages, setTotalPages] = useState(0);
+
+    const [minPrice, setMinPrice] = useState(0);
+    const [maxPrice, setMaxPrice] = useState(1000000);
+
+
+    const handleMinPriceChange = (e) => {
+        const value = parseInt(e.target.value);
+        setMinPrice(value);
+    };
+
+    const handleMaxPriceChange = (e) => {
+        const value = parseInt(e.target.value);
+        setMaxPrice(value);
+    };
+
+    const [priceRange, setPriceRange] = useState([0, 1000]);
+
+    const handlePriceChange = (newRange) => {
+        setPriceRange(newRange);
+    };
+
+    const handleSelectGenre = (genreId) => {
+        axios.get(`http://localhost:8080/api/book/genre/${genreId}?page=${currentPage}&size=${pageSize}`)
+            .then(response => {
+                if (response.data && Array.isArray(response.data.content)) {
+                    setProducts(response.data.content);
+                    setTotalPages(response.data.totalPages);
+                } else {
+                    console.error('Nhận dữ liệu không hợp lệ');
+                }
+            })
+            .catch(error => {
+                console.error('Lỗi khi lấy dữ liệu sách theo thể loại: ', error);
+            });
+    };
 
     useEffect(() => {
         axios.get(`http://localhost:8080/api/book/all?page=${currentPage}&size=${pageSize}`)
@@ -228,7 +318,9 @@ const Shop = () => {
 
     const handlePageChange = (newPage) => {
         setCurrentPage(newPage);
+        window.scrollTo(0, 0);
     };
+
 
     const sortedProducts = () => {
         if (!Array.isArray(products)) {
@@ -248,8 +340,12 @@ const Shop = () => {
 
     return (
         <div className="shop-container">
-            <LeftColumn recommendedBooks={recommendedBooks} onSort={handleSort} />
+            <LeftColumn
+                priceRange={priceRange}
+                onPriceChange={handlePriceChange}
+            />
             <RightColumn
+                onSort={handleSort}
                 products={sortedProducts()}
                 onSearch={handleSearch}
                 searchKeyword={searchKeyword}
@@ -257,6 +353,7 @@ const Shop = () => {
                 totalPages={totalPages}
                 handlePageChange={handlePageChange}
             />
+            {/*<Categories onSelectGenre={handleSelectGenre} />*/}
         </div>
     );
 };

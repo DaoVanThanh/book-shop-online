@@ -1,30 +1,68 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import './BookDetail.css'; // Đảm bảo bạn đã cập nhật file CSS này
+import './BookDetail.css';
 
 const BookDetail = () => {
     const { bookId } = useParams();
     const [bookDetail, setBookDetail] = useState(null);
+    const [quantity, setQuantity] = useState(1);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    const incrementQuantity = () => {
+        setQuantity(prevQuantity => prevQuantity + 1);
+    };
+
+    const decrementQuantity = () => {
+        setQuantity(prevQuantity => Math.max(prevQuantity - 1, 1));
+    };
 
     useEffect(() => {
         axios.get(`http://localhost:8080/api/book/detail/${bookId}`)
             .then(response => {
                 setBookDetail(response.data);
+                setLoading(false);
             })
             .catch(error => {
                 console.error('Error fetching book details:', error);
+                setError(error);
+                setLoading(false);
             });
     }, [bookId]);
 
-    if (!bookDetail) {
+    if (loading) {
         return <div>Loading...</div>;
     }
 
-    // Chuẩn bị thông tin tác giả, năm xuất bản và thể loại
+    if (error) {
+        return <div>Đã có lỗi xảy ra khi tải thông tin sách.</div>;
+    }
+
     const authors = bookDetail.authors.map(a => a.authorName).join(', ');
     const publicationYear = new Date(bookDetail.publication_date).getFullYear();
     const genres = bookDetail.genres.map(g => g.genreName).join(', ');
+
+    const addToCart = async () => {
+        const accessToken = localStorage.getItem('accessToken');
+        console.log(bookId);
+        console.log(quantity);
+        try {
+            const response = await axios.put('http://localhost:8080/api/user/orm/carts/book', {
+                bookId,
+                quantity
+            }, {
+                headers: {
+                    'Authorization':`Bearer ${accessToken}`
+                }
+            });
+            console.log(response.data);
+            alert("Thêm vào giỏ hàng thành công");
+            window.location.reload();
+        } catch (error) {
+            console.error('Error updating cart:', error);
+        }
+    };
 
     return (
         <div className="book-detail-container">
@@ -37,8 +75,20 @@ const BookDetail = () => {
                     <p className="publication-year">Năm xuất bản: {publicationYear}</p>
                     <p className="genre">Thể loại: {genres}</p>
                     <p className="reviews-count">Đánh giá: {bookDetail.stockQuantity} lượt</p>
+                    <div className="quantity-controls">
+                        <button
+                            onClick={decrementQuantity}
+                            disabled={quantity === 1}
+                            aria-label="Giảm số lượng"
+                        >-</button>
+                        <span>{quantity}</span>
+                        <button
+                            onClick={incrementQuantity}
+                            aria-label="Tăng số lượng"
+                        >+</button>
+                    </div>
                     <div className="add-to-cart">
-                        <button>Thêm vào giỏ hàng</button>
+                        <button onClick={addToCart}>Thêm vào giỏ hàng</button>
                     </div>
                 </div>
             </div>

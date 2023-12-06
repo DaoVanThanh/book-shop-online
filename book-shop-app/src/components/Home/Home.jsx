@@ -1,12 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Row, Col} from 'react-bootstrap';
 import {getBestSellerBooks, getFamousAuthors} from "../../apiServices/AdminApi/ProductManagementService";
-
-function formatVND(n) {
-    return n.toFixed(0).replace(/./g, function(c, i, a) {
-        return i > 0 && c !== "." && (a.length - i) % 3 === 0 ? "," + c : c;
-    }) + ' VND';
-}
+import {useNavigate} from "react-router-dom";
 
 const Home = () => {
     useEffect(() => {
@@ -59,11 +54,6 @@ const Home = () => {
     ]
     return (
         <div style={{
-            backgroundColor: 'hsl(0, 0%, 100%)',
-            marginTop: '-10px',
-            marginBottom: '-10px',
-        }}>
-        <div style={{
             margin: '10px 10%',
             backgroundColor: 'none',
         }}>
@@ -75,11 +65,12 @@ const Home = () => {
             <Heading text={'Đánh giá của khách hàng'}/>
             <ReviewBookShop reviewFromCustomers={reviewFromCustomers}/>
         </div>
-        </div>
     );
 };
 
 const HomeBook = ({bestSellerBooks}) => {
+    const navigate = useNavigate();
+
     return (
         <Row style={{overflow: 'hidden'}}>
             {bestSellerBooks.map((book) => (
@@ -91,12 +82,13 @@ const HomeBook = ({bestSellerBooks}) => {
                     }}
                 >
                     <img
-                        src={book.imgUrl}
+                        src={book.imgUrl.replace('/public', '')}
                         alt={book.title}
                         style={{
                             padding: '10px',
                             height: '300px',
                         }}
+                        onClick={() => navigate(`/shop/${book.bookId}`)}
                     />
                     <p style={{
                         color: 'hsl(0, 0%, 0%)',
@@ -157,9 +149,15 @@ const ReviewBookShop = ({reviewFromCustomers}) => {
         </Row>
     );
 }
-
+const imgAuthorDefault = "/author_image/blank_author.jpg";
 const HotAuthor = ({famousAuthors}) => {
-    console.log(famousAuthors)
+    const formatAuthorUrl = (url) => {
+        if (url === '' || url === null) {
+            return imgAuthorDefault
+        } else {
+            return url
+        }
+    }
     return (
         <Row>
             {famousAuthors.map((author) => (
@@ -171,7 +169,7 @@ const HotAuthor = ({famousAuthors}) => {
                     }}
                 >
                     <img
-                        src={author.imgUrl}
+                        src={formatAuthorUrl(author.imgUrl)}
                         alt={author.authorName}
                         style={{
                             display: 'block',
@@ -216,5 +214,11 @@ const Heading = ({text}) => {
             marginTop: '50px',
         }}>{text}</p>
     )
+}
+
+function formatVND(n) {
+    return n.toFixed(0).replace(/./g, function(c, i, a) {
+        return i > 0 && c !== "." && (a.length - i) % 3 === 0 ? "," + c : c;
+    }) + ' VND';
 }
 export default Home;

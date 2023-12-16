@@ -140,7 +140,7 @@ public interface BookRepository extends JpaRepository<Book, Long>  {
                         "COALESCE(SUM(od.quantity), 0) AS totalSold, " +
                         "COALESCE(SUM(od.quantity * od.price), 0) AS revenue " +
                     "FROM books AS b " +
-                    "LEFT JOIN ( " +
+                    "JOIN ( " +
                         "SELECT book_id, quantity, price " +
                         "FROM order_details AS od " +
                         "LEFT JOIN orders AS o ON o.order_id = od.order_id " +

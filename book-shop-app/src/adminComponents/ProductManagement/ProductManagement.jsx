@@ -235,6 +235,11 @@ const ProductManagement = () => {
     setCurrentPage(1);
   };
 
+  const displayRange = 2; // Số lượng trang hiển thị bên trái và bên phải của trang hiện tại
+
+  const startPage = Math.max(1, currentPage - displayRange);
+  const endPage = Math.min(totalPage, currentPage + displayRange);
+
   return (
     <div className="ad-container">
       <h1>Quản lý sản phẩm</h1>
@@ -290,21 +295,47 @@ const ProductManagement = () => {
           ))}
         </tbody>
       </Table>
-      <Pagination>
+      <Pagination style={{justifyContent:"center"}}>
         <Pagination.First onClick={() => handlePageChange(1)} />
         <Pagination.Prev
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
         />
-        {[...Array(totalPage).keys()].map((pageNumber) => (
+
+        {/* Hiển thị trang đầu */}
+        {startPage > 1 && (
+          <>
+            <Pagination.Item onClick={() => handlePageChange(1)}>
+              {1}
+            </Pagination.Item>
+            {startPage > 2 && <Pagination.Ellipsis disabled />}
+          </>
+        )}
+
+        {/* Hiển thị trang */}
+        {Array.from(
+          { length: endPage - startPage + 1 },
+          (_, index) => startPage + index
+        ).map((pageNumber) => (
           <Pagination.Item
-            key={pageNumber + 1}
-            active={pageNumber + 1 === currentPage}
-            onClick={() => handlePageChange(pageNumber + 1)}
+            key={pageNumber}
+            active={pageNumber === currentPage}
+            onClick={() => handlePageChange(pageNumber)}
           >
-            {pageNumber + 1}
+            {pageNumber}
           </Pagination.Item>
         ))}
+
+        {/* Hiển thị trang cuối */}
+        {endPage < totalPage && (
+          <>
+            {endPage < totalPage - 1 && <Pagination.Ellipsis disabled />}
+            <Pagination.Item onClick={() => handlePageChange(totalPage)}>
+              {totalPage}
+            </Pagination.Item>
+          </>
+        )}
+
         <Pagination.Next
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPage}
@@ -345,7 +376,10 @@ const ProductManagement = () => {
                 isInvalid={validated && newBook.genre.length === 0}
               />
               <label htmlFor="fl2">Thể loại</label>
-              <Form.Control.Feedback type="invalid" style={{marginLeft: "10px"}}>
+              <Form.Control.Feedback
+                type="invalid"
+                style={{ marginLeft: "10px" }}
+              >
                 Vui lòng thêm thể loại
               </Form.Control.Feedback>
 
@@ -395,7 +429,10 @@ const ProductManagement = () => {
                 isInvalid={validated && newBook.author.length === 0}
               />
               <label htmlFor="fl3">Tác giả</label>
-              <Form.Control.Feedback type="invalid" style={{marginLeft: "10px"}}>
+              <Form.Control.Feedback
+                type="invalid"
+                style={{ marginLeft: "10px" }}
+              >
                 Vui lòng thêm tác giả
               </Form.Control.Feedback>
 

@@ -27,6 +27,18 @@ public interface CartDetailRepository extends JpaRepository<CartDetail, Long> {
 
     @Modifying
     @Query(
+            value = "insert into cart_details (book_id, cart_id, quantity) " +
+                    "values (:book_id, :cart_id, :quantity) " +
+                    "on duplicate key update quantity = quantity + :quantity", nativeQuery = true)
+    @Transactional
+    void addBookToCart(
+            @Param("book_id") Long bookId,
+            @Param("cart_id") Long cartId,
+            @Param("quantity") Integer quantity
+    );
+
+    @Modifying
+    @Query(
             value = "delete from cart_details " +
                     "where book_id = :book_id and cart_id = :cart_id",
             nativeQuery = true)

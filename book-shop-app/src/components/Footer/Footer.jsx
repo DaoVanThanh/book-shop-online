@@ -18,7 +18,7 @@ const Footer = () => {
   };
   return (
     <MDBFooter bgColor="light" className="text-center text-lg-start text-muted">
-      <section className="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
+      <section className="d-flex justify-content-center p-4 border-bottom">
         <div className="me-5 d-none d-lg-block">
           <span>Hãy kết nối với chúng tôi trên các mạng xã hội:</span>
         </div>

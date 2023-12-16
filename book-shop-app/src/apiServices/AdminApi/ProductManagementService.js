@@ -1,4 +1,5 @@
 import { instance } from "../CustomAxios";
+import { instanceNotAuth } from "../AxiosWithOutAuth";
 
 const AddBook = async (
   title,
@@ -61,7 +62,7 @@ const updateBook = async (
 };
 
 const getBestSellerBooks = async (size) => {
-  return await instance.get("/api/book/bestSeller", {
+  return await instanceNotAuth.get("/api/book/bestSeller", {
     params: {
       page: 0,
       size: size,
@@ -70,7 +71,7 @@ const getBestSellerBooks = async (size) => {
 };
 
 const getFamousAuthors = async (size) => {
-  return await instance.get("/api/book/famousAuthor", {
+  return await instanceNotAuth.get("/api/book/famousAuthor", {
     params: {
       page: 0,
       size: size,

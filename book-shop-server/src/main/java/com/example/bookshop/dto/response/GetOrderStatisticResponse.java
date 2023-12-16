@@ -1,7 +1,18 @@
 package com.example.bookshop.dto.response;
 
-public interface GetOrderStatisticResponse {
-    Long getNumberOfOrder();
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-    Long getRevenue();
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class GetOrderStatisticResponse {
+    private Long numberOfOrder;
+
+    private Long revenue;
+
+    private Long numberOfBook;
 }

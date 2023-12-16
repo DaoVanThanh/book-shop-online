@@ -1,6 +1,5 @@
 package com.example.bookshop.repository;
 
-import com.example.bookshop.dto.response.GetOrderStatisticResponse;
 import com.example.bookshop.entity.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -28,15 +27,44 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     ArrayList<Order> getOrdersByUserUserId(Long userId);
 
+    ArrayList<Order> getOrdersByUserUserIdAndOrderIdIn(Long userId, ArrayList<Long> ids);
+
     @Query(
-            value = "SELECT COUNT(*) AS numberOfOrder, SUM(total_amount) AS revenue " +
+            value = "SELECT COUNT(*) " +
                     "FROM orders AS o " +
                     "WHERE o.order_date BETWEEN :start_date AND :end_date " +
                     "AND o.status = 'SUCCESS'",
             nativeQuery = true
     )
     @Transactional
-    GetOrderStatisticResponse getOrderStatistic(
+    Long getStatisticNumberOfOrder(
+            @Param("start_date") Date startDate,
+            @Param("end_date") Date endDate
+    );
+
+    @Query(
+            value = "SELECT SUM(total_amount) " +
+                    "FROM orders AS o " +
+                    "WHERE o.order_date BETWEEN :start_date AND :end_date " +
+                    "AND o.status = 'SUCCESS'",
+            nativeQuery = true
+    )
+    @Transactional
+    Long getStatisticRevenue(
+            @Param("start_date") Date startDate,
+            @Param("end_date") Date endDate
+    );
+
+    @Query(
+            value = "SELECT COUNT(DISTINCT od.book_id) " +
+                    "FROM orders AS o " +
+                    "JOIN order_details AS od ON od.order_id = o.order_id " +
+                    "WHERE o.order_date BETWEEN :start_date AND :end_date " +
+                    "AND o.status = 'SUCCESS'",
+            nativeQuery = true
+    )
+    @Transactional
+    Long getStatisticNumberOfBook(
             @Param("start_date") Date startDate,
             @Param("end_date") Date endDate
     );

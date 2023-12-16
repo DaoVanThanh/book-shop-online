@@ -16,4 +16,7 @@ public class UpdateCartRequest {
 
     @NotNull
     private Integer quantity;
+
+    @NotNull
+    private Boolean isAdded = false;
 }

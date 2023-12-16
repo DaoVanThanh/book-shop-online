@@ -41,7 +41,7 @@ public class OrderManagementServiceImpl implements OrderManagementService {
         return GetStatusOrderResponse.builder().status(order.getStatus()).build();
     }
 
-    public void updateCart(Long bookId, Integer quantity) throws ResponseStatusException {
+    public void updateCart(Long bookId, Integer quantity, Boolean isAdded) throws ResponseStatusException {
         Long userId = userService.getUserId();
         Cart cart = cartRepository
                 .getCartByUserUserId(userId)
@@ -49,6 +49,10 @@ public class OrderManagementServiceImpl implements OrderManagementService {
         bookRepository
                 .findById(bookId)
                 .orElseThrow(() -> new ElementNotFoundException("Book id"));
+        if (isAdded) {
+            cartDetailRepository.addBookToCart(bookId, cart.getCartId(), quantity);
+            return;
+        }
         if (quantity == 0) {
             cartDetailRepository.deteleByCartIdAndBookId(bookId, cart.getCartId());
         } else {

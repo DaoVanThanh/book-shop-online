@@ -1,11 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Form, Tab, Table, Tabs } from 'react-bootstrap';
-
-import {getAllOrders,updateStateOrder} from "../../apiServices/AdminApi/AdminOrmService";
+import React, {useEffect, useState} from 'react';
+import {Button, Card, Col, Form, Modal, Row, Tab, Table, Tabs} from 'react-bootstrap';
+import './tableHover.css';
+import {getAllOrders, getDetailOrder, updateStateOrder} from "../../apiServices/AdminApi/AdminOrmService";
 
 const OrderManagement = () => {
 
+    const [showDetailsModal, setShowDetailsModal] = useState(false);
+    const [selectedOrderDetails, setSelectedOrderDetails] = useState({});
     const [orders, setOrders] = useState([]);
+
+
     const orderStatuses = ['PENDING', 'ACCEPTED', 'DELIVERING', 'SUCCESS', 'RETURNED', 'CANCELLED'];
     useEffect(() => {
         getAllOrders()
@@ -20,6 +24,7 @@ const OrderManagement = () => {
 
     const [selectedTab, setSelectedTab] = useState(0);
     const [temporaryStatus, setTemporaryStatus] = useState({});
+
 
     const handleTabChange = (selectedIndex) => {
         setSelectedTab(selectedIndex);
@@ -39,12 +44,13 @@ const OrderManagement = () => {
 
         updatedOrders.map((order) => {
             const newState = {
-              orderId:order.orderId,
-              newStatus:order.status
+                orderId: order.orderId,
+                newStatus: order.status
             };
             updateStateOrder(newState).then(
                 () => {
-                })})
+                })
+        })
         setOrders(updatedOrders);
         setTemporaryStatus({});
     };
@@ -53,14 +59,64 @@ const OrderManagement = () => {
         setOrders(orders);
     }, []);
 
+    const handleShowDetails = (order) => {
+        setSelectedOrderDetails(order);
+        setShowDetailsModal(true);
+    };
+
+    const [orderDetail, setOrderDetail] = useState(
+        {
+            "orderId": "",
+            "orderDate":"" ,
+            "status": "",
+            "totalAmount": "",
+            "deliveryAddress": "",
+            "phoneNumber": "",
+            "fullName": "",
+            "userName": "",
+            "bookQuantitySummaries": [
+                {
+                    "bookSummary": {
+                        "bookId": "",
+                        "title": "",
+                       "description": "",
+                        "price": "",
+                        "publication_date": [],
+                        "stockQuantity": "",
+                        "imgUrl": "",
+                        "authors": [],
+                        "genres": []
+                    },
+                    "quantity": ""
+                }
+            ]
+        }
+    );
+    useEffect(() => {
+        if (showDetailsModal) {
+            getDetailOrder(selectedOrderDetails.orderId)
+                .then((response) => {
+                    const books = response.data;
+                    setOrderDetail(books);
+                })
+                .catch((error) => {
+                    console.error("Error fetching account info", error);
+                } );
+        }
+    }, [showDetailsModal]);
+
+    const handleCloseDetailsModal = () => {
+        setShowDetailsModal(false);
+    };
+
     return (
         <div className="container">
-            <h1>Order Management</h1>
+            <h1>Quản lý đơn hàng </h1>
             <Tabs activeKey={selectedTab} onSelect={handleTabChange}>
                 {orderStatuses.map((status, index) => (
                     <Tab eventKey={index} title={status} key={status}>
-                        <Table striped bordered hover>
-                            <thead>
+                        <Table striped bordered hover className={"table-hover"}>
+                            <thead className="thead-dark sticky-top" style={{ zIndex: '1' }}>
                             <tr>
                                 <th>Mã đơn</th>
                                 <th>Ngày đặt hàng</th>
@@ -77,8 +133,8 @@ const OrderManagement = () => {
                                 .filter((order) => order.status === status)
                                 .map((order) => (
                                     <tr key={order.orderId}>
-                                        <td>{order.orderId}</td>
-                                        <td>{order.orderDate}</td>
+                                        <td onClick={() => handleShowDetails(order)}>{order.orderId}</td>
+                                        <td onClick={() => handleShowDetails(order)}>{new Date(order.orderDate).toLocaleString()}</td>
                                         <td>
                                             <Form.Group>
                                                 <Form.Select
@@ -96,11 +152,11 @@ const OrderManagement = () => {
                                                 </Form.Select>
                                             </Form.Group>
                                         </td>
-                                        <td>{order.fullName}</td>
-                                        <td>{order.userName}</td>
-                                        <td>{order.phoneNumber}</td>
-                                        <td>{order.deliveryAddress}</td>
-                                        <td>{order.totalAmount}</td>
+                                        <td onClick={() => handleShowDetails(order)}>{order.fullName}</td>
+                                        <td onClick={() => handleShowDetails(order)}>{order.userName}</td>
+                                        <td onClick={() => handleShowDetails(order)}>{order.phoneNumber}</td>
+                                        <td onClick={() => handleShowDetails(order)}>{order.deliveryAddress}</td>
+                                        <td onClick={() => handleShowDetails(order)}>{order.totalAmount}</td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -108,11 +164,70 @@ const OrderManagement = () => {
                     </Tab>
                 ))}
             </Tabs>
-            <div id="radius-shape-1" className="position-absolute rounded-circle shadow-5-strong"></div>
-            <div id="radius-shape-2" className="position-absolute shadow-5-strong"></div>
             <Button variant="primary" onClick={handleSaveStatus}>
-                Update
+                Lưu
             </Button>
+            {/* Modal for Order Details */}
+
+            <Modal show={showDetailsModal} onHide={handleCloseDetailsModal}>
+                <Modal.Header closeButton>
+                    <Card.Header>
+                        <Card.Text>
+                            <Row>
+                                <Col sm={4}/>
+                                <Col sm={4}>
+                                    <Card.Text>Mã đơn hàng: #{orderDetail.orderId}</Card.Text>
+                                </Col>
+                                <Col sm={4} style={{ textAlign: "right" }}>
+                                    <Card.Text className={`fw-bold cover-text-${orderDetail.status.toLowerCase()} ${orderDetail.status.toLowerCase()}`}>Trạng thái: {orderDetail.status}</Card.Text>
+                                </Col>
+                            </Row>
+                        </Card.Text>
+                    </Card.Header>
+                </Modal.Header>
+                <Modal.Body>
+                    <Card.Body>
+                        {orderDetail.bookQuantitySummaries.map((bookSummary) => (
+                            <Row key={bookSummary.bookSummary.bookId}>
+                                <Col sm={4}>
+                                    <Card.Img
+                                        src={bookSummary.bookSummary.imgUrl.replace('public/', '')}
+                                        className="img-fluid w-90 mx-auto"
+                                    />
+                                </Col>
+                                <Col sm={4} className="d-flex align-items-center justify-content-center">
+                                    <Card.Title>Sách: {bookSummary.bookSummary.title}</Card.Title>
+                                </Col>
+                                <Col sm={1} className="d-flex align-items-center justify-content-center">
+                                    <p className="text-muted">x{bookSummary.quantity}</p>
+                                </Col>
+                                <Col sm={3} className="d-flex align-items-center justify-content-center">
+                                    <Card.Text>Thành tiền: {bookSummary.bookSummary.price * bookSummary.quantity}vnđ</Card.Text>
+                                </Col>
+                                <hr />
+
+                            </Row>
+
+                        ))}
+                    </Card.Body>
+                    <Card.Footer>
+                        <Row>
+                            <Col sm={3}/>
+                            <Col className="text-muted" sm={6}>
+                                Ngày đặt hàng: {new Date(orderDetail.orderDate).toLocaleString()}
+                            </Col>
+                            <Col sm={3} className="fw-bold">
+                                <Card.Text>Tổng: {orderDetail.totalAmount}vnđ</Card.Text>
+                            </Col>
+                        </Row>
+                    </Card.Footer>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseDetailsModal}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 };

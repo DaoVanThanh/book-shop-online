@@ -1,9 +1,12 @@
 package com.example.bookshop.dto.response;
 
+import com.example.bookshop.dto.BookQuantitySummary;
+import com.example.bookshop.dto.OrderSummary;
 import com.example.bookshop.entity.Order;
 import com.example.bookshop.entity.enums.OrderStatus;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 @Data
@@ -16,6 +19,7 @@ public class AdminOrderManagementDto {
     String phoneNumber;
     String fullName;
     String userName;
+    ArrayList<BookQuantitySummary> bookQuantitySummaries = new ArrayList<>();
 
     public AdminOrderManagementDto(Order order) {
         this.orderId = order.getOrderId();
@@ -27,4 +31,5 @@ public class AdminOrderManagementDto {
         this.phoneNumber = order.getUser().getPhoneNumber();
         this.userName = order.getUser().getUsername();
     }
+
 }

@@ -24,8 +24,7 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3000"));
-        configuration.setAllowedOrigins(List.of("http://localhost:8080"));
+        configuration.setAllowedOrigins(List.of("http://localhost:3000","http://localhost:8080"));
         configuration.setAllowedMethods(List.of("*"));
         configuration.setAllowedHeaders(List.of("*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -44,7 +43,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/admin/**")
                         .hasRole("ADMIN")// nhung thang role_admin thi vao dc nhung api /api/admin/**
                         .requestMatchers("/api/user/**")
-                        .hasRole("USER")// nhung thang role_user thi vao dc nhung api /api/user/**
+                        .hasAnyRole("ADMIN", "USER")// nhung thang role_user/admin thi vao dc nhung api /api/user/**
                         .requestMatchers("/api/book/**")
                         .permitAll()
                         .requestMatchers("/api/genre/**")

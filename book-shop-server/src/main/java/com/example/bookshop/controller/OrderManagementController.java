@@ -19,7 +19,7 @@ public class OrderManagementController {
     public ResponseEntity<?> updateCart(
             @RequestBody UpdateCartRequest request
     ) throws ResponseStatusException {
-        orderManagementService.updateCart(request.getBookId(), request.getQuantity());
+        orderManagementService.updateCart(request.getBookId(), request.getQuantity(), request.getIsAdded());
         return ResponseEntity.ok("update cart successfully!");
     }
     @GetMapping("/orders/status")

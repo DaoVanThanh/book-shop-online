@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public interface OrderManagementService {
     GetStatusOrderResponse getStatusOrder(Long orderId) throws ResponseStatusException;
-    void updateCart(Long bookId, Integer quantity) throws ResponseStatusException;
+    void updateCart(Long bookId, Integer quantity, Boolean isAdded) throws ResponseStatusException;
     CreateOrderResponse createOrder(String deliveryAddress, ArrayList<BookQuantity> bookQuantities) throws ResponseStatusException;
     void cancelOrder(Long orderId) throws ResponseStatusException;
     GetAllBookPurchasedResponse getAllBookPurchased() throws ResponseStatusException;

@@ -5,6 +5,8 @@ import axios from "axios";
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Typography';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 const SearchBar = ({ onSearch }) => {
     const [searchText, setSearchText] = useState('');
@@ -87,45 +89,76 @@ const SortOptions = ({ onSort }) => {
 };
 
 const PriceFilter = ({ priceRange, onPriceChange }) => {
+    const [minInput, setMinInput] = useState(priceRange[0]);
+    const [maxInput, setMaxInput] = useState(priceRange[1]);
+
     const handleSliderChange = (event, newValue) => {
-        if (newValue[0] <= newValue[1]) {
-            onPriceChange(newValue);
-        }
+        setMinInput(newValue[0]);
+        setMaxInput(newValue[1]);
+        onPriceChange([newValue[0], newValue[1]]);
     };
+
+    const handleMinInputChange = (event) => {
+        const newValue = Math.min(Number(event.target.value), maxInput);
+        setMinInput(newValue);
+        onPriceChange([newValue, maxInput]);
+    };
+
+    const handleMaxInputChange = (event) => {
+        const newValue = Math.max(Number(event.target.value), minInput);
+        setMaxInput(newValue);
+        onPriceChange([minInput, newValue]);
+    };
+
+    const onSearchClick = (event) => {
+        
+    };
+    
 
     return (
         <Box sx={{ width: 300 }}>
-            <Typography
-                id="range-slider"
-                gutterBottom
-                sx={{
-                    fontWeight: 'bold',
-                    color: 'green',
-                    mb: 2,
-                    mt: 2,
-                    fontSize: '1.8rem',
-                    textAlign: 'center'
-                }}
-            >
+            <Typography id="range-slider" gutterBottom>
                 Khoảng giá
             </Typography>
 
-            <Slider
-                getAriaLabel={() => 'Price range'}
-                value={priceRange}
-                onChange={handleSliderChange}
-                valueLabelDisplay="auto"
-                min={0}
-                max={999}
-                getAriaValueText={(value) => `${value}đ`}
-            />
-            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Typography>{priceRange[0]}.000đ</Typography>
-                <Typography>{priceRange[1]}.000đ</Typography>
-            </Box>
+            <div className="slider-container">
+                <Slider
+                    getAriaLabel={() => 'Price range'}
+                    value={[minInput, maxInput]}
+                    onChange={handleSliderChange}
+                    valueLabelDisplay="auto"
+                    min={0}
+                    max={999000}
+                    step={10000}
+                    getAriaValueText={(value) => `${value}đ`}
+                />
+                <button className="search-button" onClick={onSearchClick}>
+                    <FontAwesomeIcon icon={faSearch} />
+                </button>
+            </div>
+
+            <div className="price-input-container">
+                <div className="price-input">
+                    <label htmlFor="min-price">Giá tối thiểu: </label>
+                    <div className="input-container">
+                        <input id="min-price" type="number" value={minInput} onChange={handleMinInputChange} />
+                        <span className="unit">đ</span>
+                    </div>
+                </div>
+                <div className="price-input">
+                    <label htmlFor="max-price">Giá tối đa: </label>
+                    <div className="input-container">
+                        <input id="max-price" type="number" value={maxInput} onChange={handleMaxInputChange} />
+                        <span className="unit">đ</span>
+                    </div>
+                </div>
+            </div>
+
         </Box>
     );
 };
+
+
 
 
 // const Categories = ({ onSelectGenre }) => {
@@ -294,7 +327,7 @@ const Shop = () => {
     };
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/api/book/all?page=${currentPage}&size=${pageSize}`)
+        axios.get(`http://localhost:8080/api/book/all?page=${currentPage - 1}&size=${pageSize}`)
             .then(response => {
                 if (response.data && Array.isArray(response.data.content)) {
                     setProducts(response.data.content);

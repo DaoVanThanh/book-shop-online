@@ -32,6 +32,7 @@
 .search-bar button:hover,
 .search-bar button:focus {
     background-color: #006600;
+    transform: scale(1.1);
 }
 
 .price-filter {
@@ -111,6 +112,7 @@
 
 .sort-button:hover {
     background-color: #006600;
+    transform: scale(1.05);
 }
 
 .sort-options-list {
@@ -187,6 +189,7 @@
 .pagination .page-link:hover {
     background-color: #006600;
     color: #fff;
+    transform: scale(1.2);
 }
 
 .pagination .page-item.active .page-link {
@@ -209,6 +212,92 @@
     justify-content: space-between;
     margin-bottom: 10px;
     margin-right: 20px;
+}
+
+
+#range-slider {
+    font-weight: bold;
+    color: green;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.MuiSlider-root {
+    color: #00695c;
+}
+
+
+.price-input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.price-input label {
+    margin-right: 10px;
+}
+
+.price-input input {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.slider-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.Slider {
+    flex-grow: 1;
+    margin-right: 20px;
+}
+
+.search-button {
+    background-color: green;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+}
+
+.search-button:hover {
+    background-color: darkgreen;
+    transform: scale(1.2);
+}
+
+.search-button .fa-search {
+    color: inherit;
+    font-size: 20px;
+}
+
+.input-container {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.input-container input {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 5px 30px 5px 5px;
+    width: 100%;
+}
+
+.input-container .unit {
+    /*position: absolute;*/
+    right: 5px;
+    color: #555;
 }
 
 

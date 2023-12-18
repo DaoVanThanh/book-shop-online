@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import { Form, Button, Row, Col, Table } from "react-bootstrap";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./statistic.css";
@@ -8,13 +8,18 @@ import {
   bookStatistic,
 } from "../../apiServices/AdminApi/StatisticService";
 
+import { formatVND } from "../../common";
+
 const Statistic = () => {
-  const [totalBookSold, setTotalBookSold] = useState();
-  const [totalOrderSold, setTotalOrderSold] = useState();
-  const [totalRevenue, setTotalRevenue] = useState();
-  const [startDate, setStartDate] = useState();
-  const [endDate, setEndDate] = useState();
+  const [totalBookSold, setTotalBookSold] = useState(0);
+  const [totalOrderSold, setTotalOrderSold] = useState(0);
+  const [totalRevenue, setTotalRevenue] = useState(0);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
   const [listBookSold, setListBookSold] = useState([]);
+
+  const itemsPerPage = 10;
+  const [currentPage, setCurrentPage] = useState(1);
 
   const handleStatistic = async () => {
     try {
@@ -25,12 +30,32 @@ const Statistic = () => {
       setTotalRevenue(generalStatisticData.revenue);
 
       const bookStatisticData = (await bookStatistic(startDate, endDate)).data;
-      console.log(bookStatisticData);
       setListBookSold(bookStatisticData.content);
     } catch (err) {
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    const initStatistic = async () => {
+      try {
+        const generalStatisticData = (
+          await generalStatistic(startDate, endDate)
+        ).data;
+        console.log(generalStatisticData);
+        setTotalBookSold(generalStatisticData.numberOfBook);
+        setTotalOrderSold(generalStatisticData.numberOfOrder);
+        setTotalRevenue(generalStatisticData.revenue);
+        console.log("start", startDate, "end", endDate);
+        const bookStatisticData = (await bookStatistic(startDate, endDate))
+          .data;
+        setListBookSold(bookStatisticData.content);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    initStatistic();
+  }, []);
 
   return (
     <div>
@@ -93,7 +118,7 @@ const Statistic = () => {
           <i className="fa-solid fa-hand-holding-dollar"></i>
         </Col>
         <Col className="data-statistic">
-          <h4>{totalRevenue}đ</h4>
+          <h4>{formatVND(totalRevenue)}</h4>
           <h6>Tổng doanh thu</h6>
         </Col>
       </Row>
@@ -111,7 +136,7 @@ const Statistic = () => {
             <tr key={book.bookId}>
               <td>{book.title}</td>
               <td>{book.totalSold}</td>
-              <td>{book.revenue}</td>
+              <td>{formatVND(book.revenue)}</td>
             </tr>
           ))}
         </tbody>

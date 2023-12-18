@@ -21,6 +21,7 @@ import {
   updateBook,
 } from "../../apiServices/AdminApi/ProductManagementService";
 import "./PM.css";
+import { formatVND } from "../../common";
 
 const ProductManagement = () => {
   const ADD = "Thêm";
@@ -278,7 +279,7 @@ const ProductManagement = () => {
             <tr key={book.bookId}>
               <td style={{ textAlign: "left" }}>{book.title}</td>
               <td>{book.publication_date}</td>
-              <td>{book.price}đ</td>
+              <td>{formatVND(book.price)}</td>
               <td>{book.stockQuantity}</td>
               <td>
                 <Image src={book.imgUrl} style={{ width: "100px" }}></Image>

@@ -39,20 +39,18 @@
 
 .nav-link.active {
   border-radius: 10px;
-  color: white !important;
-  background-color: #196142 !important;
-  /* color: red !important; */
+  color: #228b22 !important;
+  background-color: #fff !important;
 }
 
 .nav-link {
+  font-weight: bold !important;
   margin: 5px;
   border-radius: 10px;
   padding: 8px !important;
-  color: #196142 !important;
-  background-color: white !important;
+  color: #000 !important;
 }
 
 .nav-link:hover {
-  background-color: #196142 !important;
-  color: white !important;
+  color: #228b22 !important;
 }

@@ -128,21 +128,24 @@ const OrderList = ({ status, orders }) => {
         {filteredOrders.map((order) => (
 
           <Card key={order.orderId} className="mb-5">
-              <Card.Header>
-                <Card.Text>
-                  <Row>
-                    <Col sm={4}></Col>
-                    <Col sm={4}>
-                      <Card.Text>Mã đơn hàng: #{order.orderId}</Card.Text>
-                    </Col>
-                    <Col sm={4} style={{ textAlign: "right" }}>
-                      <Card.Text className={`fw-bold cover-text-${order.status.toLowerCase()} ${order.status.toLowerCase()}`}>Trạng thái: {order.status}</Card.Text>
-                    </Col>
-                  </Row>
-                </Card.Text>
-              </Card.Header>
-              <Card.Body>
+
+            <Card.Header>
+              <Row>
+                <Col sm={4}></Col>
+                <Col sm={4}>
+                  <Card.Text>Mã đơn hàng: #{order.orderId}</Card.Text>
+                </Col>
+                <Col sm={4} style={{ textAlign: "right" }}>
+                  <Card.Text className={`fw-bold cover-text-${order.status.toLowerCase()} ${order.status.toLowerCase()}`}>Trạng thái: {order.status}</Card.Text>
+                </Col>
+              </Row>
+            </Card.Header>
+
+
+
+            <Card.Body>
                 {order.bookQuantitySummaries.map((bookSummary) => (
+
                     <Row key={bookSummary.bookSummary.bookId}>
                       <Col sm={4}>
                         <Card.Img
@@ -154,7 +157,7 @@ const OrderList = ({ status, orders }) => {
                         <Card.Title>Sách: {bookSummary.bookSummary.title}</Card.Title>
                       </Col>
                       <Col sm={1} className="d-flex align-items-center justify-content-center">
-                        <p className="text-muted">x{bookSummary.quantity}</p>
+                        <div className="text-muted">x{bookSummary.quantity}</div>
                       </Col>
                       <Col sm={3} className="d-flex align-items-center justify-content-center">
                         <Card.Text>Thành tiền: {bookSummary.bookSummary.price * bookSummary.quantity}vnđ</Card.Text>

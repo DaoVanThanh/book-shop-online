@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import {getCart, getBookInfo, changeCart} from "../../apiServices/CartService";
 import {getUserInfo} from "../../apiServices/CheckoutService"
 const Checkout = () => {
+    const [checkedItems, setCheckedItems] = useState({});
     const [cartItems, setCartItems] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
     const [userInfo, setUserInfo] = useState({
@@ -47,6 +48,7 @@ const Checkout = () => {
 
     const createOrder = () =>
     {
+
         if (cartItems.length === 0) {
             toast.error("Giỏ hàng của bạn đang trống");
             return;
@@ -103,10 +105,19 @@ const Checkout = () => {
 
                 Promise.all(promises)
                     .then((bookInfoArray) => {
-                        const totalPrice = bookInfoArray.reduce((total, item) => total + item.price * item.quantity, 0);
 
                         setCartItems(bookInfoArray);
-                        setTotalPrice(totalPrice);
+                        const storedCheckedItems = localStorage.getItem("checkedItems");
+                        if (storedCheckedItems) {
+                            const parsedCheckedItems = JSON.parse(storedCheckedItems);
+                            const filteredBookInfoArray = bookInfoArray.filter((item) => parsedCheckedItems[item.id] === true);
+                            console.log(parsedCheckedItems)
+                            console.log(filteredBookInfoArray);
+                            const totalPrice = filteredBookInfoArray.reduce((total, item) => total + item.price * item.quantity, 0);
+                            setCartItems(filteredBookInfoArray);
+                            setTotalPrice(totalPrice);
+                        }
+
                     })
                     .catch((error) => {
                         console.log(error);
@@ -133,7 +144,13 @@ const Checkout = () => {
             console.error("Error getting user info:", error);
         });
     }
-
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setUserInfo((prevUserInfo) => ({
+            ...prevUserInfo,
+            [name]: value,
+        }));
+    };
     useEffect(() => {
         cartDetail();
         getInfo();
@@ -151,24 +168,32 @@ const Checkout = () => {
 
                                 <div className="billing-info mb-20 form-group">
                                     <label>Tên đầy đủ</label>
-                                    <input type="text" className="form-control" value={fullName}/>
+                                    <input type="text" className="form-control" value={fullName || ''}
+                                           onChange={handleChange}
+                                    />
                                 </div>
 
 
 
                                 <div className="billing-info mb-20 form-group">
                                     <label>Địa chỉ</label>
-                                    <input type="text" className="form-control" value={address}/>
+                                    <input type="text" className="form-control" value={address || ''}
+                                           onChange={handleChange}
+                                    />
                                 </div>
 
                                 <div className="billing-info mb-20 form-group">
                                     <label>Số điện thoại</label>
-                                    <input type="text" className="form-control" value={phoneNumber}/>
+                                    <input type="text" className="form-control" value={phoneNumber || ''}
+                                           onChange={handleChange}
+                                    />
                                 </div>
 
                                 <div className="billing-info mb-20 form-group">
                                     <label>Email</label>
-                                    <input type="text" className="form-control" value={email}/>
+                                    <input type="text" className="form-control" value={email || ''}
+                                           onChange={handleChange}
+                                    />
                                 </div>
 
                                 <div>
@@ -201,22 +226,17 @@ const Checkout = () => {
                                         </div>
                                         <div className="your-order-middle">
                                             {cartItems.map((item, index) => (
-
-                                                <ul>
-
-                                                <li>
-
-                                  <span className="order-middle-left">
-                                    {item.title} X {item.quantity}
-                                  </span>{" "}
-                                                    <span className="order-price">
-                                                        {item.quantity*item.price}
-                                  </span>
-                                                </li>
-
-                                            </ul>
+                                                <ul key={item.id}>
+                                                    <li>
+                <span className="order-middle-left">
+                    {item.title} X {item.quantity}
+                </span>{" "}
+                                                        <span className="order-price">
+                    {item.quantity * item.price}
+                </span>
+                                                    </li>
+                                                </ul>
                                             ))}
-
                                         </div>
                                         <div className="your-order-bottom">
                                             <ul>

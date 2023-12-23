@@ -144,7 +144,7 @@ public interface BookRepository extends JpaRepository<Book, Long>  {
                         "SELECT book_id, quantity, price " +
                         "FROM order_details AS od " +
                         "LEFT JOIN orders AS o ON o.order_id = od.order_id " +
-                        "WHERE o.order_date BETWEEN :start_date AND :end_date " +
+                        "WHERE o.order_date BETWEEN DATE(:start_date) AND DATE_SUB(DATE_ADD(:end_date, INTERVAL 1 DAY), INTERVAL 1 SECOND) " +
                         "AND o.status = 'SUCCESS' " +
                     ") AS od ON od.book_id = b.book_id " +
                     "GROUP BY b.book_id " +

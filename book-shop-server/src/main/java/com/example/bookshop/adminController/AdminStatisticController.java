@@ -24,9 +24,9 @@ public class AdminStatisticController {
     public ResponseEntity<?> getBookStatistic(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "24") Integer size,
-            @RequestParam(value = "start_date", defaultValue = "1900-01-01")
+            @RequestParam(value = "startDate", defaultValue = "1900-01-01")
             @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
-            @RequestParam(value = "end_date", defaultValue = "2100-01-01")
+            @RequestParam(value = "endDate", defaultValue = "2100-01-01")
             @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate
     ) throws ResponseStatusException {
         return ResponseEntity.ok(adminBookService.getBookStatistic(page, size, startDate, endDate));
@@ -34,9 +34,9 @@ public class AdminStatisticController {
 
     @GetMapping("/order")
     public ResponseEntity<?> getOrderStatistic(
-            @RequestParam(value = "start_date", defaultValue = "1900-01-01")
+            @RequestParam(value = "startDate", defaultValue = "1900-01-01")
             @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
-            @RequestParam(value = "end_date", defaultValue = "2100-01-01")
+            @RequestParam(value = "endDate", defaultValue = "2100-01-01")
             @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate
     ) throws ResponseStatusException {
         return ResponseEntity.ok(adminOrderManagementService.getOrderStatistic(startDate, endDate));

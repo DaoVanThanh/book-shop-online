@@ -88,6 +88,18 @@ public interface BookRepository extends JpaRepository<Book, Long>  {
             Pageable pageable
     );
 
+    @Query(
+            value = "SELECT b.* " +
+                    "FROM books AS b " +
+                    "ORDER BY COALESCE(b.publication_date, 0) DESC",
+            countQuery = "SELECT COUNT(b.book_id) " +
+                    "FROM books AS b",
+            nativeQuery = true
+    )
+    Page<Book> findByNewest(
+            Pageable pageable
+    );
+
     @Modifying
     @Query(
             value = "DELETE FROM book_author " +

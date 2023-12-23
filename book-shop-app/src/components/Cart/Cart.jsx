@@ -7,13 +7,15 @@ import { getCart, getBookInfo, changeCart } from "../../apiServices/CartService"
 import 'react-toastify/dist/ReactToastify.css';
 import {ToastContainer,toast} from 'react-toastify'
 import Form from 'react-bootstrap/Form';
+import { formatVND } from "../../common";
 
 
 const Cart = () => {
 
     const [checkedItems, setCheckedItems] = useState({});
-
   const accessToken = localStorage.getItem('accessToken');
+
+
   let bookData;
   let cnt = 0;
   const [cartItems, setCartItems] = useState([]);
@@ -44,12 +46,8 @@ const Cart = () => {
 
                 Promise.all(promises)
                     .then((bookInfoArray) => {
-                        const totalQuantities = bookInfoArray.reduce((total, item) => total + item.quantity, 0);
-                        const totalPrice = bookInfoArray.reduce((total, item) => total + item.price * item.quantity, 0);
 
                         setCartItems(bookInfoArray);
-                        setTotalQuantities(totalQuantities);
-                        setTotalPrice(totalPrice);
                     })
                     .catch((error) => {
                         console.log(error);
@@ -70,8 +68,6 @@ const Cart = () => {
       if (item.id === bookId) {
 
 
-          setTotalQuantities(totalQuantities - item.quantity + newQuantity);
-        setTotalPrice(totalPrice - item.price * item.quantity + newQuantity * item.price);
 
         // Update the quantity for the specific item
 
@@ -97,8 +93,7 @@ const Cart = () => {
   const deleteCart = (newQuantity) => {
     const updatedCartItems = cartItems.map((item) => {
 
-        setTotalQuantities(totalQuantities - item.quantity + newQuantity);
-        setTotalPrice(totalPrice - item.price * item.quantity + newQuantity * item.price);
+
         changeCart(item.id, newQuantity)
           .then((response) => {
             console.log(response);
@@ -113,10 +108,100 @@ const Cart = () => {
 
 
   }
+    const loadCheckedItemsFromLocalStorage = async () => {
+        try {
+            // Fetch cart details without triggering a state update
+            const response = await getCart();
+            const bookData = response.data.bookQuantities;
 
-  useEffect(() => {
-    cartDetail();
-  }, []);
+            const promises = bookData.map((book) =>
+                getBookInfo(book.bookId)
+                    .then((responseBook) => {
+                        const bookInfo = {
+                            id: book.bookId,
+                            title: responseBook.data.title,
+                            price: responseBook.data.price,
+                            imgUrl: responseBook.data.imgUrl.replace('public/', ''),
+                            quantity: book.quantity,
+                        };
+
+                        return bookInfo;
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    })
+            );
+
+            const bookInfoArray = await Promise.all(promises);
+
+            // Check if the cartItems state has been updated
+            if (JSON.stringify(bookInfoArray) !== JSON.stringify(cartItems)) {
+                // Load checked items from local storage
+                const storedCheckedItems = localStorage.getItem("checkedItems");
+                if (storedCheckedItems) {
+                    const parsedCheckedItems = JSON.parse(storedCheckedItems);
+                    setCheckedItems(parsedCheckedItems);
+
+                    // Recalculate total quantities and total price based on selected items
+                    const selectedItems = bookInfoArray.filter((item) => parsedCheckedItems[item.id]);
+                    const totalQuantities = selectedItems.reduce((total, item) => total + item.quantity, 0);
+                    const totalPrice = selectedItems.reduce((total, item) => total + item.price * item.quantity, 0);
+
+                    setTotalQuantities(totalQuantities);
+                    setTotalPrice(totalPrice);
+                }
+                // Update the cartItems state
+                setCartItems(bookInfoArray);
+            }
+        } catch (error) {
+            console.error("Error loading checked items:", error);
+        }
+    };
+
+    useEffect(() => {
+        loadCheckedItemsFromLocalStorage(); // Load checked items from local storage
+    }, [cartItems]);
+
+    const handleCheckboxChange = (itemId) => {
+        setCheckedItems((prevCheckedItems) => {
+            const newCheckedItems = { ...prevCheckedItems, [itemId]: !prevCheckedItems[itemId] };
+
+            // Check if all individual checkboxes are unchecked
+            const allUnchecked = cartItems.every((item) => !newCheckedItems[item.id]);
+
+            // Update the "Select All" checkbox accordingly
+            setCheckedItems((prevCheckedItems) => {
+                const updatedCheckedItems = { ...prevCheckedItems, selectAll: !allUnchecked };
+
+                // Save the updated checked items to localStorage
+                localStorage.setItem('checkedItems', JSON.stringify(updatedCheckedItems));
+
+                // Recalculate total quantities and total price based on selected items
+                const selectedItems = cartItems.filter((item) => updatedCheckedItems[item.id]);
+                const totalQuantities = selectedItems.reduce((total, item) => total + item.quantity, 0);
+                const totalPrice = selectedItems.reduce((total, item) => total + item.price * item.quantity, 0);
+
+                setTotalQuantities(totalQuantities);
+                setTotalPrice(totalPrice);
+
+                return updatedCheckedItems;
+            });
+
+            return newCheckedItems;
+        });
+    };
+
+
+
+    useEffect(() => {
+        const storedCheckedItems = localStorage.getItem('checkedItems');
+        if (storedCheckedItems) {
+            const parsedCheckedItems = JSON.parse(storedCheckedItems);
+            setCheckedItems(parsedCheckedItems);
+
+            // If you want to initialize other states based on the checked items, you can do it here.
+        }
+    }, []);
 
   return (
       <Fragment>
@@ -136,6 +221,9 @@ const Cart = () => {
                     <table>
                       <thead>
                       <tr>
+                          <th>
+
+                          </th>
                         <th>Ảnh</th>
                         <th>Tên sản phẩm</th>
                         <th>Giá</th>
@@ -146,7 +234,7 @@ const Cart = () => {
                       </thead>
                       <tbody>
                       {cartItems.map((item, index) => (
-                          <tr>
+                          <tr key={item.id}>
                               {/*<td className="product-checkbox">*/}
                               {/*    <Form>*/}
                               {/*        <div className="mb-3">*/}
@@ -161,7 +249,20 @@ const Cart = () => {
 
                               {/*</Form>*/}
                               {/*</td>*/}
-                        <td className="product-thumbnail">
+                              <td className="product-checkbox text-center text-center" >
+                                  <Form>
+                                      <div className="mb-3">
+                                          <Form.Check
+                                              type='checkbox'
+                                              id={item.id}
+                                              className="custom-checkbox"
+                                              checked={checkedItems[item.id]}
+                                              onChange={() => handleCheckboxChange(item.id)}
+                                          />
+                                      </div>
+                                  </Form>
+                              </td>
+                        <td className="product-thumbnail text-center">
                           <Link
                               to={
                                   ''
@@ -176,7 +277,7 @@ const Cart = () => {
                             />
                           </Link>
                         </td>
-                        <td className="product-name">
+                        <td className="product-name text-center">
                           <Link
                               to={
                                   ''
@@ -185,9 +286,9 @@ const Cart = () => {
                             {item.title}
                           </Link>
                         </td>
-                        <td className="product-price-cart">
+                        <td className="product-price-cart text-center">
                               <span className="amount">
-                                {item.price}
+                                {formatVND(item.price)}
                               </span>
                         </td>
                         <td className="product-quantity">
@@ -215,10 +316,10 @@ const Cart = () => {
                             </button>
                           </div>
                         </td>
-                        <td className="product-subtotal">
-                          {item.quantity * item.price}
+                        <td className="product-subtotal text-center">
+                          {formatVND(item.quantity * item.price)}
                         </td>
-                        <td className="product-remove">
+                        <td className="product-remove text-center">
                           <button onClick={() => changeQuantity(item.id, 0)}>
                             <i className="fa fa-times"></i>
 
@@ -275,7 +376,7 @@ const Cart = () => {
                     <h4 className="grand-totall-title">
                       Tổng tiền{" "}
                       <span>
-                          {totalPrice}
+                          {formatVND(totalPrice)}
                         </span>
                     </h4>
                     <Link to={process.env.PUBLIC_URL + "/checkout"}>

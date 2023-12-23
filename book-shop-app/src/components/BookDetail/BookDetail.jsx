@@ -15,7 +15,8 @@ const BookDetail = () => {
     const navigate = useNavigate();
 
     const incrementQuantity = () => {
-        setQuantity(prevQuantity => prevQuantity + 1);
+        if (quantity < bookDetail.stockQuantity)
+            setQuantity(prevQuantity => prevQuantity + 1);
     };
 
     const decrementQuantity = () => {
@@ -34,6 +35,14 @@ const BookDetail = () => {
                 setLoading(false);
             });
     }, [bookId]);
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (error) {
+        return <div>Đã có lỗi xảy ra khi tải thông tin sách.</div>;
+    }
 
     const authors = bookDetail.authors.map(a => a.authorName).join(', ');
     const publicationYear = new Date(bookDetail.publication_date).getFullYear();
@@ -71,7 +80,7 @@ const BookDetail = () => {
                     <p className="author">Tác giả: {authors}</p>
                     <p className="publication-year">Năm xuất bản: {publicationYear}</p>
                     <p className="genre">Thể loại: {genres}</p>
-                    <p className="reviews-count">Đánh giá: {bookDetail.stockQuantity} lượt</p>
+                    <p className="stock-quantity">Số lượng sẵn có: {bookDetail.stockQuantity} sách</p>
                     <div className="quantity-controls">
                         <button
                             onClick={decrementQuantity}

@@ -38,7 +38,7 @@ const Product = ({ title, price, imgUrl, bookId }) => {
             <img src={imagePath} alt={title} />
             <h3>{title}</h3>
             <p>{price}đ</p>
-            <Link to={`/shop/${bookId}`} className="view-more-button">Xem thêm</Link>
+            <Link to={`/shop/detail/${bookId}`} className="view-more-button">Xem thêm</Link>
         </div>
     );
 };
@@ -92,12 +92,6 @@ const PriceFilter = ({ priceRange, onPriceChange }) => {
     const [minInput, setMinInput] = useState(priceRange[0]);
     const [maxInput, setMaxInput] = useState(priceRange[1]);
 
-    const handleSliderChange = (event, newValue) => {
-        setMinInput(newValue[0]);
-        setMaxInput(newValue[1]);
-        onPriceChange([newValue[0], newValue[1]]);
-    };
-
     const handleMinInputChange = (event) => {
         const newValue = Math.min(Number(event.target.value), maxInput);
         setMinInput(newValue);
@@ -110,10 +104,15 @@ const PriceFilter = ({ priceRange, onPriceChange }) => {
         onPriceChange([minInput, newValue]);
     };
 
-    const onSearchClick = (event) => {
-        
+    const handleSliderChange = (event, newValue) => {
+        setMinInput(newValue[0]);
+        setMaxInput(newValue[1]);
+        onPriceChange([newValue[0], newValue[1]]);
     };
-    
+
+    const onSearchClick = () => {
+        onPriceChange(priceRange);
+    };
 
     return (
         <Box sx={{ width: 300 }}>
@@ -198,7 +197,7 @@ const PriceFilter = ({ priceRange, onPriceChange }) => {
 
 
 
-const LeftColumn = ({ priceRange, onPriceChange }) => {
+const LeftColumn = ({ priceRange, onPriceChange, products, totalPages }) => {
     // const categories = [];
 
     return (
@@ -206,6 +205,8 @@ const LeftColumn = ({ priceRange, onPriceChange }) => {
             <PriceFilter
                 priceRange={priceRange}
                 onPriceChange={onPriceChange}
+                products={products}
+                totalPages={totalPages}
             />
             {/*<Categories categories={categories} />*/}
         </div>
@@ -233,6 +234,9 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         pageNumbers.push(i);
     }
 
+    const maxVisiblePages = 5;
+    const halfVisiblePages = Math.floor(maxVisiblePages / 2);
+
     const goToNextPage = () => {
         if (currentPage < totalPages) {
             onPageChange(currentPage + 1);
@@ -256,19 +260,53 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
                     Trang trước
                 </button>
             </li>
-            {pageNumbers.map((pageNumber) => (
-                <li
-                    key={pageNumber}
-                    className={`page-item ${currentPage === pageNumber ? 'active' : ''}`}
-                >
-                    <button
-                        className="page-link"
-                        onClick={() => onPageChange(pageNumber)}
-                    >
-                        {pageNumber}
-                    </button>
-                </li>
-            ))}
+            {pageNumbers.map((pageNumber) => {
+                if (totalPages <= maxVisiblePages) {
+                    return (
+                        <li
+                            key={pageNumber}
+                            className={`page-item ${currentPage === pageNumber ? 'active' : ''}`}
+                        >
+                            <button
+                                className="page-link"
+                                onClick={() => onPageChange(pageNumber)}
+                            >
+                                {pageNumber}
+                            </button>
+                        </li>
+                    );
+                } else {
+                    if (
+                        pageNumber <= halfVisiblePages + 1 ||
+                        pageNumber >= totalPages - halfVisiblePages ||
+                        (pageNumber >= currentPage - halfVisiblePages &&
+                            pageNumber <= currentPage + halfVisiblePages)
+                    ) {
+                        return (
+                            <li
+                                key={pageNumber}
+                                className={`page-item ${currentPage === pageNumber ? 'active' : ''}`}
+                            >
+                                <button
+                                    className="page-link"
+                                    onClick={() => onPageChange(pageNumber)}
+                                >
+                                    {pageNumber}
+                                </button>
+                            </li>
+                        );
+                    } else if (
+                        pageNumber === halfVisiblePages + 2 ||
+                        pageNumber === totalPages - halfVisiblePages - 1
+                    ) {
+                        return (
+                            <li key={pageNumber} className="page-item">
+                                <span className="ellipsis">...</span>
+                            </li>
+                        );
+                    }
+                }
+            })}
             <li>
                 <button
                     className="page-link"
@@ -283,13 +321,15 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
 };
 
 
+
 const Shop = () => {
     const [products, setProducts] = useState([]);
+    const [totalPages, setTotalPages] = useState(0);
     const [searchKeyword, setSearchKeyword] = useState('');
     const [sortOption, setSortOption] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(12);
-    const [totalPages, setTotalPages] = useState(0);
+
 
     const [minPrice, setMinPrice] = useState(0);
     const [maxPrice, setMaxPrice] = useState(1000000);
@@ -305,10 +345,24 @@ const Shop = () => {
         setMaxPrice(value);
     };
 
-    const [priceRange, setPriceRange] = useState([0, 1000]);
+    const [priceRange, setPriceRange] = useState([0, 999000]);
 
     const handlePriceChange = (newRange) => {
         setPriceRange(newRange);
+        fetchProductsByPrice(newRange);
+    };
+
+    const fetchProductsByPrice = (range) => {
+        console.log(range[0]);
+        console.log(range[1]);
+        axios.get(`http://localhost:8080/api/book/price?min_price=${range[0]}&max_price=${range[1]}&page=0&size=100&sort=asc`)
+            .then(response => {
+                setProducts(response.data.content);
+                setTotalPages(1);
+            })
+            .catch(error => {
+                console.error('Error fetching products:', error);
+            });
     };
 
     const handleSelectGenre = (genreId) => {
@@ -327,7 +381,7 @@ const Shop = () => {
     };
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/api/book/all?page=${currentPage - 1}&size=${pageSize}`)
+        axios.get(`http://localhost:8080/api/book/all?page=${currentPage - 1}&size=${100}`)
             .then(response => {
                 if (response.data && Array.isArray(response.data.content)) {
                     setProducts(response.data.content);
@@ -366,8 +420,11 @@ const Shop = () => {
             sorted.sort((a, b) => a.price - b.price);
         } else if (sortOption === 'price_desc') {
             sorted.sort((a, b) => b.price - a.price);
+        } else if (sortOption === 'year') {
+            sorted.sort((a, b) => a.publication_date - b.publication_date);
+        } else if (sortOption === 'rating') {
+            sorted.sort((a, b) => a.stockQuantity - b.stockQuantity);
         }
-
         return sorted;
     };
 

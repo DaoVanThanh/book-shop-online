@@ -1,6 +1,6 @@
 body {
-    background-color: #ffffff; /* Thay đổi màu nền thành trắng */
-    color: #333333; /* Thay đổi màu chữ thành màu đậm hơn để dễ đọc */
+    background-color: #ffffff;
+    color: #333333;
     font-family: 'Arial', sans-serif;
 }
 
@@ -8,7 +8,7 @@ body {
     display: flex;
     max-width: 1200px;
     margin: 40px auto;
-    background: #f0f0f0; /* Thay đổi màu nền của container */
+    background: #f0f0f0;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     padding: 20px;
@@ -45,16 +45,14 @@ body {
     font-weight: bold;
 }
 
-/* Phần mô tả sản phẩm */
 .description {
     flex: 2;
-    border-left: 1px solid #ccc; /* Thay đổi màu viền ngăn cách thành màu xám nhạt */
+    border-left: 1px solid #ccc;
     padding-left: 20px;
     margin-left: 20px;
-    color: #333333; /* Thay đổi màu chữ của mô tả sản phẩm thành màu đậm hơn để dễ đọc */
+    color: #333333;
 }
 
-/* Button thêm vào giỏ hàng */
 .add-to-cart button {
     background-color: green;
     color: white;
@@ -71,7 +69,6 @@ body {
     background-color: #006600;
 }
 
-/* Responsive design */
 @media (max-width: 768px) {
     .book-detail-container {
         flex-direction: column;
@@ -90,7 +87,7 @@ body {
 .book-detail-info .author,
 .book-detail-info .publication-year,
 .book-detail-info .genre,
-.book-detail-info .reviews-count {
+.book-detail-info .stock-quantity {
     color: #333333;
     margin: 0px;
 }

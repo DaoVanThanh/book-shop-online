@@ -189,7 +189,7 @@
 .pagination .page-link:hover {
     background-color: #006600;
     color: #fff;
-    transform: scale(1.2);
+    transform: scale(1.05);
 }
 
 .pagination .page-item.active .page-link {
@@ -269,6 +269,7 @@
     align-items: center;
     justify-content: center;
     transition: background-color 0.3s ease;
+    margin: 10px;
 }
 
 .search-button:hover {

@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import './BookDetail.css';
+import { toast } from 'react-toastify';
+import { useNavigate } from "react-router-dom";
 
 const BookDetail = () => {
     const { bookId } = useParams();
@@ -9,9 +11,12 @@ const BookDetail = () => {
     const [quantity, setQuantity] = useState(1);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const { isAdded } = true;
+    const navigate = useNavigate();
 
     const incrementQuantity = () => {
-        setQuantity(prevQuantity => prevQuantity + 1);
+        if (quantity < bookDetail.stockQuantity)
+            setQuantity(prevQuantity => prevQuantity + 1);
     };
 
     const decrementQuantity = () => {
@@ -45,20 +50,21 @@ const BookDetail = () => {
 
     const addToCart = async () => {
         const accessToken = localStorage.getItem('accessToken');
-        console.log(bookId);
-        console.log(quantity);
         try {
             const response = await axios.put('http://localhost:8080/api/user/orm/carts/book', {
                 bookId,
-                quantity
+                quantity,
+                isAdded: true
             }, {
                 headers: {
                     'Authorization':`Bearer ${accessToken}`
                 }
             });
-            console.log(response.data);
-            alert("Thêm vào giỏ hàng thành công");
-            window.location.reload();
+            toast.success("Thêm vào giỏ hàng thành công", {
+                position: toast.POSITION.TOP_RIGHT,
+                autoClose: 2000,
+            });
+            navigate("/shop");
         } catch (error) {
             console.error('Error updating cart:', error);
         }
@@ -74,7 +80,7 @@ const BookDetail = () => {
                     <p className="author">Tác giả: {authors}</p>
                     <p className="publication-year">Năm xuất bản: {publicationYear}</p>
                     <p className="genre">Thể loại: {genres}</p>
-                    <p className="reviews-count">Đánh giá: {bookDetail.stockQuantity} lượt</p>
+                    <p className="stock-quantity">Số lượng sẵn có: {bookDetail.stockQuantity} sách</p>
                     <div className="quantity-controls">
                         <button
                             onClick={decrementQuantity}

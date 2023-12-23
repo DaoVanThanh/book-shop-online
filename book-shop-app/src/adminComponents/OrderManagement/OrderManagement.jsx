@@ -110,8 +110,8 @@ const OrderManagement = () => {
     };
 
     return (
-        <div className="container">
-            <h1>Quản lý đơn hàng </h1>
+        <div className="container" style={{padding: "0"}}>
+            <h1 style={{color: "#228b22", marginBottom: "28px"}}>Quản lý đơn hàng </h1>
             <Tabs activeKey={selectedTab} onSelect={handleTabChange}>
                 {orderStatuses.map((status, index) => (
                     <Tab eventKey={index} title={status} key={status}>

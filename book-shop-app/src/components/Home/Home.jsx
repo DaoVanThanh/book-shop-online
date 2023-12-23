@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Row, Col} from 'react-bootstrap';
 import {getBestSellerBooks, getFamousAuthors} from "../../apiServices/AdminApi/ProductManagementService";
 import {useNavigate} from "react-router-dom";
+import Carousel from 'react-bootstrap/Carousel';
 
 const Home = () => {
     useEffect(() => {
@@ -57,6 +58,7 @@ const Home = () => {
             margin: '10px 10%',
             backgroundColor: 'none',
         }}>
+            <Slider/>
             <HomeBook bestSellerBooks={bestSellerBooks}/>
             <Line/>
             <Heading text={'Các tác giả'}/>
@@ -67,7 +69,25 @@ const Home = () => {
         </div>
     );
 };
+const Slider = () => {
 
+    return (
+        <Carousel data-bs-theme="dark">
+
+            <Carousel.Item>
+                <img src={'slider1.jpeg'}  />
+            </Carousel.Item>
+            <Carousel.Item>
+                <img src={'slider2.jpeg'}  />
+            </Carousel.Item>
+            <Carousel.Item>
+                <img src={'slider3.jpeg'}  />
+
+            </Carousel.Item>
+
+        </Carousel>
+    )
+}
 const HomeBook = ({bestSellerBooks}) => {
     const navigate = useNavigate();
 

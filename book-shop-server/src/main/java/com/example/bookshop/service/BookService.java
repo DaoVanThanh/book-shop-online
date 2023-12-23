@@ -35,5 +35,7 @@ public interface BookService {
 
     Page<Book> getAllByBestSeller(Integer page, Integer size) throws ResponseStatusException;
 
+    Page<Book> getNewest(Integer page, Integer size) throws ResponseStatusException;
+
     Page<Author> getFamousAuthor(Integer page, Integer size) throws ResponseStatusException;
 }

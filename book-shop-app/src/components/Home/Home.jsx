@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Row, Col} from 'react-bootstrap';
-import {getBestSellerBooks, getFamousAuthors} from "../../apiServices/AdminApi/ProductManagementService";
+import {getBestSellerBooks, getFamousAuthors, getNewBooks} from "../../apiServices/AdminApi/ProductManagementService";
 import Carousel from 'react-bootstrap/Carousel';
 import {Product, ProductGrid} from "../Shop/Shop";
 import {Link} from "react-router-dom";
@@ -8,16 +8,28 @@ import {Link} from "react-router-dom";
 const Home = () => {
     useEffect(() => {
         handleBestSellerBooks(4);
+        handleNewBook(4);
         handleFamousAuthors(6);
     }, []);
 
     const [bestSellerBooks, setBestSellerBooks] = useState([]);
+    const [newBooks, setNewBooks] = useState([]);
     const [famousAuthors, setFamousAuthors] = useState([]);
 
     const handleBestSellerBooks = async (size) => {
          await getBestSellerBooks(size)
             .then((response) => {
                 setBestSellerBooks(response.data.content)
+            })
+            .catch((error) => {
+                console.log(error)
+            });
+    }
+
+    const handleNewBook = async (size) => {
+        await getNewBooks(size)
+            .then((response) => {
+                setNewBooks(response.data.content)
             })
             .catch((error) => {
                 console.log(error)
@@ -50,7 +62,7 @@ const Home = () => {
             <ToShop/>
             <Line/>
             <Heading text={'Sách mới'}/>
-            <HomeBook bestSellerBooks={bestSellerBooks}/>
+            <HomeBook bestSellerBooks={newBooks}/>
         </div>
     );
 };

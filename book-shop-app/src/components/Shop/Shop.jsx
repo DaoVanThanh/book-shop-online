@@ -391,4 +391,5 @@ const Shop = () => {
     );
 };
 
+export { Product, ProductGrid};
 export default Shop;

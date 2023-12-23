@@ -6,6 +6,11 @@
   border-radius: 10px;
 }
 
+.data-container:hover {
+  background-color: aqua;
+  cursor: pointer;
+}
+
 .icon-statistic {
   text-align: center;
 }

@@ -191,7 +191,6 @@
     color: #fff;
     transform: scale(1.05);
 }
-
 .pagination .page-item.active .page-link {
     background-color: green;
     color: #fff;

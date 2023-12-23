@@ -18,7 +18,10 @@ const Footer = () => {
   };
   return (
     <MDBFooter bgColor="light" className="text-center text-lg-start text-muted">
-      <section className="d-flex justify-content-center p-4 border-bottom">
+      <section
+        className="d-flex justify-content-center p-4 border-bottom"
+        style={{ color: "#fff", backgroundColor: "#228b22" }}
+      >
         <div className="me-5 d-none d-lg-block">
           <span>Hãy kết nối với chúng tôi trên các mạng xã hội:</span>
         </div>
@@ -28,16 +31,13 @@ const Footer = () => {
             <MDBIcon fab icon="facebook-f" />
           </a>
           <a href="" className="me-4 text-reset">
-            <MDBIcon fab icon="twitter" />
+            <MDBIcon fab icon="instagram" />
           </a>
           <a href="" className="me-4 text-reset">
             <MDBIcon fab icon="google" />
           </a>
           <a href="" className="me-4 text-reset">
-            <MDBIcon fab icon="instagram" />
-          </a>
-          <a href="" className="me-4 text-reset">
-            <MDBIcon fab icon="linkedin" />
+            <MDBIcon fab icon="twitter" />
           </a>
           <a href="" className="me-4 text-reset">
             <MDBIcon fab icon="github" />
@@ -45,14 +45,14 @@ const Footer = () => {
         </div>
       </section>
 
-      <section className="">
+      <section className="" style={{ borderTop: "1px solid green" }}>
         <MDBContainer className="text-center text-md-start mt-5">
           <MDBRow className="mt-3">
             <MDBCol md="3" lg="4" xl="3" className="mx-auto mb-4">
-              <h6 className="text-uppercase fw-bold mb-4">
+              {/* <h6 className="text-uppercase fw-bold mb-4">
                 <MDBIcon icon="gem" className="me-3" />
                 Book Store
-              </h6>
+              </h6> */}
               <img
                 src={logo}
                 alt="Logo book shop"
@@ -65,7 +65,12 @@ const Footer = () => {
             </MDBCol>
 
             <MDBCol md="3" lg="2" xl="2" className="mx-auto mb-4">
-              <h6 className="text-uppercase fw-bold mb-4">Giới thiệu</h6>
+              <h6
+                className="text-uppercase fw-bold mb-4"
+                style={{ color: "green" }}
+              >
+                Giới thiệu
+              </h6>
               <p
                 onClick={() => navigate("/about")}
                 style={{ cursor: "pointer" }}
@@ -75,7 +80,12 @@ const Footer = () => {
             </MDBCol>
 
             <MDBCol md="2" lg="2" xl="2" className="mx-auto mb-4">
-              <h6 className="text-uppercase fw-bold mb-4">Dịch vụ</h6>
+              <h6
+                className="text-uppercase fw-bold mb-4"
+                style={{ color: "green" }}
+              >
+                Dịch vụ
+              </h6>
               <p
                 onClick={() => navigate("/policy")}
                 style={{ cursor: "pointer" }}
@@ -85,7 +95,12 @@ const Footer = () => {
             </MDBCol>
 
             <MDBCol md="4" lg="3" xl="3" className="mx-auto mb-md-0 mb-4">
-              <h6 className="text-uppercase fw-bold mb-4">Liên hệ</h6>
+              <h6
+                className="text-uppercase fw-bold mb-4"
+                style={{ color: "green" }}
+              >
+                Liên hệ
+              </h6>
               <p>
                 <MDBIcon icon="home" className="me-2" /> 144 Xuân Thủy, Cầu
                 Giấy, Hà Nội
@@ -106,13 +121,6 @@ const Footer = () => {
           </MDBRow>
         </MDBContainer>
       </section>
-
-      <div
-        className="text-center p-4"
-        style={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }}
-      >
-        © Copyright 2023
-      </div>
     </MDBFooter>
   );
 };

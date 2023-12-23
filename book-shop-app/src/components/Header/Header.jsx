@@ -32,11 +32,11 @@ const Header = () => {
   };
 
   return (
-    <Navbar expand="lg" className="bg-body-tertiary">
+    <Navbar expand="lg" style={{borderBottom:"1px solid green", fontSize: "18px"}}>
       <Container>
         <Navbar.Brand
           onClick={() => navigate("/")}
-          style={{ marginRight: "20%" }}
+          style={{ marginRight: "15%" }}
         >
           <img
             src={logo}

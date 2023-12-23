@@ -32,7 +32,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query(
             value = "SELECT COUNT(*) " +
                     "FROM orders AS o " +
-                    "WHERE o.order_date BETWEEN :start_date AND :end_date " +
+                    "WHERE o.order_date BETWEEN :start_date AND DATE_SUB(DATE_ADD(:end_date, INTERVAL 1 DAY), INTERVAL 1 SECOND) " +
                     "AND o.status = 'SUCCESS'",
             nativeQuery = true
     )
@@ -45,7 +45,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query(
             value = "SELECT SUM(total_amount) " +
                     "FROM orders AS o " +
-                    "WHERE o.order_date BETWEEN :start_date AND :end_date " +
+                    "WHERE o.order_date BETWEEN :start_date AND DATE_SUB(DATE_ADD(:end_date, INTERVAL 1 DAY), INTERVAL 1 SECOND) " +
                     "AND o.status = 'SUCCESS'",
             nativeQuery = true
     )
@@ -59,7 +59,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             value = "SELECT COUNT(DISTINCT od.book_id) " +
                     "FROM orders AS o " +
                     "JOIN order_details AS od ON od.order_id = o.order_id " +
-                    "WHERE o.order_date BETWEEN :start_date AND :end_date " +
+                    "WHERE o.order_date BETWEEN :start_date AND DATE_SUB(DATE_ADD(:end_date, INTERVAL 1 DAY), INTERVAL 1 SECOND) " +
                     "AND o.status = 'SUCCESS'",
             nativeQuery = true
     )

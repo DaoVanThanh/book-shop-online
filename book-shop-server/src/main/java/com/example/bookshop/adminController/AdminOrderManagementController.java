@@ -1,6 +1,7 @@
 package com.example.bookshop.adminController;
 
 import com.example.bookshop.adminService.AdminOrderManagementService;
+import com.example.bookshop.dto.OrderSummary;
 import com.example.bookshop.dto.request.AdminUpdateStatusOrderDto;
 import com.example.bookshop.dto.response.AdminOrderManagementDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +38,8 @@ public class AdminOrderManagementController {
 
     // API lấy thông tin chi tiết về một đơn hàng dựa trên ID
     @GetMapping("/order/{orderId}")
-    public AdminOrderManagementDto getOrderById(@PathVariable Long orderId) {
-        return adminOrderManagementService.getOrderById(orderId);
+    public OrderSummary getOrderById(@PathVariable Long orderId) {
+        return adminOrderManagementService.getOderSummaryById(orderId);
     }
 
 

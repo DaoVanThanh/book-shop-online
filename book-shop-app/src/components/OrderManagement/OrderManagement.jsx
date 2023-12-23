@@ -7,6 +7,7 @@ import { getOrder, cancelOrder } from "../../apiServices/OrderManagementService"
 import 'react-toastify/dist/ReactToastify.css';
 import {ToastContainer,toast} from 'react-toastify'
 import { Link } from 'react-router-dom';
+import {formatVND} from "../../common";
 
 const ConfirmationModal = ({ show, handleClose, handleConfirm }) => {
   return (
@@ -128,21 +129,23 @@ const OrderList = ({ status, orders }) => {
         {filteredOrders.map((order) => (
 
           <Card key={order.orderId} className="mb-5">
-              <Card.Header>
-                <Card.Text>
-                  <Row>
-                    <Col sm={4}></Col>
-                    <Col sm={4}>
-                      <Card.Text>Mã đơn hàng: #{order.orderId}</Card.Text>
-                    </Col>
-                    <Col sm={4} style={{ textAlign: "right" }}>
-                      <Card.Text className={`fw-bold cover-text-${order.status.toLowerCase()} ${order.status.toLowerCase()}`}>Trạng thái: {order.status}</Card.Text>
-                    </Col>
-                  </Row>
-                </Card.Text>
-              </Card.Header>
-              <Card.Body>
+
+            <Card.Header>
+              <Row>
+                <Col sm={4}></Col>
+                <Col sm={4}>
+                  <Card.Text>Mã đơn hàng: #{order.orderId}</Card.Text>
+                </Col>
+                <Col sm={4} style={{ textAlign: "right" }}>
+                </Col>
+              </Row>
+            </Card.Header>
+
+
+
+            <Card.Body>
                 {order.bookQuantitySummaries.map((bookSummary) => (
+
                     <Row key={bookSummary.bookSummary.bookId}>
                       <Col sm={4}>
                         <Card.Img
@@ -154,10 +157,10 @@ const OrderList = ({ status, orders }) => {
                         <Card.Title>Sách: {bookSummary.bookSummary.title}</Card.Title>
                       </Col>
                       <Col sm={1} className="d-flex align-items-center justify-content-center">
-                        <p className="text-muted">x{bookSummary.quantity}</p>
+                        <div className="text-muted">x{bookSummary.quantity}</div>
                       </Col>
                       <Col sm={3} className="d-flex align-items-center justify-content-center">
-                        <Card.Text>Thành tiền: {bookSummary.bookSummary.price * bookSummary.quantity}vnđ</Card.Text>
+                        <Card.Text>Thành tiền: {formatVND(bookSummary.bookSummary.price * bookSummary.quantity)}</Card.Text>
                       </Col>
                       <hr />
 
@@ -172,7 +175,7 @@ const OrderList = ({ status, orders }) => {
                     Ngày đặt hàng: {new Date(order.orderDate).toLocaleString()}
                   </Col>
                   <Col sm={3} className="fw-bold">
-                    <Card.Text>Tổng: {order.totalAmount}vnđ</Card.Text>
+                    <Card.Text>Tổng: {formatVND(order.totalAmount)}vnđ</Card.Text>
                   </Col>
                 </Row>
               </Card.Footer>
@@ -188,11 +191,7 @@ const OrderList = ({ status, orders }) => {
                   {/*</Button>*/}
                 </Col>
                 <Col sm={4}>
-                  {status === "SUCCESS" && (
-                      <Link to={`/rate?orderId=${order.orderId}`} className="btn btn-secondary mb-2">
-                        Xem đánh giá
-                      </Link>
-                  )}
+
                 </Col>
                 <Col sm={4}>
                   <Button

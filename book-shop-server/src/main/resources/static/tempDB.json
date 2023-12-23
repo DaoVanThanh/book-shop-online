@@ -1,0 +1,32 @@
+{
+  "orders": [
+    {
+      "OrderId": 1,
+      "date": "2023-11-01",
+      "user": "John Doe",
+      "totalPayment": 50,
+      "address": "123 Main St",
+      "phoneNumber": "0123456789",
+      "status": "Đơn hàng mới"
+    },
+    {
+      "id": 2,
+      "date": "2023-11-02",
+      "user": "Alice Smith",
+      "totalPayment": 75,
+      "address": "456 Elm St",
+      "phoneNumber": "0123456789",
+
+      "status": "Đơn hàng mới"
+    },
+    {
+      "id": 3,
+      "date": "2023-11-03",
+      "user": "Bob Johnson",
+      "totalPayment": 30,
+      "address": "789 Oak St",
+      "phoneNumber": "0123456789",
+      "status": "Đơn hàng mới"
+    }
+  ]
+}

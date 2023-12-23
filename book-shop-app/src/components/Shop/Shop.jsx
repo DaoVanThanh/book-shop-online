@@ -112,8 +112,7 @@ const PriceFilter = ({ priceRange, onPriceChange }) => {
 
     const onSearchClick = () => {
         onPriceChange(priceRange);
-    };
-
+    
     return (
         <Box sx={{ width: 300 }}>
             <Typography id="range-slider" gutterBottom>
@@ -448,4 +447,5 @@ const Shop = () => {
     );
 };
 
+export { Product, ProductGrid};
 export default Shop;

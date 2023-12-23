@@ -199,6 +199,15 @@ public class BookServiceImpl implements BookService {
                 );
     }
 
+    public Page<Book> getNewest(Integer page, Integer size) throws ResponseStatusException {
+        ValidatePageSize(page, size);
+        Pageable pageable = PageRequest.of(page, size);
+        return bookRepository
+                .findByNewest(
+                        pageable
+                );
+    }
+
     public Page<Author> getFamousAuthor(Integer page, Integer size) throws ResponseStatusException {
         ValidatePageSize(page, size);
         Pageable pageable = PageRequest.of(page, size);

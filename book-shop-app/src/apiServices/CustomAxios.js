@@ -16,9 +16,10 @@ instance.interceptors.response.use(function (response) {
   return response;
 }, function (error) {
 
-  if (error.response.status === 403) {
-    window.location.href = "/login";
-  }
+  // if (error.response.status !== 200) {
+  //   localStorage.clear();
+  //   window.location.href = "/login";
+  // }
   return Promise.reject(error);
 });
 

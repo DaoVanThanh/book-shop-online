@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useEffect, useRef, useState } from "react";
 import { Form, Button, Row, Col, Table } from "react-bootstrap";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./statistic.css";
@@ -8,33 +8,63 @@ import {
   bookStatistic,
 } from "../../apiServices/AdminApi/StatisticService";
 
+import { formatVND } from "../../common";
+
 const Statistic = () => {
-  const [totalBookSold, setTotalBookSold] = useState();
-  const [totalOrderSold, setTotalOrderSold] = useState();
-  const [totalRevenue, setTotalRevenue] = useState();
+  const [totalBookSold, setTotalBookSold] = useState(0);
+  const [totalOrderSold, setTotalOrderSold] = useState(0);
+  const [totalRevenue, setTotalRevenue] = useState(0);
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
   const [listBookSold, setListBookSold] = useState([]);
+  const [error, setError] = useState(false);
 
-  const handleStatistic = async () => {
-    try {
-      const generalStatisticData = (await generalStatistic(startDate, endDate))
-        .data;
-      setTotalBookSold(generalStatisticData.numberOfBook);
-      setTotalOrderSold(generalStatisticData.numberOfOrder);
-      setTotalRevenue(generalStatisticData.revenue);
+  // const itemsPerPage = 10;
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const [totalPage, setTotalPage] = useState(0);
 
-      const bookStatisticData = (await bookStatistic(startDate, endDate)).data;
-      console.log(bookStatisticData);
-      setListBookSold(bookStatisticData.content);
-    } catch (err) {
-      console.log(err);
+  const divRef = useRef(null);
+
+  const statisticAll = async () => {
+    if (startDate > endDate) {
+      setError(true);
+    } else {
+      try {
+        const generalStatisticData = (
+          await generalStatistic(startDate, endDate)
+        ).data;
+        setTotalBookSold(generalStatisticData.numberOfBook);
+        setTotalOrderSold(generalStatisticData.numberOfOrder);
+        if (generalStatisticData.revenue != null) {
+          setTotalRevenue(generalStatisticData.revenue);
+        } else {
+          setTotalRevenue(0);
+        }
+
+        const bookStatisticData = (await bookStatistic(startDate, endDate))
+          .data;
+        setListBookSold(bookStatisticData.content);
+      } catch (err) {
+        console.log(err);
+      }
+      setError(false)
     }
   };
+  const handleStatistic = async () => {
+    statisticAll();
+  };
+  useEffect(() => {
+    statisticAll();
+  }, []);
 
+  const scrollToStatistic = () => {
+    if (divRef.current) {
+      divRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
   return (
     <div>
-      <h1>Statistic</h1>
+      <h1 style={{color: "#228b22", marginBottom: "28px"}}>Thống kê</h1>
 
       <Row>
         <Col>
@@ -44,7 +74,10 @@ const Statistic = () => {
               required
               type="date"
               placeholder="Ngày bắt đầu"
-              onChange={(event) => setStartDate(event.target.value)}
+              onChange={(event) => {
+                setStartDate(event.target.value);
+                console.log(event.target.value);
+              }}
             />
             <label htmlFor="floatingDate1">Ngày bắt đầu</label>
           </Form.Floating>
@@ -62,13 +95,14 @@ const Statistic = () => {
           </Form.Floating>
         </Col>
         <Col>
-          <Button style={{}} onClick={handleStatistic}>
+          <Button variant="success" onClick={handleStatistic}>
             Thống kê
           </Button>
         </Col>
       </Row>
+      {error && <p style={{color:"red"}}>Vui lòng nhập ngày bắt đầu trước ngày kết thúc!</p>}
 
-      <Row className="data-container">
+      <Row className="data-container" onClick={scrollToStatistic}>
         <Col className="icon-statistic">
           <i className="fa-solid fa-book"></i>
         </Col>
@@ -78,7 +112,10 @@ const Statistic = () => {
         </Col>
       </Row>
 
-      <Row className="data-container">
+      <Row
+        className="data-container"
+        onClick={() => (window.location.href = "/orders")}
+      >
         <Col className="icon-statistic">
           <i className="fa-solid fa-cart-arrow-down"></i>
         </Col>
@@ -88,17 +125,17 @@ const Statistic = () => {
         </Col>
       </Row>
 
-      <Row className="data-container">
+      <Row className="data-container" onClick={scrollToStatistic}>
         <Col className="icon-statistic">
           <i className="fa-solid fa-hand-holding-dollar"></i>
         </Col>
         <Col className="data-statistic">
-          <h4>{totalRevenue}đ</h4>
+          <h4>{formatVND(totalRevenue)}</h4>
           <h6>Tổng doanh thu</h6>
         </Col>
       </Row>
 
-      <Table striped bordered hover>
+      <Table striped bordered hover ref={divRef}>
         <thead>
           <tr>
             <th>Tên sách</th>
@@ -111,7 +148,7 @@ const Statistic = () => {
             <tr key={book.bookId}>
               <td>{book.title}</td>
               <td>{book.totalSold}</td>
-              <td>{book.revenue}</td>
+              <td>{formatVND(book.revenue)}</td>
             </tr>
           ))}
         </tbody>

@@ -4,8 +4,6 @@ import {
   Table,
   Modal,
   Form,
-  Row,
-  Col,
   ListGroup,
   Pagination,
   Image,
@@ -21,6 +19,7 @@ import {
   updateBook,
 } from "../../apiServices/AdminApi/ProductManagementService";
 import "./PM.css";
+import { formatVND } from "../../common";
 
 const ProductManagement = () => {
   const ADD = "Thêm";
@@ -81,6 +80,7 @@ const ProductManagement = () => {
       title: "",
       genre: [],
       author: [],
+      imgUrl: "",
       publicationDate: new Date(),
       price: 0,
       stockQuantity: 0,
@@ -100,7 +100,6 @@ const ProductManagement = () => {
     setShowAction(true);
     try {
       const detail = (await getBookDetail(id)).data;
-      console.log(detail);
       setNewBook({
         ...newBook,
         title: detail.title,
@@ -223,7 +222,6 @@ const ProductManagement = () => {
   const handleDescription = (e) => {
     const description = e.target.value;
     setNewBook({ ...newBook, description: description });
-    console.log(newBook);
   };
 
   const handleSearch = async () => {
@@ -242,9 +240,9 @@ const ProductManagement = () => {
 
   return (
     <div className="ad-container">
-      <h1>Quản lý sản phẩm</h1>
+      <h1 style={{color: "#228b22"}}>Quản lý sản phẩm</h1>
       <div className="add-search">
-        <Button className="admin-add" variant="primary" onClick={handleShowAdd}>
+        <Button className="admin-add" variant="success" onClick={handleShowAdd}>
           Thêm sách
         </Button>
 
@@ -256,7 +254,7 @@ const ProductManagement = () => {
             value={searchKey}
             onChange={(e) => setSearchKey(e.target.value)}
           />
-          <Button onClick={handleSearch}>
+          <Button onClick={handleSearch} variant="success">
             <MDBIcon icon="search" />
           </Button>
         </InputGroup>
@@ -278,24 +276,27 @@ const ProductManagement = () => {
             <tr key={book.bookId}>
               <td style={{ textAlign: "left" }}>{book.title}</td>
               <td>{book.publication_date}</td>
-              <td>{book.price}đ</td>
+              <td>{formatVND(book.price)}</td>
               <td>{book.stockQuantity}</td>
               <td>
-                <Image src={book.imgUrl} style={{ width: "100px" }}></Image>
+                <Image
+                  src={book.imgUrl}
+                  style={{ width: "100px", height: "100px" }}
+                  alt={book.title}
+                ></Image>
               </td>
               <td>
                 <i
                   className="fa-regular fa-pen-to-square"
-                  style={{ cursor: "pointer", marginRight: "20px" }}
+                  style={{ cursor: "pointer" }}
                   onClick={() => handleShowUpdate(book.bookId)}
                 ></i>
-                <i className="fa-solid fa-trash"></i>
               </td>
             </tr>
           ))}
         </tbody>
       </Table>
-      <Pagination style={{justifyContent:"center"}}>
+      <Pagination style={{ justifyContent: "center" }}>
         <Pagination.First onClick={() => handlePageChange(1)} />
         <Pagination.Prev
           onClick={() => handlePageChange(currentPage - 1)}
@@ -524,17 +525,21 @@ const ProductManagement = () => {
                 Vui lòng nhập mô tả
               </Form.Control.Feedback>
             </Form.Floating>
-            <Form.Group className="form-group" controlId="validationCustom07">
-              <Form.Label className="form-label"></Form.Label>
-              <FileBase64
-                multiple={false}
-                type="file"
-                value={newBook.imgUrl}
-                onDone={({ base64 }) =>
-                  setNewBook({ ...newBook, imgUrl: base64 })
-                }
-              />
-            </Form.Group>
+            <FileBase64
+              multiple={false}
+              type="file"
+              value={newBook.imgUrl}
+              onDone={({ base64 }) =>
+                setNewBook({ ...newBook, imgUrl: base64 })
+              }
+            />
+            {newBook.imgUrl && (
+              <Image
+                src={newBook.imgUrl}
+                style={{ width: "300px", height: "300px" }}
+                alt={newBook.title}
+              ></Image>
+            )}
             <div
               style={{
                 paddingTop: "20px",

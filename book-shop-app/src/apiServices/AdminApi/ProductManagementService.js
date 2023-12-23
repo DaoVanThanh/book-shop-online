@@ -70,6 +70,15 @@ const getBestSellerBooks = async (size) => {
   });
 };
 
+const getNewBooks = async (size) => {
+  return await instanceNotAuth.get("/api/book/new", {
+    params: {
+      page: 0,
+      size: size,
+    }
+  });
+};
+
 const getFamousAuthors = async (size) => {
   return await instanceNotAuth.get("/api/book/famousAuthor", {
     params: {
@@ -80,4 +89,4 @@ const getFamousAuthors = async (size) => {
 };
 
 
-export { AddBook, searchBook, getBookDetail, updateBook, getBestSellerBooks, getFamousAuthors };
+export { AddBook, searchBook, getBookDetail, updateBook, getBestSellerBooks, getFamousAuthors, getNewBooks };

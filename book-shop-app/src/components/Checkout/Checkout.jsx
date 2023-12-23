@@ -9,6 +9,7 @@ import {ToastContainer,toast} from 'react-toastify'
 import { useNavigate } from "react-router-dom";
 import {getCart, getBookInfo, changeCart} from "../../apiServices/CartService";
 import {getUserInfo} from "../../apiServices/CheckoutService"
+import {formatVND} from "../../common";
 const Checkout = () => {
     const [checkedItems, setCheckedItems] = useState({});
     const [cartItems, setCartItems] = useState([]);
@@ -229,11 +230,16 @@ const Checkout = () => {
                                                 <ul key={item.id}>
                                                     <li>
                 <span className="order-middle-left">
-                    {item.title} X {item.quantity}
+                    {item.title}
                 </span>{" "}
                                                         <span className="order-price">
-                    {item.quantity * item.price}
+                    {formatVND(item.quantity * item.price)}
                 </span>
+                                                    </li>
+                                                    <li>
+                                                        <span style={{ fontStyle: 'italic' }}>
+                                                            SL: {item.quantity}
+                                                        </span>
                                                     </li>
                                                 </ul>
                                             ))}
@@ -248,7 +254,7 @@ const Checkout = () => {
                                             <ul>
                                                 <li className="order-total">Tổng</li>
                                                 <li>
-                                                    {totalPrice}
+                                                    {formatVND(totalPrice)}
                                                 </li>
                                             </ul>
                                         </div>

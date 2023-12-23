@@ -7,6 +7,7 @@ import { getCart, getBookInfo, changeCart } from "../../apiServices/CartService"
 import 'react-toastify/dist/ReactToastify.css';
 import {ToastContainer,toast} from 'react-toastify'
 import Form from 'react-bootstrap/Form';
+import { formatVND } from "../../common";
 
 
 const Cart = () => {
@@ -109,24 +110,48 @@ const Cart = () => {
   }
     const loadCheckedItemsFromLocalStorage = async () => {
         try {
-            // Fetch cart details
-            await cartDetail();
+            // Fetch cart details without triggering a state update
+            const response = await getCart();
+            const bookData = response.data.bookQuantities;
 
-            // Check if cartItems state has been updated
+            const promises = bookData.map((book) =>
+                getBookInfo(book.bookId)
+                    .then((responseBook) => {
+                        const bookInfo = {
+                            id: book.bookId,
+                            title: responseBook.data.title,
+                            price: responseBook.data.price,
+                            imgUrl: responseBook.data.imgUrl.replace('public/', ''),
+                            quantity: book.quantity,
+                        };
 
-            // Load checked items from local storage
-            const storedCheckedItems = localStorage.getItem("checkedItems");
-            if (storedCheckedItems) {
-                const parsedCheckedItems = JSON.parse(storedCheckedItems);
-                setCheckedItems(parsedCheckedItems);
+                        return bookInfo;
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    })
+            );
 
-                // Recalculate total quantities and total price based on selected items
-                const selectedItems = cartItems.filter((item) => parsedCheckedItems[item.id]);
-                const totalQuantities = selectedItems.reduce((total, item) => total + item.quantity, 0);
-                const totalPrice = selectedItems.reduce((total, item) => total + item.price * item.quantity, 0);
+            const bookInfoArray = await Promise.all(promises);
 
-                setTotalQuantities(totalQuantities);
-                setTotalPrice(totalPrice);
+            // Check if the cartItems state has been updated
+            if (JSON.stringify(bookInfoArray) !== JSON.stringify(cartItems)) {
+                // Load checked items from local storage
+                const storedCheckedItems = localStorage.getItem("checkedItems");
+                if (storedCheckedItems) {
+                    const parsedCheckedItems = JSON.parse(storedCheckedItems);
+                    setCheckedItems(parsedCheckedItems);
+
+                    // Recalculate total quantities and total price based on selected items
+                    const selectedItems = bookInfoArray.filter((item) => parsedCheckedItems[item.id]);
+                    const totalQuantities = selectedItems.reduce((total, item) => total + item.quantity, 0);
+                    const totalPrice = selectedItems.reduce((total, item) => total + item.price * item.quantity, 0);
+
+                    setTotalQuantities(totalQuantities);
+                    setTotalPrice(totalPrice);
+                }
+                // Update the cartItems state
+                setCartItems(bookInfoArray);
             }
         } catch (error) {
             console.error("Error loading checked items:", error);
@@ -136,6 +161,7 @@ const Cart = () => {
     useEffect(() => {
         loadCheckedItemsFromLocalStorage(); // Load checked items from local storage
     }, [cartItems]);
+
     const handleCheckboxChange = (itemId) => {
         setCheckedItems((prevCheckedItems) => {
             const newCheckedItems = { ...prevCheckedItems, [itemId]: !prevCheckedItems[itemId] };
@@ -223,7 +249,7 @@ const Cart = () => {
 
                               {/*</Form>*/}
                               {/*</td>*/}
-                              <td className="product-checkbox">
+                              <td className="product-checkbox text-center text-center" >
                                   <Form>
                                       <div className="mb-3">
                                           <Form.Check
@@ -236,7 +262,7 @@ const Cart = () => {
                                       </div>
                                   </Form>
                               </td>
-                        <td className="product-thumbnail">
+                        <td className="product-thumbnail text-center">
                           <Link
                               to={
                                   ''
@@ -251,7 +277,7 @@ const Cart = () => {
                             />
                           </Link>
                         </td>
-                        <td className="product-name">
+                        <td className="product-name text-center">
                           <Link
                               to={
                                   ''
@@ -260,9 +286,9 @@ const Cart = () => {
                             {item.title}
                           </Link>
                         </td>
-                        <td className="product-price-cart">
+                        <td className="product-price-cart text-center">
                               <span className="amount">
-                                {item.price}
+                                {formatVND(item.price)}
                               </span>
                         </td>
                         <td className="product-quantity">
@@ -290,10 +316,10 @@ const Cart = () => {
                             </button>
                           </div>
                         </td>
-                        <td className="product-subtotal">
-                          {item.quantity * item.price}
+                        <td className="product-subtotal text-center">
+                          {formatVND(item.quantity * item.price)}
                         </td>
-                        <td className="product-remove">
+                        <td className="product-remove text-center">
                           <button onClick={() => changeQuantity(item.id, 0)}>
                             <i className="fa fa-times"></i>
 
@@ -350,7 +376,7 @@ const Cart = () => {
                     <h4 className="grand-totall-title">
                       Tổng tiền{" "}
                       <span>
-                          {totalPrice}
+                          {formatVND(totalPrice)}
                         </span>
                     </h4>
                     <Link to={process.env.PUBLIC_URL + "/checkout"}>

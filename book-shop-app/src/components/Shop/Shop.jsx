@@ -7,6 +7,7 @@ import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Typography';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import {formatVND} from "../../common";
 
 const SearchBar = ({ onSearch }) => {
     const [searchText, setSearchText] = useState('');
@@ -36,8 +37,8 @@ const Product = ({ title, price, imgUrl, bookId }) => {
     return (
         <div className="product">
             <img src={imagePath} alt={title} />
-            <h3>{title}</h3>
-            <p>{price}đ</p>
+            {/*<h3>{title}</h3>*/}
+            <p>{formatVND(price)}</p>
             <Link to={`/shop/detail/${bookId}`} className="view-more-button">Xem thêm</Link>
         </div>
     );
@@ -191,7 +192,7 @@ const Categories = ({ onSelectGenre }) => {
             </ul>
             {categories.length >= 5 && (
                 <button onClick={() => setShowAll(!showAll)}>
-                    {showAll ? 'Thu Gọn' : 'Xem Thêm'}
+                    {showAll ? 'Thu Gọn' : 'Xem Thêm thể loại'}
                 </button>
             )}
         </div>

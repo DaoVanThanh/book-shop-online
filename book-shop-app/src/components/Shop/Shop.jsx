@@ -7,6 +7,7 @@ import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Typography';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import {formatVND} from "../../common";
 
 const SearchBar = ({ onSearch }) => {
     const [searchText, setSearchText] = useState('');
@@ -21,11 +22,11 @@ const SearchBar = ({ onSearch }) => {
         <div className="search-bar">
             <input
                 type="text"
-                placeholder="Search products..."
+                placeholder="Tìm kiếm theo tên..."
                 value={searchText}
                 onChange={handleSearchChange}
             />
-            <button>Search</button>
+            <button>Tìm kiếm</button>
         </div>
     );
 };
@@ -36,8 +37,8 @@ const Product = ({ title, price, imgUrl, bookId }) => {
     return (
         <div className="product">
             <img src={imagePath} alt={title} />
-            <h3>{title}</h3>
-            <p>{price}đ</p>
+            {/*<h3>{title}</h3>*/}
+            <p>{formatVND(price)}</p>
             <Link to={`/shop/detail/${bookId}`} className="view-more-button">Xem thêm</Link>
         </div>
     );
@@ -112,7 +113,7 @@ const PriceFilter = ({ priceRange, onPriceChange }) => {
 
     const onSearchClick = () => {
         onPriceChange(priceRange);
-    
+    }
     return (
         <Box sx={{ width: 300 }}>
             <Typography id="range-slider" gutterBottom>
@@ -159,45 +160,49 @@ const PriceFilter = ({ priceRange, onPriceChange }) => {
 
 
 
-// const Categories = ({ onSelectGenre }) => {
-//     const [categories, setCategories] = useState([]);
-//     const [showAll, setShowAll] = useState(false);
-//
-//     useEffect(() => {
-//         axios.get('http://localhost:8080/api/genre/all')
-//             .then(response => {
-//                 setCategories(response.data);
-//             })
-//             .catch(error => {
-//                 console.error('Lỗi khi lấy dữ liệu thể loại: ', error);
-//             });
-//     }, []);
-//
-//     const displayCategories = showAll ? categories : categories.slice(0, 5);
-//
-//     return (
-//         <div className="categories">
-//             <h3>Thể loại sách</h3>
-//             <ul>
-//                 {displayCategories.map((category) => (
-//                     <li key={category.genreId} onClick={() => onSelectGenre(category.genreId)}>
-//                         {category.genreName}
-//                     </li>
-//                 ))}
-//             </ul>
-//             {categories.length >= 5 && (
-//                 <button onClick={() => setShowAll(!showAll)}>
-//                     {showAll ? 'Thu Gọn' : 'Xem Thêm'}
-//                 </button>
-//             )}
-//         </div>
-//     );
-// };
+const Categories = ({ onSelectGenre }) => {
+    const [categories, setCategories] = useState([]);
+    const [showAll, setShowAll] = useState(false);
+
+    useEffect(() => {
+        axios.get('http://localhost:8080/api/genre/all')
+            .then(response => {
+                setCategories(response.data);
+            })
+            .catch(error => {
+                console.error('Lỗi khi lấy dữ liệu thể loại: ', error);
+            });
+    }, []);
+
+    const displayCategories = showAll ? categories : categories.slice(0, 3);
+
+    const handleGenreClick = (genreId) => () => {
+        onSelectGenre(genreId);
+    };
+
+    return (
+        <div className="categories">
+            <h3>Thể loại sách</h3>
+            <ul>
+                {displayCategories.map((category) => (
+                    <li key={category.genreId} onClick={handleGenreClick(category.genreId)}>
+                        {category.genreName}
+                    </li>
+                ))}
+            </ul>
+            {categories.length >= 5 && (
+                <button onClick={() => setShowAll(!showAll)}>
+                    {showAll ? 'Thu Gọn' : 'Xem Thêm thể loại'}
+                </button>
+            )}
+        </div>
+    );
+};
 
 
 
-const LeftColumn = ({ priceRange, onPriceChange, products, totalPages }) => {
-    // const categories = [];
+const LeftColumn = ({ priceRange, onPriceChange, products, totalPages, onSelectGenre }) => {
+    const categories = [];
 
     return (
         <div className="left-column">
@@ -207,7 +212,7 @@ const LeftColumn = ({ priceRange, onPriceChange, products, totalPages }) => {
                 products={products}
                 totalPages={totalPages}
             />
-            {/*<Categories categories={categories} />*/}
+            <Categories categories={categories} onSelectGenre={onSelectGenre}/>
         </div>
     );
 };
@@ -350,10 +355,7 @@ const Shop = () => {
         setPriceRange(newRange);
         fetchProductsByPrice(newRange);
     };
-
     const fetchProductsByPrice = (range) => {
-        console.log(range[0]);
-        console.log(range[1]);
         axios.get(`http://localhost:8080/api/book/price?min_price=${range[0]}&max_price=${range[1]}&page=0&size=100&sort=asc`)
             .then(response => {
                 setProducts(response.data.content);
@@ -364,8 +366,11 @@ const Shop = () => {
             });
     };
 
+    const [genreId, setGenreId] = useState(0);
+
     const handleSelectGenre = (genreId) => {
-        axios.get(`http://localhost:8080/api/book/genre/${genreId}?page=${currentPage}&size=${pageSize}`)
+        setGenreId(genreId);
+        axios.get(`http://localhost:8080/api/book/genre/${genreId}?page=${0}&size=${100}`)
             .then(response => {
                 if (response.data && Array.isArray(response.data.content)) {
                     setProducts(response.data.content);
@@ -432,6 +437,7 @@ const Shop = () => {
             <LeftColumn
                 priceRange={priceRange}
                 onPriceChange={handlePriceChange}
+                onSelectGenre={handleSelectGenre}
             />
             <RightColumn
                 onSort={handleSort}
@@ -442,7 +448,6 @@ const Shop = () => {
                 totalPages={totalPages}
                 handlePageChange={handlePageChange}
             />
-            {/*<Categories onSelectGenre={handleSelectGenre} />*/}
         </div>
     );
 };

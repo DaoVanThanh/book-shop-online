@@ -80,22 +80,33 @@ const BookDetail = () => {
                     <p className="author">Tác giả: {authors}</p>
                     <p className="publication-year">Năm xuất bản: {publicationYear}</p>
                     <p className="genre">Thể loại: {genres}</p>
-                    <p className="stock-quantity">Số lượng sẵn có: {bookDetail.stockQuantity} sách</p>
-                    <div className="quantity-controls">
-                        <button
-                            onClick={decrementQuantity}
-                            disabled={quantity === 1}
-                            aria-label="Giảm số lượng"
-                        >-</button>
-                        <span>{quantity}</span>
-                        <button
-                            onClick={incrementQuantity}
-                            aria-label="Tăng số lượng"
-                        >+</button>
-                    </div>
-                    <div className="add-to-cart">
-                        <button onClick={addToCart}>Thêm vào giỏ hàng</button>
-                    </div>
+                    <p className="stock-quantity">
+                        Số lượng sẵn có: {bookDetail.stockQuantity > 0 ? `${bookDetail.stockQuantity} sách` : <span style={{ color: 'red' }}>Hết hàng</span>}
+                    </p>
+
+                    {bookDetail.stockQuantity > 0 ? (
+                        <>
+                            <div className="quantity-controls">
+                                <button
+                                    onClick={decrementQuantity}
+                                    disabled={quantity === 1}
+                                    aria-label="Giảm số lượng"
+                                >-</button>
+                                <span>{quantity}</span>
+                                <button
+                                    onClick={incrementQuantity}
+                                    disabled={bookDetail.stockQuantity === 0}
+                                    aria-label="Tăng số lượng"
+                                >+</button>
+                            </div>
+                            <div className="add-to-cart">
+                                <button onClick={addToCart}>Thêm vào giỏ hàng</button>
+                            </div>
+                        </>
+                    ) : (
+                        <p style={{ color: 'red', fontWeight: 'bold' }}></p>
+                    )}
+
                 </div>
             </div>
             <div className="description">

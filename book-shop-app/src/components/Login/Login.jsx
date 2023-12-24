@@ -61,10 +61,10 @@ function Login() {
             const storedAccessToken = localStorage.getItem("accessToken");
             if (storedAccessToken) {
               if (storedAccessToken === response.data.accessToken) {
-                if (jwtDecode(storedAccessToken).role == "ROLE_USER") {
+                if (jwtDecode(storedAccessToken).role === "ROLE_USER") {
                   window.location.href = "/";
-                } else if (jwtDecode(storedAccessToken).role == "ROLE_ADMIN") {
-                  window.location.href = "/products";
+                } else if (jwtDecode(storedAccessToken).role === "ROLE_ADMIN") {
+                  window.location.href = "/";
                 }
               }
             }

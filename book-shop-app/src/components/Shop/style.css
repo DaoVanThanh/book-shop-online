@@ -84,14 +84,14 @@
 }
 
 .left-column {
-    /* width: 30%;
-    float: left; */
+     width: 30%;
+    float: left;
     padding: 10px;
 }
 
 .right-column {
-    /* width: 70%;
-    float: left; */
+     width: 70%;
+    float: left;
     padding: 10px;
 }
 

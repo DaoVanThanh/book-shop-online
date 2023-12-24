@@ -269,10 +269,11 @@ const Cart = () => {
                               }
                           >
                             <img
-                                className="img-fluid"
+                                className="img-fluid mx-auto"
                                 src={
                                   item.imgUrl
                                 }
+                                style={{width: "auto", height: "100px"}}
                                 alt=""
                             />
                           </Link>

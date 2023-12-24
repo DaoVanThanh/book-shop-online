@@ -37,7 +37,7 @@ const Product = ({ title, price, imgUrl, bookId }) => {
     return (
         <div className="product">
             <img src={imagePath} alt={title} />
-            {/*<h3>{title}</h3>*/}
+            <h3>{title}</h3>
             <p>{formatVND(price)}</p>
             <Link to={`/shop/detail/${bookId}`} className="view-more-button">Xem thêm</Link>
         </div>
@@ -224,11 +224,11 @@ const RightColumn = ({ products, onSearch, searchKeyword, currentPage, totalPage
             <SortOptions onSort={onSort} />
         </div>
         <ProductGrid products={products} searchKeyword={searchKeyword} />
-        <Pagination
+        {/* <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
             onPageChange={handlePageChange}
-        />
+        /> */}
     </div>
 );
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
@@ -434,20 +434,23 @@ const Shop = () => {
 
     return (
         <div className="shop-container">
-            <LeftColumn
-                priceRange={priceRange}
-                onPriceChange={handlePriceChange}
-                onSelectGenre={handleSelectGenre}
-            />
-            <RightColumn
-                onSort={handleSort}
-                products={sortedProducts()}
-                onSearch={handleSearch}
-                searchKeyword={searchKeyword}
-                currentPage={currentPage}
-                totalPages={totalPages}
-                handlePageChange={handlePageChange}
-            />
+            <img src='https://bizweb.dktcdn.net/100/363/455/themes/918830/assets/banner-col.jpg?1698221845135'></img>
+            <div className='shop-grid'>
+                <LeftColumn
+                    priceRange={priceRange}
+                    onPriceChange={handlePriceChange}
+                    onSelectGenre={handleSelectGenre}
+                />
+                <RightColumn
+                    onSort={handleSort}
+                    products={sortedProducts()}
+                    onSearch={handleSearch}
+                    searchKeyword={searchKeyword}
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    handlePageChange={handlePageChange}
+                />
+            </div>
         </div>
     );
 };

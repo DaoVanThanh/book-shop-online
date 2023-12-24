@@ -12,22 +12,23 @@ const Admin = () => {
     <div className="admin-container">
       <div className="admin-sidebar">
         <img
-          src={logo}
-          alt="Logo book shop"
-          style={{
-            width: "100px",
-            borderRadius: "50%",
-            margin: "20px",
-          }}
-        ></img>
+    src={logo}
+    alt="Logo book shop"
+    style={{
+        width: "100px",
+        borderRadius: "50%",
+        margin: "20px",
+    }}
+    />
         <SidebarAdmin />
       </div>
       <div className="admin-content">
         <Routes>
           <Route>
-            <Route path="/products" element={<ProductManagement />}></Route>
-            <Route path="/orders" element={<OrderManagement />}></Route>
-            <Route path="/statistics" element={<Statistic />}></Route>
+              <Route path="" element={<ProductManagement/>}/>
+              <Route path="/products" element={<ProductManagement/>}/>
+            <Route path="/orders" element={<OrderManagement/>}/>
+            <Route path="/statistics" element={<Statistic/>}/>
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

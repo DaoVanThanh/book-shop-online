@@ -52,15 +52,15 @@ const Home = () => {
             backgroundColor: 'none',
         }}>
             <Slider/>
-            <Heading text={'Sách bán chạy'}/>
-            <HomeBook bestSellerBooks={bestSellerBooks}/>
-            <Line/>
-            <Heading text={'Các tác giả'}/>
-            <HotAuthor famousAuthors={famousAuthors}/>
-            <Line/>
             <Heading text={'Book Shop'}/>
             <ToShop/>
             <Line/>
+            <Heading text={'Sách bán chạy'}/>
+            <HomeBook bestSellerBooks={bestSellerBooks}/>
+            <Line/>
+            {/*<Heading text={'Các tác giả'}/>*/}
+            {/*<HotAuthor famousAuthors={famousAuthors}/>*/}
+            {/*<Line/>*/}
             <Heading text={'Sách mới'}/>
             <HomeBook bestSellerBooks={newBooks}/>
         </div>

@@ -24,7 +24,7 @@ function AppRoutes() {
       <Route index element={<Home />} />
       <Route path="/about" element={<About />} />
       <Route path="/shop" element={<Shop />} />
-        <Route path="/shop/:bookId" element={<BookDetail />} />
+        <Route path="/shop/detail/:bookId" element={<BookDetail />} />
       <Route path="/cart" element={<Cart />} />
       <Route path="/policy" element={<Policy />} />
       <Route path="/checkout" element={<Checkout />} />

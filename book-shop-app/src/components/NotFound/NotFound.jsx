@@ -24,7 +24,7 @@ const NotFound = () => {
                 </div>
             </center>
             <center className="mt-6">
-                <a href="/" className="text-gray-500 font-mono text-xl bg-gray-200 p-3 rounded-md hover:shadow-md btn-go-back">Trở lại trang chủ </a>
+                <a href="/" className="text-gray-500 font-mono text-xl bg-gray-200 p-3 rounded-md hover:shadow-md btn-go-back" style={{backgroundColor: "#228b22"}}>Trở lại trang chủ </a>
             </center>
         </div>
     );

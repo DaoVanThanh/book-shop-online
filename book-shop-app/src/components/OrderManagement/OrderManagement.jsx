@@ -75,7 +75,7 @@ const OrderManagement = () => {
   }, []);
 
   return (
-      <Tabs
+      <Tabs style={{margin: "0 20px"}}
           id="orderTabs"
           className="mb-3 order-tabs"
           fill
@@ -150,7 +150,8 @@ const OrderList = ({ status, orders }) => {
                       <Col sm={4}>
                         <Card.Img
                             src={bookSummary.bookSummary.imgUrl.replace('public/', '')}
-                            className="img-fluid w-25 mx-auto"
+                            className="img-fluid mx-auto"
+                            style={{width: "auto", height: "150px"}}
                         />
                       </Col>
                       <Col sm={4} className="d-flex align-items-center justify-content-center">

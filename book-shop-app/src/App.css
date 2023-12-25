@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  margin: 20px 0;
 }
 
 .App-logo {
@@ -38,7 +39,6 @@
 }
 
 .nav-link.active {
-  border-radius: 10px;
   color: #228b22 !important;
   background-color: #fff !important;
 }
@@ -46,7 +46,6 @@
 .nav-link {
   font-weight: bold !important;
   margin: 5px;
-  border-radius: 10px;
   padding: 8px !important;
   color: #000 !important;
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   MDBBtn,
   MDBContainer,
@@ -23,6 +23,17 @@ function Login() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [loginError, setLoginError] = useState("");
   const [alertLogin, setAlertLogin] = useState(null);
+
+  useEffect(() => {
+    if(localStorage.getItem("accessToken")) {
+      const token = localStorage.getItem("accessToken");
+      if (jwtDecode(token).role == "ROLE_USER") {
+        window.location.href = "/";
+      } else if (jwtDecode(token).role == "ROLE_ADMIN") {
+        window.location.href = "/products";
+      }
+    }
+  },[])
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
@@ -50,10 +61,10 @@ function Login() {
             const storedAccessToken = localStorage.getItem("accessToken");
             if (storedAccessToken) {
               if (storedAccessToken === response.data.accessToken) {
-                if (jwtDecode(storedAccessToken).role == "ROLE_USER") {
+                if (jwtDecode(storedAccessToken).role === "ROLE_USER") {
                   window.location.href = "/";
-                } else if (jwtDecode(storedAccessToken).role == "ROLE_ADMIN") {
-                  window.location.href = "/products";
+                } else if (jwtDecode(storedAccessToken).role === "ROLE_ADMIN") {
+                  window.location.href = "/";
                 }
               }
             }

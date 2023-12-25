@@ -1,3 +1,23 @@
+/* Loại bỏ tô màu background khi tab mất focus */
+.nav-tabs .nav-item .nav-link  {
+    background-color: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none;
+}
+
 .table-hover tbody tr:hover td {
     background: aqua;
 }
+
+.table-hover {
+    margin-top: 20px;
+}
+
+.nav-tabs .nav-item {
+    width: 16.66%;
+}
+
+/* Đảm bảo chiều rộng của nút bên trong là 100% để điều chỉnh chiều rộng của tab */
+/* .nav-link {
+    width: 100%;
+} */

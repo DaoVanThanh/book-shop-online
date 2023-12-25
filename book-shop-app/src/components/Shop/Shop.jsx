@@ -7,6 +7,7 @@ import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Typography';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import {formatVND} from "../../common";
 
 const SearchBar = ({ onSearch }) => {
     const [searchText, setSearchText] = useState('');
@@ -21,11 +22,11 @@ const SearchBar = ({ onSearch }) => {
         <div className="search-bar">
             <input
                 type="text"
-                placeholder="Search products..."
+                placeholder="Tìm kiếm theo tên..."
                 value={searchText}
                 onChange={handleSearchChange}
             />
-            <button>Search</button>
+            <button>Tìm kiếm</button>
         </div>
     );
 };
@@ -37,8 +38,8 @@ const Product = ({ title, price, imgUrl, bookId }) => {
         <div className="product">
             <img src={imagePath} alt={title} />
             <h3>{title}</h3>
-            <p>{price}đ</p>
-            <Link to={`/shop/${bookId}`} className="view-more-button">Xem thêm</Link>
+            <p>{formatVND(price)}</p>
+            <Link to={`/shop/detail/${bookId}`} className="view-more-button">Xem thêm</Link>
         </div>
     );
 };
@@ -92,12 +93,6 @@ const PriceFilter = ({ priceRange, onPriceChange }) => {
     const [minInput, setMinInput] = useState(priceRange[0]);
     const [maxInput, setMaxInput] = useState(priceRange[1]);
 
-    const handleSliderChange = (event, newValue) => {
-        setMinInput(newValue[0]);
-        setMaxInput(newValue[1]);
-        onPriceChange([newValue[0], newValue[1]]);
-    };
-
     const handleMinInputChange = (event) => {
         const newValue = Math.min(Number(event.target.value), maxInput);
         setMinInput(newValue);
@@ -110,11 +105,15 @@ const PriceFilter = ({ priceRange, onPriceChange }) => {
         onPriceChange([minInput, newValue]);
     };
 
-    const onSearchClick = (event) => {
-        
+    const handleSliderChange = (event, newValue) => {
+        setMinInput(newValue[0]);
+        setMaxInput(newValue[1]);
+        onPriceChange([newValue[0], newValue[1]]);
     };
-    
 
+    const onSearchClick = () => {
+        onPriceChange(priceRange);
+    }
     return (
         <Box sx={{ width: 300 }}>
             <Typography id="range-slider" gutterBottom>
@@ -161,53 +160,59 @@ const PriceFilter = ({ priceRange, onPriceChange }) => {
 
 
 
-// const Categories = ({ onSelectGenre }) => {
-//     const [categories, setCategories] = useState([]);
-//     const [showAll, setShowAll] = useState(false);
-//
-//     useEffect(() => {
-//         axios.get('http://localhost:8080/api/genre/all')
-//             .then(response => {
-//                 setCategories(response.data);
-//             })
-//             .catch(error => {
-//                 console.error('Lỗi khi lấy dữ liệu thể loại: ', error);
-//             });
-//     }, []);
-//
-//     const displayCategories = showAll ? categories : categories.slice(0, 5);
-//
-//     return (
-//         <div className="categories">
-//             <h3>Thể loại sách</h3>
-//             <ul>
-//                 {displayCategories.map((category) => (
-//                     <li key={category.genreId} onClick={() => onSelectGenre(category.genreId)}>
-//                         {category.genreName}
-//                     </li>
-//                 ))}
-//             </ul>
-//             {categories.length >= 5 && (
-//                 <button onClick={() => setShowAll(!showAll)}>
-//                     {showAll ? 'Thu Gọn' : 'Xem Thêm'}
-//                 </button>
-//             )}
-//         </div>
-//     );
-// };
+const Categories = ({ onSelectGenre }) => {
+    const [categories, setCategories] = useState([]);
+    const [showAll, setShowAll] = useState(false);
+
+    useEffect(() => {
+        axios.get('http://localhost:8080/api/genre/all')
+            .then(response => {
+                setCategories(response.data);
+            })
+            .catch(error => {
+                console.error('Lỗi khi lấy dữ liệu thể loại: ', error);
+            });
+    }, []);
+
+    const displayCategories = showAll ? categories : categories.slice(0, 3);
+
+    const handleGenreClick = (genreId) => () => {
+        onSelectGenre(genreId);
+    };
+
+    return (
+        <div className="categories">
+            <h3>Thể loại sách</h3>
+            <ul>
+                {displayCategories.map((category) => (
+                    <li key={category.genreId} onClick={handleGenreClick(category.genreId)}>
+                        {category.genreName}
+                    </li>
+                ))}
+            </ul>
+            {categories.length >= 5 && (
+                <button onClick={() => setShowAll(!showAll)}>
+                    {showAll ? 'Thu Gọn' : 'Xem Thêm thể loại'}
+                </button>
+            )}
+        </div>
+    );
+};
 
 
 
-const LeftColumn = ({ priceRange, onPriceChange }) => {
-    // const categories = [];
+const LeftColumn = ({ priceRange, onPriceChange, products, totalPages, onSelectGenre }) => {
+    const categories = [];
 
     return (
         <div className="left-column">
             <PriceFilter
                 priceRange={priceRange}
                 onPriceChange={onPriceChange}
+                products={products}
+                totalPages={totalPages}
             />
-            {/*<Categories categories={categories} />*/}
+            <Categories categories={categories} onSelectGenre={onSelectGenre}/>
         </div>
     );
 };
@@ -219,11 +224,11 @@ const RightColumn = ({ products, onSearch, searchKeyword, currentPage, totalPage
             <SortOptions onSort={onSort} />
         </div>
         <ProductGrid products={products} searchKeyword={searchKeyword} />
-        <Pagination
+        {/* <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
             onPageChange={handlePageChange}
-        />
+        /> */}
     </div>
 );
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
@@ -232,6 +237,9 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
     for (let i = 1; i <= totalPages; i++) {
         pageNumbers.push(i);
     }
+
+    const maxVisiblePages = 5;
+    const halfVisiblePages = Math.floor(maxVisiblePages / 2);
 
     const goToNextPage = () => {
         if (currentPage < totalPages) {
@@ -256,19 +264,53 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
                     Trang trước
                 </button>
             </li>
-            {pageNumbers.map((pageNumber) => (
-                <li
-                    key={pageNumber}
-                    className={`page-item ${currentPage === pageNumber ? 'active' : ''}`}
-                >
-                    <button
-                        className="page-link"
-                        onClick={() => onPageChange(pageNumber)}
-                    >
-                        {pageNumber}
-                    </button>
-                </li>
-            ))}
+            {pageNumbers.map((pageNumber) => {
+                if (totalPages <= maxVisiblePages) {
+                    return (
+                        <li
+                            key={pageNumber}
+                            className={`page-item ${currentPage === pageNumber ? 'active' : ''}`}
+                        >
+                            <button
+                                className="page-link"
+                                onClick={() => onPageChange(pageNumber)}
+                            >
+                                {pageNumber}
+                            </button>
+                        </li>
+                    );
+                } else {
+                    if (
+                        pageNumber <= halfVisiblePages + 1 ||
+                        pageNumber >= totalPages - halfVisiblePages ||
+                        (pageNumber >= currentPage - halfVisiblePages &&
+                            pageNumber <= currentPage + halfVisiblePages)
+                    ) {
+                        return (
+                            <li
+                                key={pageNumber}
+                                className={`page-item ${currentPage === pageNumber ? 'active' : ''}`}
+                            >
+                                <button
+                                    className="page-link"
+                                    onClick={() => onPageChange(pageNumber)}
+                                >
+                                    {pageNumber}
+                                </button>
+                            </li>
+                        );
+                    } else if (
+                        pageNumber === halfVisiblePages + 2 ||
+                        pageNumber === totalPages - halfVisiblePages - 1
+                    ) {
+                        return (
+                            <li key={pageNumber} className="page-item">
+                                <span className="ellipsis">...</span>
+                            </li>
+                        );
+                    }
+                }
+            })}
             <li>
                 <button
                     className="page-link"
@@ -283,13 +325,15 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
 };
 
 
+
 const Shop = () => {
     const [products, setProducts] = useState([]);
+    const [totalPages, setTotalPages] = useState(0);
     const [searchKeyword, setSearchKeyword] = useState('');
     const [sortOption, setSortOption] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(12);
-    const [totalPages, setTotalPages] = useState(0);
+
 
     const [minPrice, setMinPrice] = useState(0);
     const [maxPrice, setMaxPrice] = useState(1000000);
@@ -305,14 +349,28 @@ const Shop = () => {
         setMaxPrice(value);
     };
 
-    const [priceRange, setPriceRange] = useState([0, 1000]);
+    const [priceRange, setPriceRange] = useState([0, 999000]);
 
     const handlePriceChange = (newRange) => {
         setPriceRange(newRange);
+        fetchProductsByPrice(newRange);
+    };
+    const fetchProductsByPrice = (range) => {
+        axios.get(`http://localhost:8080/api/book/price?min_price=${range[0]}&max_price=${range[1]}&page=0&size=100&sort=asc`)
+            .then(response => {
+                setProducts(response.data.content);
+                setTotalPages(1);
+            })
+            .catch(error => {
+                console.error('Error fetching products:', error);
+            });
     };
 
+    const [genreId, setGenreId] = useState(0);
+
     const handleSelectGenre = (genreId) => {
-        axios.get(`http://localhost:8080/api/book/genre/${genreId}?page=${currentPage}&size=${pageSize}`)
+        setGenreId(genreId);
+        axios.get(`http://localhost:8080/api/book/genre/${genreId}?page=${0}&size=${100}`)
             .then(response => {
                 if (response.data && Array.isArray(response.data.content)) {
                     setProducts(response.data.content);
@@ -327,7 +385,7 @@ const Shop = () => {
     };
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/api/book/all?page=${currentPage - 1}&size=${pageSize}`)
+        axios.get(`http://localhost:8080/api/book/all?page=${currentPage - 1}&size=${100}`)
             .then(response => {
                 if (response.data && Array.isArray(response.data.content)) {
                     setProducts(response.data.content);
@@ -366,29 +424,36 @@ const Shop = () => {
             sorted.sort((a, b) => a.price - b.price);
         } else if (sortOption === 'price_desc') {
             sorted.sort((a, b) => b.price - a.price);
+        } else if (sortOption === 'year') {
+            sorted.sort((a, b) => a.publication_date - b.publication_date);
+        } else if (sortOption === 'rating') {
+            sorted.sort((a, b) => a.stockQuantity - b.stockQuantity);
         }
-
         return sorted;
     };
 
     return (
         <div className="shop-container">
-            <LeftColumn
-                priceRange={priceRange}
-                onPriceChange={handlePriceChange}
-            />
-            <RightColumn
-                onSort={handleSort}
-                products={sortedProducts()}
-                onSearch={handleSearch}
-                searchKeyword={searchKeyword}
-                currentPage={currentPage}
-                totalPages={totalPages}
-                handlePageChange={handlePageChange}
-            />
-            {/*<Categories onSelectGenre={handleSelectGenre} />*/}
+            <img src='https://bizweb.dktcdn.net/100/363/455/themes/918830/assets/banner-col.jpg?1698221845135'></img>
+            <div className='shop-grid'>
+                <LeftColumn
+                    priceRange={priceRange}
+                    onPriceChange={handlePriceChange}
+                    onSelectGenre={handleSelectGenre}
+                />
+                <RightColumn
+                    onSort={handleSort}
+                    products={sortedProducts()}
+                    onSearch={handleSearch}
+                    searchKeyword={searchKeyword}
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    handlePageChange={handlePageChange}
+                />
+            </div>
         </div>
     );
 };
 
+export { Product, ProductGrid};
 export default Shop;

@@ -18,10 +18,9 @@ const Checkout = () => {
         fullName: '',
         phoneNumber: '',
         address: '',
-        email: ''
     });
 
-    const { fullName, address, phoneNumber, email } = userInfo;
+    const { fullName, address, phoneNumber } = userInfo;
     const bookId = 1;
     const quantity = 1;
     const accessToken = localStorage.getItem('accessToken');
@@ -55,10 +54,10 @@ const Checkout = () => {
             return;
         }
         const bookQuantities = cartItems.map(item => ({
-            bookId: item.id,
-            quantity: item.quantity,
+                bookId: item.id,
+                quantity: item.quantity,
 
-        }
+            }
         ));
         cartItems.forEach(item => {
             changeCart(item.id, 0).then(response => {
@@ -134,7 +133,6 @@ const Checkout = () => {
             fullName: user.fullName,
             address: user.address,
             phoneNumber: user.phoneNumber,
-            email: user.email
         });
     };
     const getInfo = () => {
@@ -190,25 +188,9 @@ const Checkout = () => {
                                     />
                                 </div>
 
-                                <div className="billing-info mb-20 form-group">
-                                    <label>Email</label>
-                                    <input type="text" className="form-control" value={email || ''}
-                                           onChange={handleChange}
-                                    />
-                                </div>
 
-                                <div>
-                                    <h4>Thông tin bổ sung</h4>
-                                    <div className="additional-info form-group">
-                                        <label>Ghi chú</label>
-                                        <textarea
-                                            className="form-control"
-                                            placeholder="Ghi chú cho cửa hàng và đơn vị vận chuyển "
-                                            name="message"
-                                            defaultValue={""}
-                                        />
-                                    </div>
-                                </div>
+
+
                             </form>
 
 

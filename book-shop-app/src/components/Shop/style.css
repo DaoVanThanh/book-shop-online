@@ -295,7 +295,7 @@
 }
 
 .input-container .unit {
-    /*position: absolute;*/
+    position: absolute;
     right: 5px;
     color: #555;
 }
@@ -305,7 +305,7 @@
     border-radius: 8px;
     padding: 20px;
     margin-bottom: 20px;
-    width: 300px;
+    width: 100%;
 }
 
 .categories h3 {

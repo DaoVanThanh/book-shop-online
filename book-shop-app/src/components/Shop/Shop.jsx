@@ -115,7 +115,7 @@ const PriceFilter = ({ priceRange, onPriceChange }) => {
         onPriceChange(priceRange);
     }
     return (
-        <Box sx={{ width: 300 }}>
+        <Box sx={{ width: '100%' }}>
             <Typography id="range-slider" gutterBottom>
                 Khoảng giá
             </Typography>

@@ -283,18 +283,18 @@
 
 .slider-container {
     display: flex;
-    align-items: center; /* Canh giữa các phần tử theo chiều dọc */
+    align-items: center;
 }
 
 .price-input-container {
     display: flex;
-    flex-direction: column; /* Hiển thị các phần tử con theo chiều dọc */
-    align-items: flex-start; /* Canh trái các phần tử con */
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .price-input {
     display: flex;
-    align-items: center; /* Canh giữa các phần tử theo chiều dọc */
+    align-items: center;
     width: 100%;
 }
 
@@ -332,7 +332,7 @@
 .categories h3 {
     margin-bottom: 15px;
     color: #333;
-    /*text-align: left;*/
+    text-align: left;
 }
 
 .categories ul {
@@ -346,18 +346,22 @@
     cursor: pointer;
     border-radius: 5px;
     transition: background-color 0.2s, color 0.2s;
-    /*text-align: left;*/
-    /*width: 50%;*/
+    text-align: left;
+    width: 50%;
 }
 
+.categories li.selected {
+    background-color: #ddd;
+    color: #000000;
+}
 .categories li:hover {
     background-color: #ddd;
     color: #000000;
 }
 
 .categories button {
-    width: 100%;
-    /*width: 50%;*/
+    /*width: 100%;*/
+    width: 50%;
     padding: 10px;
     border: none;
     background-color: green;
@@ -365,7 +369,7 @@
     border-radius: 5px;
     cursor: pointer;
     margin-top: 10px;
-    /*float: left;*/
+    float: left;
 }
 
 .categories button:hover {

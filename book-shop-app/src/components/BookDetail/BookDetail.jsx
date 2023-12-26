@@ -67,6 +67,10 @@ const BookDetail = () => {
             navigate("/shop");
         } catch (error) {
             console.error('Error updating cart:', error);
+            toast.success("Bạn cần phải đăng nhập để mua sản update !", {
+                position: toast.POSITION.TOP_RIGHT,
+                autoClose: 2000,
+            });
         }
     };
 

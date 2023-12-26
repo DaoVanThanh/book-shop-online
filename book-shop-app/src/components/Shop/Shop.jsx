@@ -133,6 +133,7 @@ const PriceFilter = ({ priceRange, onPriceChange }) => {
                 />
                 <button className="search-button" onClick={onSearchClick}>
                     <FontAwesomeIcon icon={faSearch} />
+                    {/*Reset*/}
                 </button>
             </div>
 
@@ -163,6 +164,8 @@ const PriceFilter = ({ priceRange, onPriceChange }) => {
 const Categories = ({ onSelectGenre }) => {
     const [categories, setCategories] = useState([]);
     const [showAll, setShowAll] = useState(false);
+    const [selectedGenre, setSelectedGenre] = useState(0);
+
 
     useEffect(() => {
         axios.get('http://localhost:8080/api/genre/all')
@@ -178,14 +181,22 @@ const Categories = ({ onSelectGenre }) => {
 
     const handleGenreClick = (genreId) => () => {
         onSelectGenre(genreId);
+        setSelectedGenre(genreId);
     };
 
     return (
         <div className="categories">
             <h3>Thể loại sách</h3>
             <ul>
+                <li key={0} onClick={handleGenreClick(0)}>
+                    Tất cả
+                </li>
                 {displayCategories.map((category) => (
-                    <li key={category.genreId} onClick={handleGenreClick(category.genreId)}>
+                    <li
+                        key={category.genreId}
+                        onClick={handleGenreClick(category.genreId)}
+                        className={selectedGenre === category.genreId ? 'selected' : ''}
+                    >
                         {category.genreName}
                     </li>
                 ))}
@@ -370,19 +381,35 @@ const Shop = () => {
 
     const handleSelectGenre = (genreId) => {
         setGenreId(genreId);
-        axios.get(`http://localhost:8080/api/book/genre/${genreId}?page=${0}&size=${100}`)
-            .then(response => {
-                if (response.data && Array.isArray(response.data.content)) {
-                    setProducts(response.data.content);
-                    setTotalPages(response.data.totalPages);
-                } else {
-                    console.error('Nhận dữ liệu không hợp lệ');
-                }
-            })
-            .catch(error => {
-                console.error('Lỗi khi lấy dữ liệu sách theo thể loại: ', error);
-            });
-    };
+        if (genreId === 0) {
+            axios.get(`http://localhost:8080/api/book/all?page=0&size=${100}`)
+                .then(response => {
+                    if (response.data && Array.isArray(response.data.content)) {
+                        setProducts(response.data.content);
+                        setTotalPages(response.data.totalPages);
+                    } else {
+                        console.error('Nhận dữ liệu không hợp lệ');
+                    }
+                })
+                .catch(error => {
+                    console.error('Lỗi khi lấy dữ liệu bằng axios: ', error);
+                });
+        } else {
+            axios.get(`http://localhost:8080/api/book/genre/${genreId}?page=${0}&size=${100}`)
+                .then(response => {
+                    if (response.data && Array.isArray(response.data.content)) {
+                        setProducts(response.data.content);
+                        setTotalPages(response.data.totalPages);
+                    } else {
+                        console.error('Nhận dữ liệu không hợp lệ');
+                    }
+                })
+                .catch(error => {
+                    console.error('Lỗi khi lấy dữ liệu sách theo thể loại: ', error);
+                });
+        }
+    }
+
 
     useEffect(() => {
         axios.get(`http://localhost:8080/api/book/all?page=${currentPage - 1}&size=${100}`)

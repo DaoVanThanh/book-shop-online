@@ -41,10 +41,9 @@ function ChangePassword() {
   return (
     <div
       className="d-flex justify-content-center"
-      style={{ alignItems: "top" }}
+      style={{ alignItems: "top", marginTop: "20px" }}
     >
-      <Form style={{ width: "30%" }}>
-        <h1>Đổi Mật Khẩu</h1>
+      <Form style={{ width: "50%" }}>
         <Form.Floating id="oldPassword" className="mb-3">
           <Form.Control
             id="old"
@@ -80,7 +79,7 @@ function ChangePassword() {
         {error && <p className="text-danger">{error}</p>}
 
         <Button
-          variant="primary"
+          variant="success"
           onClick={handlePasswordChange}
           className="mb-3"
         >

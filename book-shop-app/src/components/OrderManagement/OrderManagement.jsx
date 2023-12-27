@@ -149,7 +149,7 @@ const OrderList = ({ status, orders }) => {
                     <Row key={bookSummary.bookSummary.bookId}>
                       <Col sm={4}>
                         <Card.Img
-                            src={bookSummary.bookSummary.imgUrl.replace('public/', '')}
+                            src={bookSummary.bookSummary.imgUrl}
                             className="img-fluid mx-auto"
                             style={{width: "auto", height: "150px"}}
                         />
@@ -176,7 +176,7 @@ const OrderList = ({ status, orders }) => {
                     Ngày đặt hàng: {new Date(order.orderDate).toLocaleString()}
                   </Col>
                   <Col sm={3} className="fw-bold">
-                    <Card.Text>Tổng: {formatVND(order.totalAmount)}vnđ</Card.Text>
+                    <Card.Text>Tổng: {formatVND(order.totalAmount)}</Card.Text>
                   </Col>
                 </Row>
               </Card.Footer>

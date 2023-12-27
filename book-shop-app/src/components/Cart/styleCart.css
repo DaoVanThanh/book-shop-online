@@ -2,6 +2,7 @@
     margin-bottom: 15px;
     margin-right: 5px;
 }
+
 @media only screen and (max-width: 767px) {
     .cart-main-area.pb-100 {
         padding-bottom: 60px;
@@ -196,7 +197,7 @@ h3.cart-page-title {
     }
 }
 .cart-shiping-update-wrapper .cart-shiping-update > a:hover, .cart-shiping-update-wrapper .cart-clear > button:hover, .cart-shiping-update-wrapper .cart-clear > a:hover {
-    background-color: #196142;
+    background-color: #228b22;
     color: #fff;
 }
 .cart-shiping-update-wrapper .cart-clear > button {

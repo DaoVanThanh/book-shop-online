@@ -14,6 +14,8 @@ import {
 }
     from 'mdb-react-ui-kit';
 import {Button} from "react-bootstrap"
+import { ToastContainer, toast } from "react-toastify";
+
 function Register() {
     const navigate = useNavigate();
 
@@ -36,7 +38,7 @@ function Register() {
         const value = event.target.value;
         setFullName(value);
         if (!value) {
-            setFullNameError("Vui lòng nhập tên của bạn");
+            setFullNameError("Vui lòng nhập họ và tên");
         } else {
             setFullNameError("");
         }
@@ -81,7 +83,7 @@ function Register() {
             setPasswordError("");
         } else {
             setPassword(password);
-            setPasswordError("Mật khẩu phải bao gồm ít nhất 1 chữ in hoa, 1 chữ số, 1 ký tự đặc biệt!");
+            setPasswordError("Mật khẩu phải có ít nhất 8 ký tự, bao gồm ít nhất 1 chữ hoa, 1 chữ thường, 1 chữ số, 1 ký tự đặc biệt!");
         }
     };
 
@@ -105,9 +107,9 @@ function Register() {
         axios
             .post("http://localhost:8080/api/auth/register", { username, password, address, phoneNumber, fullName })
             .then((response) => {
-                const token = response.data.token;
-                localStorage.setItem("token", token);
-                setToken(token);
+                // const token = response.data.token;
+                // localStorage.setItem("token", token);
+                // setToken(token);
                 alert("Đăng kí tài khoản thành công");
                 navigate("/login");
             })
@@ -146,22 +148,22 @@ function Register() {
                     <MDBCard className='my-5 bg-glass'>
                         <MDBCardBody className='p-5'>
 
-                            <MDBInput wrapperClass='mb-4' id='fullNameInput' type='text' placeholder="Tên của bạn" value={fullName} onChange={handleFullNameChange}/>
-                            {fullNameError && <div style={{ color: 'red' }}>{fullNameError}</div>}
+                            <MDBInput wrapperClass='mb-4' id='fullNameInput' type='text' placeholder="Họ và tên" value={fullName} onChange={handleFullNameChange}/>
+                            {fullNameError && <div style={{ color: 'red', textAlign:"justify" }}>{fullNameError}</div>}
 
                             <MDBInput wrapperClass='mb-4' id='addressInput' type='text' placeholder="Địa chỉ" value={address} onChange={handleAddressChange}/>
-                            {addressError && <div style={{ color: 'red' }}>{addressError}</div>}
+                            {addressError && <div style={{ color: 'red', textAlign:"justify" }}>{addressError}</div>}
 
                             <MDBInput wrapperClass='mb-4' id='phoneInput' type='number' placeholder="Số điện thoại" value={phoneNumber} onChange={handlePhoneChange}/>
-                            {phoneNumberError && <div style={{ color: 'red' }}>{phoneNumberError}</div>}
+                            {phoneNumberError && <div style={{ color: 'red', textAlign:"justify" }}>{phoneNumberError}</div>}
 
                             <MDBInput wrapperClass='mb-4' id='usernameInput' type='text' placeholder="Tên tài khoản" value={username} onChange={handleUsernameChange}/>
-                            {usernameError && <div style={{ color: 'red' }}>{usernameError}</div>}
+                            {usernameError && <div style={{ color: 'red', textAlign:"justify" }}>{usernameError}</div>}
                             <MDBInput wrapperClass='mb-4' id='passwordInput' type='password' placeholder="Mật khẩu" value={password} onChange={handlePasswordChange}/>
-                            {passwordError && <div style={{ color: 'red' }}>{passwordError}</div>}
+                            {passwordError && <div style={{ color: 'red', textAlign:"justify" }}>{passwordError}</div>}
 
                             <MDBInput wrapperClass='mb-4' id='confirmPasswordInput' type='password' placeholder="Nhập lại mật khẩu" value={confirmPassword} onChange={handleConfirmPasswordChange}/>
-                            {confirmPasswordError && <div style={{ color: 'red' }}>{confirmPasswordError}</div>}
+                            {confirmPasswordError && <div style={{ color: 'red', textAlign:"justify" }}>{confirmPasswordError}</div>}
 
                             <Button className='w-100 mb-4' size='md' onClick={handleRegister}>Đăng kí</Button>
 
@@ -176,7 +178,7 @@ function Register() {
                 </MDBCol>
 
             </MDBRow>
-
+        <ToastContainer />
         </MDBContainer>
     );
 }

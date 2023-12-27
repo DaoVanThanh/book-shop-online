@@ -26,7 +26,7 @@ const SearchBar = ({ onSearch }) => {
                 value={searchText}
                 onChange={handleSearchChange}
             />
-            <button>Tìm kiếm</button>
+            {/* <button>Tìm kiếm</button> */}
         </div>
     );
 };
@@ -39,7 +39,7 @@ const Product = ({ title, price, imgUrl, bookId }) => {
             <img src={imagePath} alt={title} />
             <h3>{title}</h3>
             <p>{formatVND(price)}</p>
-            <Link to={`/shop/detail/${bookId}`} className="view-more-button">Xem thêm</Link>
+            <Link to={`/shop/detail/${bookId}`} className="view-more-button" style={{backgroundColor:"#228b22"}}>Xem thêm</Link>
         </div>
     );
 };
@@ -74,15 +74,15 @@ const SortOptions = ({ onSort }) => {
 
     return (
         <div className="sort-options-container">
-            <button className="sort-button" onClick={toggleOptions}>
+            <button className="sort-button" onClick={toggleOptions} style={{backgroundColor:"#228b22"}}>
                 Sắp xếp các cuốn sách
             </button>
             {showOptions && (
                 <ul className="sort-options-list">
                     <li onClick={() => handleSort('price_asc')}>Sắp xếp giá tăng dần</li>
                     <li onClick={() => handleSort('price_desc')}>Sắp xếp giá giảm dần</li>
-                    <li onClick={() => handleSort('rating')}>Sắp xếp theo đánh giá</li>
-                    <li onClick={() => handleSort('year')}>Sắp xếp theo năm sản suất</li>
+                    {/* <li onClick={() => handleSort('rating')}>Sắp xếp theo đánh giá</li> */}
+                    <li onClick={() => handleSort('year')}>Sắp xếp theo năm sản xuất</li>
                 </ul>
             )}
         </div>
@@ -116,12 +116,13 @@ const PriceFilter = ({ priceRange, onPriceChange }) => {
     }
     return (
         <Box sx={{ width: '100%' }}>
-            <Typography id="range-slider" gutterBottom>
+            <Typography id="range-slider" gutterBottom style={{color:"#228b22"}}>
                 Khoảng giá
             </Typography>
 
             <div className="slider-container">
                 <Slider
+                style={{color:"#228b22"}}
                     getAriaLabel={() => 'Price range'}
                     value={[minInput, maxInput]}
                     onChange={handleSliderChange}
@@ -129,12 +130,12 @@ const PriceFilter = ({ priceRange, onPriceChange }) => {
                     min={0}
                     max={999000}
                     step={10000}
-                    getAriaValueText={(value) => `${value}đ`}
+                    getAriaValueText={(value) => `${value}đ`
+                }
                 />
-                <button className="search-button" onClick={onSearchClick}>
+                {/* <button className="search-button" onClick={onSearchClick}>
                     <FontAwesomeIcon icon={faSearch} />
-                    {/*Reset*/}
-                </button>
+                </button> */}
             </div>
 
             <div className="price-input-container">
@@ -186,7 +187,7 @@ const Categories = ({ onSelectGenre }) => {
 
     return (
         <div className="categories">
-            <h3>Thể loại sách</h3>
+            <h3 style={{color:"#228b22"}}>Thể loại sách</h3>
             <ul>
                 <li key={0} onClick={handleGenreClick(0)}>
                     Tất cả
@@ -202,8 +203,8 @@ const Categories = ({ onSelectGenre }) => {
                 ))}
             </ul>
             {categories.length >= 5 && (
-                <button onClick={() => setShowAll(!showAll)}>
-                    {showAll ? 'Thu Gọn' : 'Xem Thêm thể loại'}
+                <button onClick={() => setShowAll(!showAll)} style={{backgroundColor:"#228b22"}}>
+                    {showAll ? 'Thu gọn' : 'Xem thêm'}
                 </button>
             )}
         </div>

@@ -105,7 +105,7 @@ function Register() {
         }
 
         axios
-            .post("http://localhost:8080/api/auth/register", { username, password, address, phoneNumber, fullName })
+            .post("http://fall2324w3g8.int3306.freeddns.org/api/auth/register", { username, password, address, phoneNumber, fullName })
             .then((response) => {
                 // const token = response.data.token;
                 // localStorage.setItem("token", token);

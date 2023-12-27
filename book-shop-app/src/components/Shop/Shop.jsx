@@ -169,7 +169,7 @@ const Categories = ({ onSelectGenre }) => {
 
 
     useEffect(() => {
-        axios.get('http://localhost:8080/api/genre/all')
+        axios.get('http://fall2324w3g8.int3306.freeddns.org/api/genre/all')
             .then(response => {
                 setCategories(response.data);
             })
@@ -368,7 +368,7 @@ const Shop = () => {
         fetchProductsByPrice(newRange);
     };
     const fetchProductsByPrice = (range) => {
-        axios.get(`http://localhost:8080/api/book/price?min_price=${range[0]}&max_price=${range[1]}&page=0&size=100&sort=asc`)
+        axios.get(`http://fall2324w3g8.int3306.freeddns.org/api/book/price?min_price=${range[0]}&max_price=${range[1]}&page=0&size=100&sort=asc`)
             .then(response => {
                 setProducts(response.data.content);
                 setTotalPages(1);
@@ -383,7 +383,7 @@ const Shop = () => {
     const handleSelectGenre = (genreId) => {
         setGenreId(genreId);
         if (genreId === 0) {
-            axios.get(`http://localhost:8080/api/book/all?page=0&size=${100}`)
+            axios.get(`http://fall2324w3g8.int3306.freeddns.org/api/book/all?page=0&size=${100}`)
                 .then(response => {
                     if (response.data && Array.isArray(response.data.content)) {
                         setProducts(response.data.content);
@@ -396,7 +396,7 @@ const Shop = () => {
                     console.error('Lỗi khi lấy dữ liệu bằng axios: ', error);
                 });
         } else {
-            axios.get(`http://localhost:8080/api/book/genre/${genreId}?page=${0}&size=${100}`)
+            axios.get(`http://fall2324w3g8.int3306.freeddns.org/api/book/genre/${genreId}?page=${0}&size=${100}`)
                 .then(response => {
                     if (response.data && Array.isArray(response.data.content)) {
                         setProducts(response.data.content);
@@ -413,7 +413,7 @@ const Shop = () => {
 
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/api/book/all?page=${currentPage - 1}&size=${100}`)
+        axios.get(`http://fall2324w3g8.int3306.freeddns.org/api/book/all?page=${currentPage - 1}&size=${100}`)
             .then(response => {
                 if (response.data && Array.isArray(response.data.content)) {
                     setProducts(response.data.content);

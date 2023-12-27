@@ -2,7 +2,7 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
 const instance = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: "http://fall2324w3g8.int3306.freeddns.org",
 });
 
 instance.interceptors.request.use(function (config) {

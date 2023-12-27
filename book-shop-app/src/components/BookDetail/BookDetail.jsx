@@ -25,7 +25,7 @@ const BookDetail = () => {
     };
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/api/book/detail/${bookId}`)
+        axios.get(`http://fall2324w3g8.int3306.freeddns.org/api/book/detail/${bookId}`)
             .then(response => {
                 setBookDetail(response.data);
                 setLoading(false);
@@ -52,7 +52,7 @@ const BookDetail = () => {
     const addToCart = async () => {
         const accessToken = localStorage.getItem('accessToken');
         try {
-            const response = await axios.put('http://localhost:8080/api/user/orm/carts/book', {
+            const response = await axios.put('http://fall2324w3g8.int3306.freeddns.org/api/user/orm/carts/book', {
                 bookId,
                 quantity,
                 isAdded: true

@@ -37,7 +37,7 @@ const ProductRating = () => {
             const bookId = book.bookId; // Update with the actual property for book ID
             const bookRating = ratings[bookId] || 0; // Default to 0 if no rating is provided
 
-            axios.post('http://localhost:8080/api/book/review', { bookId, point: bookRating, review }, { headers: { 'Authorization': 'Bearer ' + accessToken } })
+            axios.post('http://fall2324w3g8.int3306.freeddns.org/api/book/review', { bookId, point: bookRating, review }, { headers: { 'Authorization': 'Bearer ' + accessToken } })
                 .then((response) => {
                     toast.success("Đánh giá thành công", {
                         position: toast.POSITION.TOP_RIGHT,

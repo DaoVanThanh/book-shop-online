@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instanceNotAuth = axios.create({
-    baseURL: "http://localhost:8080",
+    baseURL: "http://fall2324w3g8.int3306.freeddns.org",
 });
 
 // Add a request interceptor

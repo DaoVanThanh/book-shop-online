@@ -48,7 +48,7 @@ function Login() {
       setLoginError("Tên tài khoản hoặc mật khẩu không hợp lệ!");
     } else {
       axios
-        .post("http://localhost:8080/api/auth/authenticate", {
+        .post("http://fall2324w3g8.int3306.freeddns.org/api/auth/authenticate", {
           username,
           password,
         })

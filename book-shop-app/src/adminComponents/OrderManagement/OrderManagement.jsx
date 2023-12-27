@@ -151,7 +151,7 @@ const OrderManagement = () => {
                             {orders
                                 .filter((order) => order.status === status)
                                 .map((order) => (
-                                    <tr key={order.orderId}>
+                                    <tr key={order.orderId} style={{cursor:"pointer"}}>
                                         <td onClick={() => handleShowDetails(order)}>{order.orderId}</td>
                                         <td onClick={() => handleShowDetails(order)}>{new Date(order.orderDate).toLocaleString()}</td>
                                         <td>
@@ -183,7 +183,7 @@ const OrderManagement = () => {
                     </Tab>
                 ))}
             </Tabs>
-            <Button variant="primary" onClick={handleSaveStatus}>
+            <Button variant="success" onClick={handleSaveStatus}>
                 Lưu
             </Button>
             {/* Modal for Order Details */}
@@ -197,8 +197,8 @@ const OrderManagement = () => {
                                 <Col sm={4}>
                                     <Card.Text>Mã đơn hàng: #{orderDetail.orderId}</Card.Text>
                                 </Col>
-                                <Col sm={4} style={{ textAlign: "right" }}>
-                                    <Card.Text className={`fw-bold cover-text-${orderDetail.status.toLowerCase()} ${orderDetail.status.toLowerCase()}`}>Trạng thái: {orderDetail.status}</Card.Text>
+                                <Col sm={4}>
+                                    <Card.Text className={`fw-bold cover-text-${orderDetail.status.toLowerCase()} ${orderDetail.status.toLowerCase()}`}>Trạng thái: {translateStatus(orderDetail.status)}</Card.Text>
                                 </Col>
                             </Row>
                         </Card.Text>
@@ -243,7 +243,7 @@ const OrderManagement = () => {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleCloseDetailsModal}>
-                        Close
+                        Đóng
                     </Button>
                 </Modal.Footer>
             </Modal>

@@ -4,6 +4,7 @@ import axios from 'axios';
 import './BookDetail.css';
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
+import { formatVND } from '../../common';
 
 const BookDetail = () => {
     const { bookId } = useParams();
@@ -62,25 +63,26 @@ const BookDetail = () => {
             });
             toast.success("Thêm vào giỏ hàng thành công", {
                 position: toast.POSITION.TOP_RIGHT,
-                autoClose: 2000,
+                autoClose: 1000,
             });
             navigate("/shop");
         } catch (error) {
             console.error('Error updating cart:', error);
-            toast.success("Bạn cần phải đăng nhập để mua sản update !", {
+            toast.error("Vui lòng đăng nhập để mua sản phẩm !", {
                 position: toast.POSITION.TOP_RIGHT,
-                autoClose: 2000,
+                autoClose: 1000,
             });
+            navigate("/login")
         }
     };
 
     return (
         <div className="book-detail-container">
             <div className="book-detail-image">
-                <img src={bookDetail.imgUrl.replace('/public', '')} alt={bookDetail.title} />
+                <img  src={bookDetail.imgUrl} alt={bookDetail.title} />
                 <div className="book-detail-info">
                     <h1>{bookDetail.title}</h1>
-                    <p className="price">{bookDetail.price.toLocaleString()}đ</p>
+                    <p className="price">{formatVND(bookDetail.price)}</p>
                     <p className="author">Tác giả: {authors}</p>
                     <p className="publication-year">Năm xuất bản: {publicationYear}</p>
                     <p className="genre">Thể loại: {genres}</p>
@@ -114,8 +116,8 @@ const BookDetail = () => {
                 </div>
             </div>
             <div className="description">
-                <h3>Giới thiệu về sách</h3>
-                <p>{bookDetail.description}</p>
+                <h1 style={{color: "#228b22"}}>Giới thiệu về sách</h1>
+                <p style={{textAlign: "justify"}}>{bookDetail.description}</p>
             </div>
         </div>
     );

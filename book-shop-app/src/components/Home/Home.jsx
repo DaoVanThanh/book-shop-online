@@ -101,8 +101,9 @@ const ToShop = () => {
                 Chào mừng bạn đến với BookShop, nơi mà chúng tôi không chỉ bán sách, mà còn là ngôi nhà dành cho những con tim đam mê và yêu sách. Tại đây, chúng tôi đã tạo ra một không gian tương tác, sôi động, và tràn đầy sự đa dạng, nơi mà mọi độc giả có thể khám phá, chia sẻ, và tìm kiếm những trải nghiệm đọc sách không giới hạn.            </p>
             <Link
                 to={`/shop`}
-                className="view-more-button">
-                Shop now
+                className="view-more-button"
+                style={{backgroundColor: "#228b22"}}>
+                Cửa hàng
             </Link>
         </div>
     )

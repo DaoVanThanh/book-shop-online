@@ -27,7 +27,10 @@ const Header = () => {
       const currentURL = "/cart";
       localStorage.setItem("currentURL", currentURL);
       navigate("/login");
-      toast("Vui lòng đăng nhập để xem giỏ hàng");
+      toast.error("Vui lòng đăng nhập để xem giỏ hàng", {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 1000,
+    });
     }
   };
 

@@ -12,6 +12,20 @@ const OrderManagement = () => {
 
 
     const orderStatuses = ['PENDING', 'ACCEPTED', 'DELIVERING', 'SUCCESS', 'RETURNED', 'CANCELLED'];
+
+    const compareOrderDate = (orderA, orderB) => {
+        const dateA = new Date(orderA.orderDate);
+        const dateB = new Date(orderB.orderDate);
+
+        if (orderA.status === 'SUCCESS' || orderA.status === 'RETURNED' || orderA.status === 'CANCELLED') {
+            // Nếu là tab SUCCESS, RETURNED, hoặc CANCELLED, sắp xếp mới nhất lên trước
+            return dateB - dateA;
+        } else {
+            // Ngược lại, sắp xếp cũ nhất lên trước
+            return dateA - dateB;
+        }
+    };
+
     useEffect(() => {
         getAllOrders()
             .then((response) => {
@@ -150,6 +164,7 @@ const OrderManagement = () => {
                             <tbody>
                             {orders
                                 .filter((order) => order.status === status)
+                                .sort(compareOrderDate)
                                 .map((order) => (
                                     <tr key={order.orderId} style={{cursor:"pointer"}}>
                                         <td onClick={() => handleShowDetails(order)}>{order.orderId}</td>

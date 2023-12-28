@@ -25,9 +25,28 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             @Param("user_id") Long userId
     );
 
-    ArrayList<Order> getOrdersByUserUserId(Long userId);
+    @Query(
+            value = "SELECT * " +
+                    "FROM orders AS o " +
+                    "WHERE o.user_id = :user_id " +
+                    "ORDER BY o.order_date DESC",
+            nativeQuery = true
+    )
+    @Transactional
+    ArrayList<Order> getOrdersByUserUserId(@Param("user_id") Long userId);
 
-    ArrayList<Order> getOrdersByUserUserIdAndOrderIdIn(Long userId, ArrayList<Long> ids);
+    @Query(
+            value = "SELECT * " +
+                    "FROM orders AS o " +
+                    "WHERE o.user_id = :user_id AND o.order_id IN :ids " +
+                    "ORDER BY o.order_date DESC",
+            nativeQuery = true
+    )
+    @Transactional
+    ArrayList<Order> getOrdersByUserUserIdAndOrderIdIn(
+            @Param("user_id") Long userId,
+            @Param("ids") ArrayList<Long> ids
+    );
 
     @Query(
             value = "SELECT COUNT(*) " +

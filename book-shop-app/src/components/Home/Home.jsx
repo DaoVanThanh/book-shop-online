@@ -108,21 +108,48 @@ const ToShop = () => {
         </div>
     )
 }
+const HomeBook = ({ bestSellerBooks }) => {
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
-const HomeBook = ({bestSellerBooks}) => {
+    useEffect(() => {
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+    const getColumnWidth = () => {
+        if (windowWidth < 600) {
+            return 'repeat(auto-fill, minmax(100%, 1fr))';
+        } else if (windowWidth >= 600 && windowWidth < 900) {
+            return 'repeat(auto-fill, minmax(40%, 1fr))';
+        } else {
+            return 'repeat(auto-fill, minmax(20%, 1fr))';
+        }
+    };
+
+    const gridStyle = {
+        display: 'grid',
+        gridTemplateColumns: getColumnWidth(),
+        width: '100%',
+        gap: '20px',
+        padding: '20px',
+    };
+
     return (
-        <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
-            gap: '20px',
-            padding: '20px',
-        }}>
+        <div style={gridStyle}>
             {bestSellerBooks.map((product) => (
                 <Product key={product.bookId} {...product} />
             ))}
         </div>
     );
-}
+};
+
+
 
 const imgAuthorDefault = "/author_image/blank_author.jpg";
 const HotAuthor = ({famousAuthors}) => {

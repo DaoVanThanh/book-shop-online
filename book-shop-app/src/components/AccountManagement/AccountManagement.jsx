@@ -89,7 +89,7 @@ function FormExample() {
                 value={userData.username}
                 disabled={true}
             />
-            <label htmlFor="username">Username</label>
+            <label htmlFor="username">Tên tài khoản</label>
           </Form.Floating>
 
           <Form.Floating
@@ -146,6 +146,7 @@ function FormExample() {
                 id="dc"
                 required
                 type="text"
+                as="textarea"
                 placeholder="dc"
                 value={userData.address}
                 disabled={!isEditing}

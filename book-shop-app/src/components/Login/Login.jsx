@@ -45,7 +45,7 @@ function Login() {
 
   const handleLogin = () => {
     if (!username || !password) {
-      setLoginError("Tên đăng nhập hoặc mật khẩu không hợp lệ!");
+      setLoginError("Tên tài khoản hoặc mật khẩu không hợp lệ!");
     } else {
       axios
         .post("http://localhost:8080/api/auth/authenticate", {
@@ -64,7 +64,7 @@ function Login() {
                 if (jwtDecode(storedAccessToken).role === "ROLE_USER") {
                   window.location.href = "/";
                 } else if (jwtDecode(storedAccessToken).role === "ROLE_ADMIN") {
-                  window.location.href = "/";
+                  window.location.href = "/products";
                 }
               }
             }

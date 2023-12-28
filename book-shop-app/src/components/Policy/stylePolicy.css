@@ -6,8 +6,9 @@
 .title {
     font-size: 30px;
     font-weight: bold;
-    color: green;
+    color: #228b22;
     margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .section {

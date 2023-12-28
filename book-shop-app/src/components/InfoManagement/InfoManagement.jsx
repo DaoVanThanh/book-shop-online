@@ -1,12 +1,19 @@
-import React from "react";
+import { React, useEffect } from "react";
 import { Row, Col, Tab, Nav } from "react-bootstrap";
-import { Outlet, NavLink } from "react-router-dom";
+import { Outlet, NavLink, useNavigate } from "react-router-dom";
 
 const InfoManagement = () => {
+  const navigate = useNavigate();
   const handleLogout = () => {
     window.location.href = "/login";
     localStorage.clear();
   }
+
+  useEffect(() => {
+    if(!localStorage.getItem("accessToken")) {
+      navigate("/login")
+    }
+  },[])
 
   return (
     <Tab.Container id="left-tabs-example">

@@ -33,7 +33,7 @@ const Cart = () => {
                                 id: book.bookId,
                                 title: responseBook.data.title,
                                 price: responseBook.data.price,
-                                imgUrl: responseBook.data.imgUrl.replace('public/', ''),
+                                imgUrl: responseBook.data.imgUrl,
                                 quantity: book.quantity,
                             };
 
@@ -380,7 +380,7 @@ const Cart = () => {
                           {formatVND(totalPrice)}
                         </span>
                     </h4>
-                    <Link to={process.env.PUBLIC_URL + "/checkout"}>
+                    <Link to={process.env.PUBLIC_URL + "/checkout"} style={{backgroundColor: "#228b22"}}>
                       Thanh toán
                     </Link>
                   </div>

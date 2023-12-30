@@ -24,8 +24,6 @@ const Header = () => {
     if (localStorage.getItem("accessToken")) {
       navigate("/cart");
     } else {
-      const currentURL = "/cart";
-      localStorage.setItem("currentURL", currentURL);
       navigate("/login");
       toast.error("Vui lòng đăng nhập để xem giỏ hàng!", {
         position: toast.POSITION.TOP_RIGHT,

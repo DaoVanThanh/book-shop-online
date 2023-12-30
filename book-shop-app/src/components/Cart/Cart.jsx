@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, {Fragment, useEffect, useState} from "react";
-import {json, Link} from "react-router-dom";
+import {json, Link, useNavigate} from "react-router-dom";
 import "./styleCart.css";
 import axios from "axios";
 import { getCart, getBookInfo, changeCart } from "../../apiServices/CartService";
@@ -11,6 +11,12 @@ import { formatVND } from "../../common";
 
 
 const Cart = () => {
+    const navigate = useNavigate();
+    useEffect(() => {
+        if(!localStorage.getItem("accessToken")) {
+            navigate("/login");
+        }
+    },[])
 
     const [checkedItems, setCheckedItems] = useState({});
     const accessToken = localStorage.getItem('accessToken');
@@ -390,7 +396,7 @@ const Cart = () => {
 
                 </div>
             </div>
-            {/* <ToastContainer /> */}
+            <ToastContainer />
 
         </Fragment>
     );

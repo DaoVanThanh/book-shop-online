@@ -56,7 +56,6 @@ const ProductManagement = () => {
         const books = (await searchBook(searchKey, page, size)).data;
         setAllBook(books.content);
         setTotalPage(books.totalPages);
-        console.log(books.content)
       } catch (error) {
         console.log(error);
       }
@@ -275,13 +274,6 @@ const ProductManagement = () => {
         <tbody>
           {allBook.map((book) => (
             <tr key={book.bookId}>
-              {/* <td>
-                <Image
-                  src={book.imgUrl}
-                  style={{ width: "100px", height: "100px" }}
-                  alt={book.title}
-                ></Image>
-              </td> */}
               <td style={{ textAlign: "left" }}>
               <Image
                   src={book.imgUrl}

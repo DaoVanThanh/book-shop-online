@@ -129,6 +129,9 @@ const Checkout = () => {
               setCartItems(filteredBookInfoArray);
               setTotalPrice(totalPrice);
             }
+            else {
+              setCartItems([]);
+            }
           })
           .catch((error) => {
             console.log(error);

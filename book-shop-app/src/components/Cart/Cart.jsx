@@ -102,7 +102,6 @@ const Cart = () => {
 
             changeCart(item.id, newQuantity)
                 .then((response) => {
-                    console.log(response);
                 })
                 .catch((error) => {
                     console.log(error);

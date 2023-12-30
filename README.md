@@ -3,7 +3,7 @@
 ![demo](book-shop-app/public/demo.png)
 
 ## Mô tả dự án
-Dự án Book Shop là một hệ thống quản lý cửa hàng sách mua bán trực tuyến, giúp người dùng khám phá, tìm kiếm và mua sách một cách thuận lợi. Hệ thống này cung cấp cho quản trị viên các công cụ để quản lý kho sách, đơn hàng, tác giả và thể loại.
+Dự án Book Shop là một hệ thống quản lý cửa hàng sách mua bán trực tuyến, giúp người dùng khám phá, tìm kiếm và mua sách một cách thuận lợi. Hệ thống này cung cấp cho quản trị viên các công cụ để quản lý kho sách, đơn hàng và thống kê doanh thu.
 
 Hệ thống được xây dựng bởi các thành viên:
 * Đào Văn Thành - 21020094

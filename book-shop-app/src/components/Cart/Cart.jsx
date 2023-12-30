@@ -60,7 +60,10 @@ const Cart = () => {
 
     const changeQuantity = (bookId, newQuantity) => {
         if (newQuantity < 0) {
-            toast.error("Số lượng sách trong giỏ không hợp lệ");
+            toast.error("Số lượng sách trong giỏ không hợp lệ",{
+                position: toast.POSITION.TOP_RIGHT,
+                autoClose: 2000
+            });
             return;
         }
 
@@ -387,7 +390,7 @@ const Cart = () => {
 
                 </div>
             </div>
-            <ToastContainer />
+            {/* <ToastContainer /> */}
 
         </Fragment>
     );

@@ -6,7 +6,7 @@
 }
 
 .table-hover tbody tr:hover td {
-    background: aqua;
+    background: #51f542;
 }
 
 .table-hover {

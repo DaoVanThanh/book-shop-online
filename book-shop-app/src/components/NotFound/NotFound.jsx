@@ -1,7 +1,21 @@
 import React from 'react'
 import "./NotFound.css"
+import { jwtDecode } from 'jwt-decode'
+import { useNavigate } from 'react-router-dom'
 
 const NotFound = () => {
+    const navigate = useNavigate();
+    const handleBack = () => {
+        if(localStorage.getItem("accessToken")) {
+            const decoded = jwtDecode(localStorage.getItem("accessToken"));
+            if(decoded.role == "ROLE_ADMIN") {
+                navigate("/products");
+                return;
+            }
+        }
+        navigate("/");
+    }
+
     return (
         <div className="h-screen justify-center">
             <center className="mt-24 m-auto">
@@ -24,7 +38,7 @@ const NotFound = () => {
                 </div>
             </center>
             <center className="mt-6">
-                <a href="/" className="text-gray-500 font-mono text-xl bg-gray-200 p-3 rounded-md hover:shadow-md btn-go-back" style={{backgroundColor: "#228b22"}}>Trở lại trang chủ </a>
+                <p onClick={handleBack} className="text-gray-500 font-mono text-xl bg-gray-200 p-3 rounded-md hover:shadow-md btn-go-back" style={{backgroundColor: "#228b22", cursor:"pointer", width:"200px"}}>Trở lại trang chủ </p>
             </center>
         </div>
     );

@@ -56,6 +56,7 @@ const ProductManagement = () => {
         const books = (await searchBook(searchKey, page, size)).data;
         setAllBook(books.content);
         setTotalPage(books.totalPages);
+        console.log(books.content)
       } catch (error) {
         console.log(error);
       }
@@ -262,11 +263,11 @@ const ProductManagement = () => {
       <Table striped bordered hover>
         <thead>
           <tr>
-            <th>Tên sách</th>
+            {/* <th></th> */}
+            <th>Sách</th>
             <th>Ngày xuất bản</th>
             <th>Giá</th>
             <th>Số lượng</th>
-            <th>Ảnh</th>
             <th>Chỉnh sửa</th>
           </tr>
         </thead>
@@ -274,17 +275,23 @@ const ProductManagement = () => {
         <tbody>
           {allBook.map((book) => (
             <tr key={book.bookId}>
-              <td style={{ textAlign: "left" }}>{book.title}</td>
-              <td>{book.publication_date}</td>
-              <td>{formatVND(book.price)}</td>
-              <td>{book.stockQuantity}</td>
-              <td>
+              {/* <td>
                 <Image
                   src={book.imgUrl}
                   style={{ width: "100px", height: "100px" }}
                   alt={book.title}
                 ></Image>
-              </td>
+              </td> */}
+              <td style={{ textAlign: "left" }}>
+              <Image
+                  src={book.imgUrl}
+                  style={{ width: "100px", height: "100px", marginRight:"5px" }}
+                  alt={book.title}
+                ></Image>
+                {book.title}</td>
+              <td>{book.publication_date[2] + "-" + book.publication_date[1] + "-" + book.publication_date[0]}</td>
+              <td>{formatVND(book.price)}</td>
+              <td>{book.stockQuantity}</td>
               <td>
                 <i
                   className="fa-regular fa-pen-to-square"

@@ -63,14 +63,14 @@ const BookDetail = () => {
             });
             toast.success("Thêm vào giỏ hàng thành công", {
                 position: toast.POSITION.TOP_RIGHT,
-                autoClose: 1000,
+                autoClose: 2000,
             });
             navigate("/shop");
         } catch (error) {
             console.error('Error updating cart:', error);
             toast.error("Vui lòng đăng nhập để mua sản phẩm !", {
                 position: toast.POSITION.TOP_RIGHT,
-                autoClose: 1000,
+                autoClose: 2000,
             });
             navigate("/login")
         }

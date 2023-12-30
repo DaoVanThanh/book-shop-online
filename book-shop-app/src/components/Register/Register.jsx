@@ -115,7 +115,7 @@ function Register() {
             })
             .catch((error) => {
                 console.error("Đăng kí tài khoản không thành công", error);
-                alert("Các thông tin nhập không hợp lệ !");
+                alert("Tên tài khoản đã tồn tại !");
             });
     };
     return (

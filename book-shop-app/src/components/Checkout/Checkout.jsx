@@ -51,7 +51,10 @@ const Checkout = () => {
 
   const createOrder = () => {
     if (cartItems.length === 0) {
-      toast.error("Giỏ hàng của bạn đang trống");
+      toast.error("Giỏ hàng của bạn đang trống!", {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 2000,
+    });
       return;
     }
     const bookQuantities = cartItems.map((item) => ({
@@ -79,7 +82,10 @@ const Checkout = () => {
       .then(() => {
         handleShow();
 
-        toast.success("Đặt hàng thành công");
+        toast.success("Đặt hàng thành công", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 2000,
+      });
       })
       .catch((error) => {
         console.error("Error creating order:", error);
@@ -278,7 +284,7 @@ const Checkout = () => {
           </button>
         </Modal.Footer>
       </Modal>
-      <ToastContainer />
+      {/* <ToastContainer /> */}
     </Fragment>
   );
 };

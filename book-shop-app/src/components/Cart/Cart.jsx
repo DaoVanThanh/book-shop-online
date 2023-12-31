@@ -66,7 +66,7 @@ const Cart = () => {
 
     const changeQuantity = (bookId, newQuantity) => {
         if (newQuantity < 0) {
-            toast.error("Số lượng sách trong giỏ không hợp lệ",{
+            toast.error("Số lượng sách trong giỏ không hợp lệ", {
                 position: toast.POSITION.TOP_RIGHT,
                 autoClose: 2000
             });
@@ -80,12 +80,29 @@ const Cart = () => {
 
                 // Update the state with the new cart items
                 setCartItems((prevCartItems) => {
+                    // Declare newCheckedItems before modifying it
+                    let newCheckedItems = { ...checkedItems };
+
                     const updatedCartItems = prevCartItems.map((item) => {
                         if (item.id === bookId) {
+                            // If the new quantity is 0, uncheck the corresponding checkbox
+                            if(checkedItems[bookId] === true )
+                                newCheckedItems = { ...newCheckedItems, [bookId]: newQuantity !== 0  };
                             return { ...item, quantity: newQuantity };
                         }
                         return item;
                     });
+
+                    // Save the updated checked items to local storage
+                    localStorage.setItem('checkedItems', JSON.stringify(newCheckedItems));
+
+                    // Recalculate total quantities and total price based on checked items
+                    const selectedItems = updatedCartItems.filter((item) => newCheckedItems[item.id]);
+                    const totalQuantities = selectedItems.reduce((total, item) => total + item.quantity, 0);
+                    const totalPrice = selectedItems.reduce((total, item) => total + item.price * item.quantity, 0);
+
+                    setTotalQuantities(totalQuantities);
+                    setTotalPrice(totalPrice);
 
                     return updatedCartItems;
                 });
@@ -96,21 +113,24 @@ const Cart = () => {
     };
 
 
-    const deleteCart = (newQuantity) => {
-        const updatedCartItems = cartItems.map((item) => {
+    const deleteCart = async (newQuantity) => {
+        const updatedCartItems = await Promise.all(cartItems.map((item) => {
 
-
-            changeCart(item.id, newQuantity)
+            const bookId = item.id;
+            changeCart(bookId, newQuantity)
                 .then((response) => {
+
                 })
                 .catch((error) => {
                     console.log(error);
                 });
             // Update the quantity for the specific item
             return { ...item, quantity: newQuantity };
-        });
-        setCartItems(updatedCartItems);
+        }));
+        localStorage.removeItem('checkedItems');
 
+        setCartItems(updatedCartItems);
+        window.location.reload();
 
     }
     const loadCheckedItemsFromLocalStorage = async () => {
@@ -303,7 +323,7 @@ const Cart = () => {
                                                                 ''
                                                             }
                                                         >
-                                                        
+
                                                             {item.title}
                                                         </Link>
                                                     </td>

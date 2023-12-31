@@ -229,8 +229,8 @@ const Cart = () => {
                                                 <th>
 
                                                 </th>
-                                                {/* <th>Ảnh</th> */}
-                                                <th>Sản phẩm</th>
+                                                <th></th>
+                                                <th className="text-left">Sản phẩm</th>
                                                 <th>Giá</th>
                                                 <th>Số lượng</th>
                                                 <th>Tổng</th>
@@ -267,7 +267,7 @@ const Cart = () => {
                                                             </div>
                                                         </Form>
                                                     </td>
-                                                    {/* <td className="product-thumbnail text-center">
+                                                    <td className="product-thumbnail text-center">
                                                         <Link
                                                             to={
                                                                 ''
@@ -282,9 +282,9 @@ const Cart = () => {
                                                                 alt=""
                                                             />
                                                         </Link>
-                                                    </td> */}
+                                                    </td>
                                                     <td className="product-name text-center">
-                                                        <Link style={{marginRight:"10px"}}
+                                                        {/* <Link style={{marginRight:"10px"}}
                                                             to={
                                                                 ''
                                                             }
@@ -297,7 +297,7 @@ const Cart = () => {
                                                                 style={{width: "auto", height: "100px"}}
                                                                 alt=""
                                                             />
-                                                        </Link>
+                                                        </Link> */}
                                                         <Link
                                                             to={
                                                                 ''

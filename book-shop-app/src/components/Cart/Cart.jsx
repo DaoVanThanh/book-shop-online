@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, {Fragment, useEffect, useState} from "react";
-import {json, Link} from "react-router-dom";
+import {json, Link, useNavigate} from "react-router-dom";
 import "./styleCart.css";
 import axios from "axios";
 import { getCart, getBookInfo, changeCart } from "../../apiServices/CartService";
@@ -11,6 +11,12 @@ import { formatVND } from "../../common";
 
 
 const Cart = () => {
+    const navigate = useNavigate();
+    useEffect(() => {
+        if(!localStorage.getItem("accessToken")) {
+            navigate("/login");
+        }
+    },[])
 
     const [checkedItems, setCheckedItems] = useState({});
     const accessToken = localStorage.getItem('accessToken');
@@ -60,7 +66,10 @@ const Cart = () => {
 
     const changeQuantity = (bookId, newQuantity) => {
         if (newQuantity < 0) {
-            toast.error("Số lượng sách trong giỏ không hợp lệ");
+            toast.error("Số lượng sách trong giỏ không hợp lệ",{
+                position: toast.POSITION.TOP_RIGHT,
+                autoClose: 2000
+            });
             return;
         }
 
@@ -93,7 +102,6 @@ const Cart = () => {
 
             changeCart(item.id, newQuantity)
                 .then((response) => {
-                    console.log(response);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -208,7 +216,7 @@ const Cart = () => {
             <div className="cart-main-area pt-90 pb-100">
                 <div className="container">
                     <Fragment>
-                        <h3 className="cart-page-title">Giỏ hàng của bạn</h3>
+                        <h1 className="cart-page-title" style={{color:"#228b22"}}>Giỏ hàng của bạn</h1>
                         <div className="row center-tabl">
                             <div className="col-12">
                                 <div className="table-responsive cart-table-content " >
@@ -221,8 +229,8 @@ const Cart = () => {
                                                 <th>
 
                                                 </th>
-                                                <th>Ảnh</th>
-                                                <th>Tên sản phẩm</th>
+                                                <th></th>
+                                                <th className="text-left">Sản phẩm</th>
                                                 <th>Giá</th>
                                                 <th>Số lượng</th>
                                                 <th>Tổng</th>
@@ -276,11 +284,26 @@ const Cart = () => {
                                                         </Link>
                                                     </td>
                                                     <td className="product-name text-center">
+                                                        {/* <Link style={{marginRight:"10px"}}
+                                                            to={
+                                                                ''
+                                                            }
+                                                        >
+                                                            <img
+                                                                className="img-fluid mx-auto"
+                                                                src={
+                                                                    item.imgUrl
+                                                                }
+                                                                style={{width: "auto", height: "100px"}}
+                                                                alt=""
+                                                            />
+                                                        </Link> */}
                                                         <Link
                                                             to={
                                                                 ''
                                                             }
                                                         >
+                                                        
                                                             {item.title}
                                                         </Link>
                                                     </td>
@@ -378,7 +401,7 @@ const Cart = () => {
                         </span>
                                     </h4>
                                     <Link to={process.env.PUBLIC_URL + "/checkout"} style={{backgroundColor: "#228b22"}}>
-                                        Thanh toán
+                                        Mua hàng
                                     </Link>
                                 </div>
                             </div>

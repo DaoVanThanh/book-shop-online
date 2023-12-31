@@ -53,7 +53,7 @@ function FormExample() {
       updateUser(userData)
           .then((response) => {
             setInitialUserData(userData);
-            toast("Cập nhật tài khoản thành công");
+            toast.success("Cập nhật tài khoản thành công");
           })
           .catch((error) => {
             console.error("Error updating user information", error);
@@ -175,7 +175,7 @@ function FormExample() {
             </Col>
           </Row>
         </Form>
-        <ToastContainer/>
+        {/* <ToastContainer/> */}
       </div>
   );
 }

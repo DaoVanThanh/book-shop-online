@@ -36,12 +36,12 @@ const Footer = () => {
           <a href="" className="me-4 text-reset">
             <MDBIcon fab icon="google" />
           </a>
-          <a href="" className="me-4 text-reset">
+          {/* <a href="" className="me-4 text-reset">
             <MDBIcon fab icon="twitter" />
           </a>
           <a href="" className="me-4 text-reset">
             <MDBIcon fab icon="github" />
-          </a>
+          </a> */}
         </div>
       </section>
 
@@ -111,11 +111,11 @@ const Footer = () => {
               </p>
               <p>
                 <MDBIcon icon="phone" className="me-3" />
-                02435146875
+                0123456789
               </p>
               <p>
                 <MDBIcon icon="mobile-screen-button" className="me-3" />{" "}
-                0903244248
+                0123456789
               </p>
             </MDBCol>
           </MDBRow>

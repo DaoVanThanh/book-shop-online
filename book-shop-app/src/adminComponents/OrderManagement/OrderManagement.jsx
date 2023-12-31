@@ -170,14 +170,14 @@ const OrderManagement = () => {
                                         <td onClick={() => handleShowDetails(order)}>{order.orderId}</td>
                                         <td onClick={() => handleShowDetails(order)}>{new Date(order.orderDate).toLocaleString()}</td>
                                         <td>
-                                            <Form.Group>
-                                                <Form.Select
+                                            <Form.Group >
+                                                <Form.Select 
                                                     as="select"
                                                     value={temporaryStatus[order.orderId] || order.status}
                                                     onChange={(e) =>
                                                         handleEditStatus(order.orderId, e.target.value)
                                                     }
-                                                    style={{ width: '100%' }}
+                                                    style={{ width: '100%',cursor:"pointer" }}
                                                 >
                                                     {orderStatuses.map((newStatus) => (
                                                         <option key={newStatus} value={newStatus}>

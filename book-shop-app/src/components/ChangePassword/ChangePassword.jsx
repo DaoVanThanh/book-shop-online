@@ -22,7 +22,7 @@ function ChangePassword() {
           // Xử lý kết quả từ API nếu cập nhật thành công
           localStorage.clear();
           navigate("/login")
-          toast("Đổi mật khẩu thành công. Vui lòng đăng nhập lại!");
+          toast.success("Đổi mật khẩu thành công. Vui lòng đăng nhập lại!");
         })
         .catch((error) => {
           // Xử lý lỗi từ API nếu có lỗi
@@ -86,7 +86,7 @@ function ChangePassword() {
           Đổi Mật Khẩu
         </Button>
       </Form>
-      <ToastContainer />
+      {/* <ToastContainer /> */}
     </div>
   );
 }

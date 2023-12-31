@@ -82,7 +82,7 @@ const SortOptions = ({ onSort }) => {
                     <li onClick={() => handleSort('price_asc')}>Sắp xếp giá tăng dần</li>
                     <li onClick={() => handleSort('price_desc')}>Sắp xếp giá giảm dần</li>
                     {/* <li onClick={() => handleSort('rating')}>Sắp xếp theo đánh giá</li> */}
-                    <li onClick={() => handleSort('year')}>Sắp xếp theo năm sản xuất</li>
+                    <li onClick={() => handleSort('year')}>Sắp xếp theo năm xuất bản</li>
                 </ul>
             )}
         </div>

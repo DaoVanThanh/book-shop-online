@@ -76,7 +76,6 @@ const Cart = () => {
         // Call the API to update the quantity in the backend
         changeCart(bookId, newQuantity)
             .then((response) => {
-                console.log(response);
 
                 // Update the state with the new cart items
                 setCartItems((prevCartItems) => {

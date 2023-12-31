@@ -216,7 +216,7 @@ const Cart = () => {
             <div className="cart-main-area pt-90 pb-100">
                 <div className="container">
                     <Fragment>
-                        <h3 className="cart-page-title">Giỏ hàng của bạn</h3>
+                        <h1 className="cart-page-title" style={{color:"#228b22"}}>Giỏ hàng của bạn</h1>
                         <div className="row center-tabl">
                             <div className="col-12">
                                 <div className="table-responsive cart-table-content " >
@@ -229,8 +229,8 @@ const Cart = () => {
                                                 <th>
 
                                                 </th>
-                                                <th>Ảnh</th>
-                                                <th>Tên sản phẩm</th>
+                                                {/* <th>Ảnh</th> */}
+                                                <th>Sản phẩm</th>
                                                 <th>Giá</th>
                                                 <th>Số lượng</th>
                                                 <th>Tổng</th>
@@ -267,7 +267,7 @@ const Cart = () => {
                                                             </div>
                                                         </Form>
                                                     </td>
-                                                    <td className="product-thumbnail text-center">
+                                                    {/* <td className="product-thumbnail text-center">
                                                         <Link
                                                             to={
                                                                 ''
@@ -282,13 +282,28 @@ const Cart = () => {
                                                                 alt=""
                                                             />
                                                         </Link>
-                                                    </td>
+                                                    </td> */}
                                                     <td className="product-name text-center">
+                                                        <Link style={{marginRight:"10px"}}
+                                                            to={
+                                                                ''
+                                                            }
+                                                        >
+                                                            <img
+                                                                className="img-fluid mx-auto"
+                                                                src={
+                                                                    item.imgUrl
+                                                                }
+                                                                style={{width: "auto", height: "100px"}}
+                                                                alt=""
+                                                            />
+                                                        </Link>
                                                         <Link
                                                             to={
                                                                 ''
                                                             }
                                                         >
+                                                        
                                                             {item.title}
                                                         </Link>
                                                     </td>
@@ -386,7 +401,7 @@ const Cart = () => {
                         </span>
                                     </h4>
                                     <Link to={process.env.PUBLIC_URL + "/checkout"} style={{backgroundColor: "#228b22"}}>
-                                        Thanh toán
+                                        Mua hàng
                                     </Link>
                                 </div>
                             </div>

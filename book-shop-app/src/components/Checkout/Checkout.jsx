@@ -69,7 +69,7 @@ const Checkout = () => {
     };
     axios
         .post(
-            "http://localhost:8080/api/user/orm/orders/create",
+            "http://fall2324w3g8.int3306.freeddns.org/api/user/orm/orders/create",
             updatedOrderData,
             { headers: { Authorization: "Bearer " + accessToken } }
         )

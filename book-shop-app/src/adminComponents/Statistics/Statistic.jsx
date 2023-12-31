@@ -76,7 +76,6 @@ const Statistic = () => {
               placeholder="Ngày bắt đầu"
               onChange={(event) => {
                 setStartDate(event.target.value);
-                console.log(event.target.value);
               }}
             />
             <label htmlFor="floatingDate1">Ngày bắt đầu</label>

@@ -34,5 +34,9 @@ public class IndexController {
         return "forward:/index.html";
     }
 
+    @RequestMapping(value = "/shop/detail/{path:[^\\.]*}")
+    public String shopDetail() {
+        return "forward:/index.html";
+    }
 
 }

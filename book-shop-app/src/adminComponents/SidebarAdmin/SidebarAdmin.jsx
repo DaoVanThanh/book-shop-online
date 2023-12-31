@@ -4,7 +4,7 @@ import { Nav } from "react-bootstrap";
 import "./Sidebar.css";
 const Sidebar = () => {
   const handleLogout = () => {
-    window.location.href = "/login";
+    window.location.href = "/";
     localStorage.clear();
   }
   return (

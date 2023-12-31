@@ -66,7 +66,7 @@ const Cart = () => {
 
     const changeQuantity = (bookId, newQuantity) => {
         if (newQuantity < 0) {
-            toast.error("Số lượng sách trong giỏ không hợp lệ",{
+            toast.error("Số lượng sách trong giỏ không hợp lệ", {
                 position: toast.POSITION.TOP_RIGHT,
                 autoClose: 2000
             });
@@ -76,16 +76,32 @@ const Cart = () => {
         // Call the API to update the quantity in the backend
         changeCart(bookId, newQuantity)
             .then((response) => {
-                console.log(response);
 
                 // Update the state with the new cart items
                 setCartItems((prevCartItems) => {
+                    // Declare newCheckedItems before modifying it
+                    let newCheckedItems = { ...checkedItems };
+
                     const updatedCartItems = prevCartItems.map((item) => {
                         if (item.id === bookId) {
+                            // If the new quantity is 0, uncheck the corresponding checkbox
+                            if(checkedItems[bookId] === true )
+                                newCheckedItems = { ...newCheckedItems, [bookId]: newQuantity !== 0  };
                             return { ...item, quantity: newQuantity };
                         }
                         return item;
                     });
+
+                    // Save the updated checked items to local storage
+                    localStorage.setItem('checkedItems', JSON.stringify(newCheckedItems));
+
+                    // Recalculate total quantities and total price based on checked items
+                    const selectedItems = updatedCartItems.filter((item) => newCheckedItems[item.id]);
+                    const totalQuantities = selectedItems.reduce((total, item) => total + item.quantity, 0);
+                    const totalPrice = selectedItems.reduce((total, item) => total + item.price * item.quantity, 0);
+
+                    setTotalQuantities(totalQuantities);
+                    setTotalPrice(totalPrice);
 
                     return updatedCartItems;
                 });
@@ -96,22 +112,24 @@ const Cart = () => {
     };
 
 
-    const deleteCart = (newQuantity) => {
-        const updatedCartItems = cartItems.map((item) => {
+    const deleteCart = async (newQuantity) => {
+        const updatedCartItems = await Promise.all(cartItems.map((item) => {
 
-
-            changeCart(item.id, newQuantity)
+            const bookId = item.id;
+            changeCart(bookId, newQuantity)
                 .then((response) => {
-                    console.log(response);
+
                 })
                 .catch((error) => {
                     console.log(error);
                 });
             // Update the quantity for the specific item
             return { ...item, quantity: newQuantity };
-        });
-        setCartItems(updatedCartItems);
+        }));
+        localStorage.removeItem('checkedItems');
 
+        setCartItems(updatedCartItems);
+        window.location.reload();
 
     }
     const loadCheckedItemsFromLocalStorage = async () => {
@@ -217,7 +235,7 @@ const Cart = () => {
             <div className="cart-main-area pt-90 pb-100">
                 <div className="container">
                     <Fragment>
-                        <h3 className="cart-page-title">Giỏ hàng của bạn</h3>
+                        <h1 className="cart-page-title" style={{color:"#228b22"}}>Giỏ hàng của bạn</h1>
                         <div className="row center-tabl">
                             <div className="col-12">
                                 <div className="table-responsive cart-table-content " >
@@ -230,8 +248,8 @@ const Cart = () => {
                                                 <th>
 
                                                 </th>
-                                                <th>Ảnh</th>
-                                                <th>Tên sản phẩm</th>
+                                                <th></th>
+                                                <th className="text-left">Sản phẩm</th>
                                                 <th>Giá</th>
                                                 <th>Số lượng</th>
                                                 <th>Tổng</th>
@@ -285,11 +303,26 @@ const Cart = () => {
                                                         </Link>
                                                     </td>
                                                     <td className="product-name text-center">
+                                                        {/* <Link style={{marginRight:"10px"}}
+                                                            to={
+                                                                ''
+                                                            }
+                                                        >
+                                                            <img
+                                                                className="img-fluid mx-auto"
+                                                                src={
+                                                                    item.imgUrl
+                                                                }
+                                                                style={{width: "auto", height: "100px"}}
+                                                                alt=""
+                                                            />
+                                                        </Link> */}
                                                         <Link
                                                             to={
                                                                 ''
                                                             }
                                                         >
+
                                                             {item.title}
                                                         </Link>
                                                     </td>
@@ -387,7 +420,7 @@ const Cart = () => {
                         </span>
                                     </h4>
                                     <Link to={process.env.PUBLIC_URL + "/checkout"} style={{backgroundColor: "#228b22"}}>
-                                        Thanh toán
+                                        Mua hàng
                                     </Link>
                                 </div>
                             </div>

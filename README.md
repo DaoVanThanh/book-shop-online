@@ -24,23 +24,23 @@ Hệ thống được xây dựng bởi các thành viên:
 * Đổi mật khẩu
 
 #### Xem thông tin sách
-* Xem sách theo best seller
+* Xem sách bán chạy, sách mới
 * Xem danh sách tất cả các sách
 * Lọc sách theo thể loại, khoảng giá
+* Sắp xếp sách
 * Tìm kiếm sách
-* Xem thông tin sách
+* Xem thông tin chi tiết sách
 
 #### Quản lý giỏ hàng
 * Thêm sản phẩm vào giỏ hàng 
 * Xem giỏ hàng
 * Xóa sản phẩm khỏi giỏ hàng
-* Thanh toán sản phẩm
+* Mua hàng
 
 
 #### Quản lý đơn hàng
 * Tạo đơn hàng
 * Xem tình trạng đơn hàng
-* Xem sản phẩm đã mua
 * Hủy đơn hàng
 
 ### Admin
